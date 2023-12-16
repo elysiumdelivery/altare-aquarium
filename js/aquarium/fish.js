@@ -1,7 +1,7 @@
 import { Aquarium } from "./aquarium.js";
 
 const cubism4Model =
-  "./resources/l2d_feesh/fish.model3.json";
+  "./images/resources/l2d_feesh/fish.model3.json";
 // const glowFilter = new PIXI.filters.GlowFilter({ distance: 15, outerStrength: 3 })
 
 let fishCounter = 0;
