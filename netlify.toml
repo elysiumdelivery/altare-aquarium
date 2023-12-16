@@ -3,4 +3,4 @@
 
     [plugins.inputs]
     deliveryType = "upload"
-    folder = "cards"
+    folder = "resources"
