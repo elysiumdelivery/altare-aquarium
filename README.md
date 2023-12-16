@@ -5,6 +5,13 @@ README in progress!
 ## Features
 TODO
 
+## Libraries Used
+
+Live2D Cubism Core SDK
+PixiJS
+https://github.com/pixijs/spine
+https://github.com/guansss/pixi-live2d-display
+https://github.com/davidfig/pixi-viewport
 
 # Contributing
 
