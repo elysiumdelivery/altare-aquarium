@@ -1,0 +1,75 @@
+html {
+    /* fullscreen, no scrolling */
+    height: 100dvh;
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+}
+
+.dialog-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialog-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    transition: opacity ease 0.5s;
+    opacity: 0;
+}
+
+[role="dialog"][aria-hidden="true"] {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+#fish-details-dialog {
+    width: 80vmin;
+    height: 80dvh;
+    padding: 2em;
+    box-sizing: border-box;
+
+    background: white;
+
+    transition: 0.5s transform ease, 0.5s opacity ease;
+    transform: translateY(25%);
+    opacity: 0;
+}
+
+.dialog-container:not([aria-hidden="true"]) #fish-details-dialog, 
+.dialog-container:not([aria-hidden="true"]) .dialog-overlay {
+    transform: translateY(0);
+    opacity: 1;
+}
