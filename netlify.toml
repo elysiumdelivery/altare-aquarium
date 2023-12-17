@@ -2,5 +2,4 @@
     package = "netlify-plugin-cloudinary"
 
     [plugins.inputs]
-    deliveryType = "fetch"
-    folder = "images"
+    deliveryType = "upload"
