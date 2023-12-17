@@ -103,6 +103,9 @@ async function init () {
     setupDebug();
     setupFilters();
 
+    let loader = document.getElementById("loader-progress");
+    loader.setAttribute("max", 100);
+    loader.setAttribute("value", 0);
     for (var i = 0; i < 100; i++) {
         const newFish = new Fish();
         await newFish.init();
@@ -141,6 +144,7 @@ async function init () {
         Aquarium.viewport.addChild(newFish.model);
 
         allFish.push(newFish);
+        loader.setAttribute("value", i + 1);
     }
 
     allFish.sort((a, b) => {

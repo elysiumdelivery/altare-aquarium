@@ -7,6 +7,9 @@ async function main() {
     window.aquarium = Aquarium;
     window.aquarium.settings.filters = false;
     await Aquarium.init();
+
+    let loader = document.getElementById("loader");
+    loader.remove();
     
     Aquarium.addGameStateListener("onFishClicked", (data) => {
         updateDetailsDialog(`Fish #${data.idx}`);
