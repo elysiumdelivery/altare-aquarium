@@ -1,9 +1,11 @@
 {
   "name": "altare-aquarium",
   "version": "0.0.1",
-  "dependencies": {},
+  "dependencies": {
+    "netlify-plugin-cloudinary": "^1.16.0"
+  },
   "devDependencies": {
-    "live-server": "^1.2.2",
+    "live-server": "^1.1.0",
     "prettier": "^2.7.1"
   }
 }
