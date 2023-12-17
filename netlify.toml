@@ -3,4 +3,5 @@
 
     [plugins.inputs]
     deliveryType = "upload"
-    imagesPath = "/images"
+    uploadPreset = "ml-default"
+    folder = "images"
