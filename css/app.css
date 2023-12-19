@@ -44,6 +44,12 @@ body {
     color: white;
 }
 
+#quality-settings {
+    /* TODO: temp placement for now */
+    position: absolute;
+    right: 0;
+}
+
 .dialog-container {
     position: absolute;
     top: 0;

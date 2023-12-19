@@ -2,8 +2,14 @@ import { Fish } from "./fish.js";
 
 // const spineModel = "../resources/fish/FishAnimationTest.json";
 
+
 const WORLD_WIDTH = 1000;
 const WORLD_HEIGHT = 10000;
+const LEVELS = {
+    "Surface": 0,
+    "Mid": WORLD_HEIGHT * 1 / 3,
+    "Floor": WORLD_HEIGHT * 2 / 3
+}
 const debug = {};
 const allFish = [];
 
@@ -54,12 +60,12 @@ export const Aquarium = ((options = {}) => {
     return self;
 })();
 
-async function init () {
+async function init (data) {
     Aquarium.app = new PIXI.Application({
         view: document.getElementById('canvas'),
         backgroundAlpha: 1,
         resizeTo: window,
-        resolution: 0.75
+        resolution: 0.95
     });
     Aquarium.viewport = new pixi_viewport.Viewport({
         screenWidth: window.innerWidth,
@@ -106,6 +112,122 @@ async function init () {
     let loader = document.getElementById("loader-progress");
     loader.setAttribute("max", 100);
     loader.setAttribute("value", 0);
+
+    await loadData(data);
+
+    allFish.sort((a, b) => {
+        if (a.model.scale.y > b.model.scale.y) return -1;
+        else if (a.model.scale.y < b.model.scale.y) return 1;
+        else return 0
+    }).forEach((fish, i) => {
+        fish.model.zIndex = i;
+    })
+
+    Aquarium.app.view.addEventListener("pointermove", (e) => {
+        if (Aquarium.accessibilityActive) {
+            Aquarium.accessibilityActive = false;
+            if (Aquarium.currentActiveFish) {
+                Aquarium.emitEvent("onFishOut", Aquarium.currentActiveFish);
+            }
+        }
+    })
+    /**
+     * Click events are kinda weird w/ the L2D Model Plugin.
+     * Workaround where we emit our own event that acts as the click.
+     */
+    Aquarium.app.view.addEventListener('pointerdown', (e) => {
+        if (Aquarium.currentActiveFish && Aquarium.currentActiveFish.model.containsPoint(e)) {
+            Aquarium.emitEvent("onFishClicked", { idx: Aquarium.currentActiveFish.id, data: Aquarium.currentActiveFish.data });
+        }
+    });
+
+    Aquarium.addGameStateListener("onFishOver", (fish) => {
+        if (Aquarium.currentActiveFish && Aquarium.currentActiveFish !== fish) {
+            Aquarium.currentActiveFish.toggleHighlight(false);
+            Aquarium.currentActiveFish.node.blur();
+        }
+        Aquarium.currentActiveFish = fish;
+        fish.toggleHighlight(true);
+    })
+
+    Aquarium.addGameStateListener("onFishOut", (fish) => {
+        if (Aquarium.currentActiveFish === fish) {
+            Aquarium.currentActiveFish.node.blur();
+            Aquarium.currentActiveFish = undefined;
+        }
+        fish.toggleHighlight(false);
+    })
+
+    Aquarium.app.ticker.add(d => {
+        if (Aquarium.settings.filters) {
+            overlayGraphic.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
+            Aquarium.filters.godrayFilter.time += d / lerp(50, 100, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
+            Aquarium.filters.godrayFilter.gain = lerp(0.1, 0.4, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
+            Aquarium.filters.godrayFilter.lacunarity = lerp(1.8, 5, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
+        }
+        updateDebugLayer();
+    });
+
+    Aquarium.resize = resize;
+
+    Aquarium.app.start();
+    Aquarium.viewport.alpha = 1;
+    Aquarium.viewport.fitWidth()
+    Aquarium.viewport.clamp({direction: "y"})
+    Aquarium.viewport.moveCenter(WORLD_WIDTH / 2, 0)
+
+    window.addEventListener("resize", resize);
+    resize();
+}
+
+async function loadData(allFishData) {
+    let lastFishAtLevel = {};
+    for (var i = 0; i < allFishData.length; i++) {
+        let fishData = allFishData[i];
+        let newFish = new Fish(fishData);
+        await newFish.init();
+        let level = fishData["Sea Level"];
+        let lastModel = lastFishAtLevel[level] ? allFish[lastFishAtLevel[level]].model : undefined;
+        if (lastModel) {
+            newFish.model.y = (lastModel.y + (lastModel.height / 2) + (newFish.model.height / 2));
+        }
+        else {
+            newFish.model.y = LEVELS[level] + (newFish.model.height);
+        }
+        newFish.model.x = randomRange(0, WORLD_WIDTH);
+        // model.filters = [new PIXI.filters.ColorOverlayFilter(0xFFFFFF * Math.random(), 0.5)]
+        let node = document.createElement("button");
+        node.title = fishData["Fish Display Name"];
+        node.innerText = fishData["Fish Display Name"];
+        node.role = "listitem"
+        node.ariaPosInSet = i;
+        node.tabIndex = 0;
+        node.onfocus = function () {
+            Aquarium.accessibilityActive = true;
+            Aquarium.emitEvent("onFishOver", this);
+            if ((this.model.y + (this.model.height / 2)) > Aquarium.viewport.bottom || (this.model.y - (this.model.height / 2)) <= Aquarium.viewport.top) {
+                Aquarium.viewport.animate({ time: 250, position: {x: Aquarium.viewport.center.x, y: this.model.y}, removeOnInterrupt: true })
+            }
+        }.bind(newFish)
+        node.onblur = function () {
+            Aquarium.accessibilityActive = true;
+            Aquarium.emitEvent("onFishOut", this);
+        }.bind(newFish)
+        node.onclick = function () {
+            console.log(this)
+            Aquarium.emitEvent("onFishClicked", { idx: this.id, data: this.data });
+        }.bind(newFish);
+        newFish.node = node;
+        fishAriaDiv.appendChild(node);
+        Aquarium.viewport.addChild(newFish.model);
+
+        lastFishAtLevel[level] = allFish.length;
+        allFish.push(newFish);
+        loader.setAttribute("value", i + 1);
+    }
+}
+
+async function randomFishStressTest () {
     for (var i = 0; i < 100; i++) {
         const newFish = new Fish();
         await newFish.init();
@@ -146,68 +268,6 @@ async function init () {
         allFish.push(newFish);
         loader.setAttribute("value", i + 1);
     }
-
-    allFish.sort((a, b) => {
-        if (a.model.scale.y > b.model.scale.y) return -1;
-        else if (a.model.scale.y < b.model.scale.y) return 1;
-        else return 0
-    }).forEach((fish, i) => {
-        fish.model.zIndex = i;
-    })
-
-    Aquarium.app.view.addEventListener("pointermove", (e) => {
-        if (Aquarium.accessibilityActive) {
-            Aquarium.accessibilityActive = false;
-            if (Aquarium.currentActiveFish) {
-                Aquarium.emitEvent("onFishOut", Aquarium.currentActiveFish);
-            }
-        }
-    })
-    /**
-     * Click events are kinda weird w/ the L2D Model Plugin.
-     * Workaround where we emit our own event that acts as the click.
-     */
-    Aquarium.app.view.addEventListener('pointerdown', (e) => {
-        if (Aquarium.currentActiveFish && Aquarium.currentActiveFish.model.containsPoint(e)) {
-            Aquarium.emitEvent("onFishClicked", { idx: Aquarium.currentActiveFish.id });
-        }
-    });
-
-    Aquarium.addGameStateListener("onFishOver", (fish) => {
-        if (Aquarium.currentActiveFish && Aquarium.currentActiveFish !== fish) {
-            Aquarium.currentActiveFish.toggleHighlight(false);
-            Aquarium.currentActiveFish.node.blur();
-        }
-        Aquarium.currentActiveFish = fish;
-        fish.toggleHighlight(true);
-    })
-
-    Aquarium.addGameStateListener("onFishOut", (fish) => {
-        if (Aquarium.currentActiveFish === fish) {
-            Aquarium.currentActiveFish.node.blur();
-            Aquarium.currentActiveFish = undefined;
-        }
-        fish.toggleHighlight(false);
-    })
-
-    Aquarium.app.ticker.add(d => {
-        if (Aquarium.settings.filters) {
-            overlayGraphic.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
-            Aquarium.filters.godrayFilter.time += d / lerp(50, 100, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
-            Aquarium.filters.godrayFilter.gain = lerp(0.1, 0.4, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
-            Aquarium.filters.godrayFilter.lacunarity = lerp(1.8, 5, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
-        }
-        updateDebugLayer();
-    })
-
-    Aquarium.app.start();
-    Aquarium.viewport.alpha = 1;
-    Aquarium.viewport.fitWidth()
-    Aquarium.viewport.clamp({direction: "y"})
-    Aquarium.viewport.moveCenter(WORLD_WIDTH / 2, 0)
-
-    window.addEventListener("resize", resize);
-    resize();
 }
 
 function setupFilters () {

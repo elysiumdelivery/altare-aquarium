@@ -1,15 +1,15 @@
 <html>
     <head>
-        <title>Live2D Test</title>
+        <title>Regis Altare Birthday Project 2024</title>
         
         <link rel="stylesheet" href="css/app.css"/>
-        <script src="js/pixi/pixi7.min.js"></script>
-        <script src="js/pixi/pixi-filters.js"></script>
-        <script src="js/pixi/pixi_viewport.umd.cjs"></script>
+        <script src="js/plugins/pixi/pixi7.min.js"></script>
+        <script src="js/plugins/pixi/pixi-filters.js"></script>
+        <script src="js/plugins/pixi/pixi_viewport.umd.cjs"></script>
         <script src="https://cdn.jsdelivr.net/npm/@pixi/assets@6.x/dist/browser/assets.min.js"></script>
-        <script src="js/pixi/live2dcubismcore.min.js"></script>
-        <script src="js/l2d_sdk/cubism4.min.js"></script>
-        <script src="js/pixi/pixi-spine.js"></script>
+        <script src="js/plugins/pixi/live2dcubismcore.min.js"></script>
+        <script src="js/plugins/l2d_sdk/cubism4.min.js"></script>
+        <script src="js/plugins/pixi/pixi-spine.js"></script>
     </head>
     <body>
         <main>
@@ -19,9 +19,20 @@
                 <label for="loader-progress">Loading in aquarium...</label>
                 <progress id="loader-progress"></progress>
             </div>
+            <section id="quality-settings" aria-label="Quality Settings">
+                <label>
+                    Quality: 
+                    <select id="quality-settings">
+                      <option value="Low" selected>Low</option>
+                      <option value="Medium" selected>Medium</option>
+                      <option value="High">High</option>
+                    </select>
+                </label>
+            </section>
             <div id="overlay" aria-hidden="true"></div>
         </main>
-        <script type="text/javascript" src="js/a11y-dialog.min.js"></script>
+        <script type="text/javascript" src="js/plugins/a11y-dialog.min.js"></script>
+        <script type="text/javascript" src="js/plugins/papaparse.min.js"></script>
         <script type="module" src="js/main.js"></script>
     </body>
 </html>
