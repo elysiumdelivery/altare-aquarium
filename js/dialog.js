@@ -26,7 +26,9 @@ export function updateDetailsDialog(id, data, cardUrl) {
   )[0].insertAdjacentHTML(
     "beforeend",
     `
-    <h2 class="card-name">${id}</h2>
+    <h2 class="fish-name">${data["Fish Display Name"]}</h2>
+    <p class="fish-description">${data["Description"]}</p>
   `
+  // TODO add more to this section
   );
 }

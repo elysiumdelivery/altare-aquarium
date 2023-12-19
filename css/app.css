@@ -27,6 +27,29 @@ body {
     height: 100dvh;
 }
 
+#loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#loader label {
+    color: white;
+}
+
+#quality-settings {
+    /* TODO: temp placement for now */
+    position: absolute;
+    right: 0;
+}
+
 .dialog-container {
     position: absolute;
     top: 0;

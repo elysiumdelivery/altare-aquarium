@@ -1,21 +1,21 @@
 import { Aquarium } from "./aquarium.js";
 
-const cubism4Model =
-  "./images/resources/l2d_feesh/fish.model3.json";
 // const glowFilter = new PIXI.filters.GlowFilter({ distance: 15, outerStrength: 3 })
 
 let fishCounter = 0;
 
-export function Fish (options = {}) {
+export function Fish (fishData) {
+    this.data = fishData;
     this.node = document.createElement("a");
-    this.speed = options.speed || randomRange(0.25, 2);
-    this.scale = options.scale || randomRange(0.02, 0.125);
+    this.speed = getSpeedFromSize(fishData["Size Category"]) || randomRange(0.25, 2);
+    this.scale = getScaleFromSize(fishData["Size Category"]) || randomRange(0.02, 0.125);
     this.direction = Math.random() >= 0.5 ? 1 : -1;
 }
 
 Fish.prototype.init = async function () {
+    let modelFilePath = `images/resources/${this.data["Filename"]}/${this.data["Filename"]}.model3.json`;
     this.id = fishCounter++;
-    this.model = await PIXI.live2d.Live2DModel.from(cubism4Model, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'idle' });
+    this.model = await PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'idle' });
     this.model.cullable = true;
     this.model.filters = [];
     this.model.anchor.set(0.5);
@@ -73,4 +73,20 @@ Fish.prototype.toggleHighlight = function (isOn) {
 
 function randomRange(min, max) {
     return Math.random() * (max - min) + min;
+}
+
+function getSpeedFromSize (sizeCategory) {
+    switch (sizeCategory) {
+        case "L": return randomRange(0.1, 0.5);
+        case "M": return randomRange(0.5, 1);
+        case "S": return randomRange(1, 3);
+    }
+}
+
+function getScaleFromSize (sizeCategory) {
+    switch (sizeCategory) {
+        case "L": return randomRange(0.1, 0.2);
+        case "M": return randomRange(0.05, 0.1);
+        case "S": return randomRange(0.02, 0.05);
+    }
 }
