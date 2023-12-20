@@ -92,7 +92,7 @@ async function init (data) {
     Aquarium.app.stage.addChild(Aquarium.viewport)
     Aquarium.app.stage.addChild(Aquarium.overlay)
 
-    let bg = new PIXI.Sprite(generateGradient(["#D3FFE9", "#2B59C3", "#253C78"], { width: 64, height: 64 }));
+    let bg = new PIXI.Sprite(generateGradient(["#D3FFE9", "#2B59C3", "#011138"], { width: 64, height: 64 }));
     bg.width = WORLD_WIDTH;
     bg.height = WORLD_HEIGHT;
     Aquarium.viewport.addChild(bg);

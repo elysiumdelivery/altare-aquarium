@@ -13,9 +13,9 @@ export function Fish (fishData) {
 }
 
 Fish.prototype.init = async function () {
-    let modelFilePath = `images/resources/${this.data["Filename"]}/${this.data["Filename"]}.model3.json`;
+    let modelFilePath = `images/l2d/${this.data["Filename"]}/${this.data["Filename"]}.model3.json`;
     this.id = fishCounter++;
-    this.model = await PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'idle' });
+    this.model = await PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'Idle' });
     this.model.cullable = true;
     this.model.filters = [];
     this.model.anchor.set(0.5);
@@ -77,16 +77,16 @@ function randomRange(min, max) {
 
 function getSpeedFromSize (sizeCategory) {
     switch (sizeCategory) {
-        case "L": return randomRange(0.1, 0.5);
+        case "L": return randomRange(0.25, 0.5);
         case "M": return randomRange(0.5, 1);
-        case "S": return randomRange(1, 3);
+        case "S": return randomRange(1, 2);
     }
 }
 
 function getScaleFromSize (sizeCategory) {
     switch (sizeCategory) {
-        case "L": return randomRange(0.1, 0.2);
-        case "M": return randomRange(0.05, 0.1);
-        case "S": return randomRange(0.02, 0.05);
+        case "L": return 0.25;
+        case "M": return 0.1;
+        case "S": return 0.05;
     }
 }

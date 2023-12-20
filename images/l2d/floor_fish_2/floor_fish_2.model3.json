@@ -1,0 +1,1 @@
+{"Version":3,"FileReferences":{"Moc":"floor_fish_2.moc3","Textures":["floor_fish_2.1024/texture_00.png"],"Motions":{"Idle":[{"File":"idle.motion3.json"}]},"DisplayInfo":"floor_fish_2.cdi3.json"},"Groups":[{"Target":"Parameter","Name":"EyeBlink","Ids":[]},{"Target":"Parameter","Name":"LipSync","Ids":[]}]}
