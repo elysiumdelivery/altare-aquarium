@@ -142,8 +142,7 @@ async function init (data) {
     });
 
     Aquarium.addGameStateListener("onFishCreated", (fish) => {
-        let val = Number.parseInt(loader.getAttribute("value"));
-        loader.setAttribute("value", val + 1);
+        document.getElementById("loader-progress").value++;
     })
 
     Aquarium.addGameStateListener("onFishOver", (fish) => {
@@ -270,7 +269,6 @@ async function randomFishStressTest () {
         Aquarium.viewport.addChild(newFish.model);
 
         allFish.push(newFish);
-        loader.setAttribute("value", i + 1);
     }
 }
 
