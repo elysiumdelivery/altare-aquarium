@@ -141,7 +141,7 @@ async function init (data) {
         }
     });
 
-    Aquarium.addGameStateListener("onFishCreated", (fish) => {
+    Aquarium.addGameStateListener("fishCreated", (fish) => {
         document.getElementById("loader-progress").value++;
     })
 
