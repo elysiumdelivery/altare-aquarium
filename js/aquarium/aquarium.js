@@ -113,6 +113,10 @@ async function init (data) {
     loader.setAttribute("max", 100);
     loader.setAttribute("value", 0);
 
+    Aquarium.addGameStateListener("fishCreated", (fish) => {
+        document.getElementById("loader-progress").value++;
+    })
+
     await loadData(data);
 
     allFish.sort((a, b) => {
@@ -140,10 +144,6 @@ async function init (data) {
             Aquarium.emitEvent("onFishClicked", { idx: Aquarium.currentActiveFish.id, data: Aquarium.currentActiveFish.data });
         }
     });
-
-    Aquarium.addGameStateListener("fishCreated", (fish) => {
-        document.getElementById("loader-progress").value++;
-    })
 
     Aquarium.addGameStateListener("onFishOver", (fish) => {
         if (Aquarium.currentActiveFish && Aquarium.currentActiveFish !== fish) {
