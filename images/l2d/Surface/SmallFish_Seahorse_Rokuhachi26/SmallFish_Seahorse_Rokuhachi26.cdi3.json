@@ -1,0 +1,117 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "Param5",
+			"GroupId": "",
+			"Name": "WholeRotate"
+		},
+		{
+			"Id": "Param",
+			"GroupId": "",
+			"Name": "FinWave1"
+		},
+		{
+			"Id": "Param2",
+			"GroupId": "",
+			"Name": "FinWave2"
+		},
+		{
+			"Id": "Param3",
+			"GroupId": "",
+			"Name": "FinWave3"
+		},
+		{
+			"Id": "Param4",
+			"GroupId": "",
+			"Name": "FinWave4"
+		},
+		{
+			"Id": "Param6",
+			"GroupId": "",
+			"Name": "HeadFin1"
+		},
+		{
+			"Id": "Param7",
+			"GroupId": "",
+			"Name": "HeadFin2"
+		},
+		{
+			"Id": "Param9",
+			"GroupId": "",
+			"Name": "Tail1"
+		},
+		{
+			"Id": "Param10",
+			"GroupId": "",
+			"Name": "Tail2"
+		},
+		{
+			"Id": "Param11",
+			"GroupId": "",
+			"Name": "Tail3"
+		},
+		{
+			"Id": "Param12",
+			"GroupId": "",
+			"Name": "Tail4"
+		},
+		{
+			"Id": "Param8",
+			"GroupId": "",
+			"Name": "Armor float"
+		},
+		{
+			"Id": "Param_Angle_Rotation2",
+			"GroupId": "ParamGroup",
+			"Name": "[0]Curved Surface2"
+		},
+		{
+			"Id": "Param_Angle_Rotation3",
+			"GroupId": "ParamGroup",
+			"Name": "[1]Curved Surface2"
+		},
+		{
+			"Id": "Param_Angle_Rotation4",
+			"GroupId": "ParamGroup",
+			"Name": "[2]Curved Surface2"
+		},
+		{
+			"Id": "Param_Angle_Rotation5",
+			"GroupId": "ParamGroup",
+			"Name": "[3]Curved Surface2"
+		},
+		{
+			"Id": "Param_Angle_Rotation6",
+			"GroupId": "ParamGroup",
+			"Name": "[4]Curved Surface2"
+		},
+		{
+			"Id": "Param_Angle_Rotation7",
+			"GroupId": "ParamGroup",
+			"Name": "[5]Curved Surface2"
+		},
+		{
+			"Id": "Param_Angle_Rotation8",
+			"GroupId": "ParamGroup",
+			"Name": "[6]Curved Surface2"
+		}
+	],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "Curved Surface2"
+		}
+	],
+	"Parts": [
+		{
+			"Id": "main_Body_Skinning2",
+			"Name": "main_Body(Skinning)"
+		},
+		{
+			"Id": "main_Body_Skinning",
+			"Name": "main_Body(Skinning)"
+		}
+	]
+}

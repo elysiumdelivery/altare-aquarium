@@ -33,7 +33,7 @@ async function main() {
                 break;
             case "Medium":
                 newResolution = 1;
-                window.aquarium.settings.filters = true;
+                window.aquarium.settings.filters = false;
                 break;
             case "High": 
                 newResolution = 2;

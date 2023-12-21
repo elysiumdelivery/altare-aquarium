@@ -1,0 +1,22 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "SmallFish_VelellaVelella_nyanbeans.moc3",
+		"Textures": [
+			"SmallFish_VelellaVelella_nyanbeans.256/texture_00.png"
+		],
+		"DisplayInfo": "SmallFish_VelellaVelella_nyanbeans.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		}
+	]
+}

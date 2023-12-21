@@ -1,0 +1,42 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "Param",
+			"GroupId": "",
+			"Name": "BodyYWave"
+		},
+		{
+			"Id": "Param2",
+			"GroupId": "",
+			"Name": "BodyYWave2"
+		},
+		{
+			"Id": "Param3",
+			"GroupId": "",
+			"Name": "MouthWiggle1"
+		},
+		{
+			"Id": "Param4",
+			"GroupId": "",
+			"Name": "MouthWiggle2"
+		},
+		{
+			"Id": "Param5",
+			"GroupId": "",
+			"Name": "ArmorBounce"
+		},
+		{
+			"Id": "Param6",
+			"GroupId": "",
+			"Name": "ScarfPhysicsX"
+		},
+		{
+			"Id": "Param7",
+			"GroupId": "",
+			"Name": "ScarfPhysicsX2"
+		}
+	],
+	"ParameterGroups": [],
+	"Parts": []
+}

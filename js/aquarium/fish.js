@@ -7,13 +7,16 @@ let fishCounter = 0;
 export function Fish (fishData) {
     this.data = fishData;
     this.node = document.createElement("a");
-    this.speed = getSpeedFromSize(fishData["Size Category"]) || randomRange(0.25, 2);
+    this.speed = Number.parseFloat(this.data["Speed"]);
+    if (Number.isNaN(this.speed)) {
+        this.speed = getSpeedFromSize(fishData["Size Category"]) || randomRange(0.25, 2);
+    }
     this.scale = getScaleFromSize(fishData["Size Category"]) || randomRange(0.02, 0.125);
     this.direction = Math.random() >= 0.5 ? 1 : -1;
 }
 
 Fish.prototype.init = async function () {
-    let modelFilePath = `images/l2d/${this.data["Filename"]}/${this.data["Filename"]}.model3.json`;
+    let modelFilePath = `images/l2d/${this.data["Sea Level"]}/${this.data["Filename"]}/${this.data["Filename"]}.model3.json`;
     this.id = fishCounter++;
     this.model = await PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'Idle' });
     this.model.cullable = true;
@@ -59,7 +62,7 @@ Fish.prototype.update = function (delta) {
         this.toggleDirection();
     }
     this.model.update(Aquarium.app.ticker.elapsedMS);
-    this.model.x += this.speed * this.direction;
+    this.model.x += delta * this.speed * this.direction;
 }
 
 Fish.prototype.toggleHighlight = function (isOn) {
@@ -77,13 +80,14 @@ function randomRange(min, max) {
 
 function getSpeedFromSize (sizeCategory) {
     switch (sizeCategory) {
-        case "L": return randomRange(0.25, 0.5);
-        case "M": return randomRange(0.5, 1);
-        case "S": return randomRange(1, 2);
+        case "L": return randomRange(0.5, 1);
+        case "M": return randomRange(1, 1.5);
+        case "S": return randomRange(1.5, 2);
     }
 }
 
 function getScaleFromSize (sizeCategory) {
+    return 0.25;
     switch (sizeCategory) {
         case "L": return 0.25;
         case "M": return 0.1;

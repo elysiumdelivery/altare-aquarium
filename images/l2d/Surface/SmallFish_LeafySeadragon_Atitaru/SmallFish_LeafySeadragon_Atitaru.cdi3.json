@@ -1,0 +1,137 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "",
+			"Name": "Angle X"
+		},
+		{
+			"Id": "ParamAngleY",
+			"GroupId": "",
+			"Name": "Angle Y"
+		},
+		{
+			"Id": "Rotate",
+			"GroupId": "",
+			"Name": "Rotate"
+		},
+		{
+			"Id": "Body",
+			"GroupId": "",
+			"Name": "Body"
+		},
+		{
+			"Id": "LeafOBB",
+			"GroupId": "",
+			"Name": "Leaf Over Back Body"
+		},
+		{
+			"Id": "LeafOT",
+			"GroupId": "",
+			"Name": "Leaf over top"
+		},
+		{
+			"Id": "LeafBBL",
+			"GroupId": "",
+			"Name": "Leaf Back Bottom L"
+		},
+		{
+			"Id": "LeafBBLB",
+			"GroupId": "",
+			"Name": "Leaf Back Bottom L Body"
+		},
+		{
+			"Id": "Wiggle",
+			"GroupId": "",
+			"Name": "Wiggle"
+		},
+		{
+			"Id": "LeafOB",
+			"GroupId": "",
+			"Name": "Leaf Over Bottom"
+		},
+		{
+			"Id": "LeafBBR",
+			"GroupId": "",
+			"Name": "Leaf Back Bottom R"
+		},
+		{
+			"Id": "LBBRB",
+			"GroupId": "",
+			"Name": "Leaf Back Bottom R Body"
+		},
+		{
+			"Id": "UpDown",
+			"GroupId": "",
+			"Name": "Up Down"
+		},
+		{
+			"Id": "ParamBrowRAngle",
+			"GroupId": "",
+			"Name": "BrowR Angle"
+		},
+		{
+			"Id": "ParamBrowLForm",
+			"GroupId": "",
+			"Name": "BrowL Form"
+		},
+		{
+			"Id": "ParamBrowRForm",
+			"GroupId": "",
+			"Name": "BrowR Form"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"GroupId": "",
+			"Name": "Mouth Form"
+		},
+		{
+			"Id": "ParamMouthOpenY",
+			"GroupId": "",
+			"Name": "Mouth Open"
+		},
+		{
+			"Id": "ParamCheek",
+			"GroupId": "",
+			"Name": "Cheek"
+		},
+		{
+			"Id": "ParamBodyAngleX",
+			"GroupId": "",
+			"Name": "Body X"
+		},
+		{
+			"Id": "ParamBodyAngleY",
+			"GroupId": "",
+			"Name": "Body Y"
+		},
+		{
+			"Id": "ParamBodyAngleZ",
+			"GroupId": "",
+			"Name": "Body Z"
+		},
+		{
+			"Id": "ParamBreath",
+			"GroupId": "",
+			"Name": "Breath"
+		},
+		{
+			"Id": "ParamHairFront",
+			"GroupId": "",
+			"Name": "Hair Move Front"
+		},
+		{
+			"Id": "ParamHairSide",
+			"GroupId": "",
+			"Name": "Hair Move Side"
+		},
+		{
+			"Id": "ParamHairBack",
+			"GroupId": "",
+			"Name": "Hair Move Back"
+		}
+	],
+	"ParameterGroups": [],
+	"Parts": []
+}

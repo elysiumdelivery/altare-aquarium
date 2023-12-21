@@ -1,1 +1,0 @@
-{"Version":3,"FileReferences":{"Moc":"another_fish_name.moc3","Textures":["another_fish_name.1024/texture_00.png"],"Motions":{"Idle":[{"File":"idle.motion3.json"}]},"DisplayInfo":"another_fish_name.cdi3.json"},"Groups":[{"Target":"Parameter","Name":"EyeBlink","Ids":[]},{"Target":"Parameter","Name":"LipSync","Ids":[]}]}

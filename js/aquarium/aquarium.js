@@ -26,7 +26,7 @@ export const Aquarium = ((options = {}) => {
         worldWidth: options.worldWidth || WORLD_WIDTH,
         worldHeight: options.worldHeight || WORLD_HEIGHT,
         debug: options.debug || true,
-        filters: options.filters || true
+        filters: options.filters || false
     };
     self.emitEvent = (e, data) => {
         if (gameStateListeners[e]) {
@@ -187,9 +187,9 @@ async function loadData(allFishData) {
         let newFish = new Fish(fishData);
         await newFish.init();
         let level = fishData["Sea Level"];
-        let lastModel = lastFishAtLevel[level] ? allFish[lastFishAtLevel[level]].model : undefined;
+        let lastModel = lastFishAtLevel[level] !== undefined ? allFish[lastFishAtLevel[level]].model : undefined;
         if (lastModel) {
-            newFish.model.y = (lastModel.y + (lastModel.height / 2) + (newFish.model.height / 2));
+            newFish.model.y = (lastModel.y + (newFish.model.height / 2));
         }
         else {
             newFish.model.y = LEVELS[level] + (newFish.model.height);
