@@ -141,6 +141,11 @@ async function init (data) {
         }
     });
 
+    Aquarium.addGameStateListener("onFishCreated", (fish) => {
+        let val = Number.parseInt(loader.getAttribute("value"));
+        loader.setAttribute("value", val + 1);
+    })
+
     Aquarium.addGameStateListener("onFishOver", (fish) => {
         if (Aquarium.currentActiveFish && Aquarium.currentActiveFish !== fish) {
             Aquarium.currentActiveFish.toggleHighlight(false);
@@ -223,7 +228,6 @@ async function loadData(allFishData) {
 
         lastFishAtLevel[level] = allFish.length;
         allFish.push(newFish);
-        loader.setAttribute("value", i + 1);
     }
 }
 
