@@ -26,6 +26,7 @@ Fish.prototype.init = async function () {
     if (this.direction === 1) {
         this.model.scale.x *= -1;
     }
+    this.bounds = getActualBounds(this.model);
     Aquarium.app.ticker.add(this.update.bind(this));
     Aquarium.emitEvent("fishCreated", this);
     return this;
@@ -93,4 +94,17 @@ function getScaleFromSize (sizeCategory) {
         case "M": return 0.1;
         case "S": return 0.05;
     }
+}
+
+function getActualBounds (model) {
+    let drawables = model.internalModel.getDrawableIDs();
+    let actualBounds = [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY];
+    let wR = model.width / model.internalModel.originalWidth;
+    let hR = model.height / model.internalModel.originalHeight;
+    drawables.forEach((meshId, idx) => {
+        let bounds = model.internalModel.getDrawableBounds(idx);
+        actualBounds[0] = Math.max(actualBounds[0], ((bounds.width)) * wR);
+        actualBounds[1] = Math.max(actualBounds[1], ((bounds.height)) * hR);
+    });
+    return actualBounds;
 }

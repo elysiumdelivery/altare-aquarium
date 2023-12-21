@@ -46,7 +46,7 @@ export const Aquarium = ((options = {}) => {
         if (fish === self.currentActiveFish) {
             debug.debugHitbox.visible = self.currentActiveFish.isVisible();
             var screenCoords = self.viewport.toScreen(Math.abs(fish.model.x), Math.abs(fish.model.y));
-            updateDebugHitbox({x: screenCoords.x, y: screenCoords.y, width: Math.abs(fish.model.width * self.viewport.scaled), height: Math.abs(fish.model.height * self.viewport.scaled)});
+            updateDebugHitbox({x: screenCoords.x, y: screenCoords.y, width: Math.abs(fish.model.width * self.viewport.scaled), height: Math.abs(fish.bounds[1] * self.viewport.scaled)});
             return true;
         }
     }
@@ -110,7 +110,7 @@ async function init (data) {
     setupFilters();
 
     let loader = document.getElementById("loader-progress");
-    loader.setAttribute("max", 100);
+    loader.setAttribute("max", data.length);
     loader.setAttribute("value", 0);
 
     Aquarium.addGameStateListener("fishCreated", (fish) => {
@@ -196,7 +196,7 @@ async function loadData(allFishData) {
             newFish.model.y = (lastModel.y + (newFish.model.height / 2));
         }
         else {
-            newFish.model.y = LEVELS[level] + (newFish.model.height);
+            newFish.model.y = LEVELS[level] + (newFish.model.height / 2);
         }
         newFish.model.x = randomRange(0, WORLD_WIDTH);
         // model.filters = [new PIXI.filters.ColorOverlayFilter(0xFFFFFF * Math.random(), 0.5)]
@@ -309,6 +309,7 @@ function setupDebug () {
 
 function updateDebugLayer () {
     if (!Aquarium.settings.debug) return;
+    // if (Aquarium.currentActiveFish) Aquarium.checkActiveFish(Aquarium.currentActiveFish);
     debug.fps.text = `Debug Window:\n` +
                         `${PIXI.Ticker.shared.FPS.toFixed(0)} fps\n` +
                         `Viewport: ${Aquarium.app.renderer.width}px x ${Aquarium.app.renderer.height}px\n` +
