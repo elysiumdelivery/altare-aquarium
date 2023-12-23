@@ -29,15 +29,15 @@ async function main() {
         switch (e.target.value) {
             case "Low": 
                 newResolution = 0.5;
-                window.aquarium.settings.filters = false;
+                window.aquarium.toggleFilters(false);
                 break;
             case "Medium":
-                newResolution = 1;
-                window.aquarium.settings.filters = false;
+                newResolution = 0.95;
+                window.aquarium.toggleFilters(true);
                 break;
             case "High": 
-                newResolution = 2;
-                window.aquarium.settings.filters = true;
+                newResolution = 1.25;
+                window.aquarium.toggleFilters(true);
                 break;
         }
         window.aquarium.app.renderer.resolution = newResolution;

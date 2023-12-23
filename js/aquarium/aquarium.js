@@ -26,7 +26,7 @@ export const Aquarium = ((options = {}) => {
         worldWidth: options.worldWidth || WORLD_WIDTH,
         worldHeight: options.worldHeight || WORLD_HEIGHT,
         debug: options.debug || true,
-        filters: options.filters || false
+        filters: options.filters || true
     };
     self.emitEvent = (e, data) => {
         if (gameStateListeners[e]) {
@@ -39,6 +39,7 @@ export const Aquarium = ((options = {}) => {
     self.init = init;
     self.resize = resize;
     self.setDebug = setDebug;
+    self.toggleFilters = toggleFilters;
     self.addFish = (fish) => { allFish.push(newFish); }
     self.getActiveFish = () => { return allFish.filter(fish => fish.isVisible()) }
     self.getAllFish = () => { return allFish; }
@@ -97,14 +98,12 @@ async function init (data) {
     bg.height = WORLD_HEIGHT;
     Aquarium.viewport.addChild(bg);
 
-    if (Aquarium.settings.filters) {
-        overlayGraphic = new PIXI.Graphics();
-        overlayGraphic.blendMode = PIXI.BLEND_MODES.MULTIPLY
-        overlayGraphic.beginFill("#253C78", 1);
-        overlayGraphic.drawRect(0, 0, window.innerWidth, window.innerHeight);
-        overlayGraphic.endFill();
-        Aquarium.overlay.addChild(overlayGraphic);
-    }
+    overlayGraphic = new PIXI.Graphics();
+    overlayGraphic.blendMode = PIXI.BLEND_MODES.MULTIPLY
+    overlayGraphic.beginFill("#253C78", 1);
+    overlayGraphic.drawRect(0, 0, window.innerWidth, window.innerHeight);
+    overlayGraphic.endFill();
+    Aquarium.overlay.addChild(overlayGraphic);
 
     setupDebug();
     setupFilters();
@@ -172,6 +171,7 @@ async function init (data) {
         updateDebugLayer();
     });
 
+    Aquarium.toggleFilters(Aquarium.settings.filters);
     Aquarium.resize = resize;
 
     Aquarium.app.start();
@@ -273,7 +273,6 @@ async function randomFishStressTest () {
 }
 
 function setupFilters () {
-    if (!Aquarium.settings.filters) return;
     const displacementMap = "https://cdn.jsdelivr.net/gh/pixijs/pixi-filters/tools/demo/images/displacement_map.png";
     const displacementSprite = PIXI.Sprite.from(displacementMap, {
         wrapMode: PIXI.WRAP_MODES.REPEAT
@@ -288,8 +287,18 @@ function setupFilters () {
         angle: 30,
         alpha: 0.3
     });
+}
 
-    Aquarium.viewport.filters = [Aquarium.filters.displacementFilter, Aquarium.filters.godrayFilter]
+function toggleFilters (isOn) {
+    Aquarium.settings.filters = isOn;
+    if (Aquarium.settings.filters) {
+        Aquarium.overlay.visible = true;
+        Aquarium.viewport.filters = [Aquarium.filters.displacementFilter, Aquarium.filters.godrayFilter]
+    }
+    else {
+        Aquarium.overlay.visible = false;
+        Aquarium.viewport.filters = [];
+    }
 }
 
 function setupDebug () {
