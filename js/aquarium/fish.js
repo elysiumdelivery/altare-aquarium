@@ -18,40 +18,32 @@ export function Fish (fishData) {
 }
 
 Fish.prototype.init = async function () {
+    let self = this;
     let modelFilePath = `images/l2d/${this.data["Sea Level"]}/${this.data["Filename"]}/${this.data["Filename"]}.model3.json`;
     this.id = fishCounter++;
-    try {
-        this.model = await PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'Idle' });   
-    }
-    catch(e) {
-        console.log(e);
-    }
-
-    if (this.model) {
-        this.model.cullable = true;
-        this.model.filters = [];
-        this.model.anchor.set(0.5);
-        this.model.scale.set(this.scale);
-        if (this.direction === 1) {
-            this.model.scale.x *= -1;
+    return PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'Idle' }).then((loadedModel) => {
+        self.model = loadedModel;
+        self.model.cullable = true;
+        self.model.filters = [];
+        self.model.anchor.set(0.5);
+        self.model.scale.set(self.scale);
+        if (self.direction === 1) {
+            self.model.scale.x *= -1;
         }
     
         // setup hitboxes b/c model bounds are huge and go beyond the actual rendered parts
-        this.bounds = getActualBounds(this.model);
-        this.hitArea = new PIXI.Graphics();
-        this.hitArea.beginFill(0xff0000);
-        this.bounds.forEach(bound => {
-            this.hitArea.drawRect(bound.x, bound.y, bound.width, bound.height);
+        self.bounds = getActualBounds(self.model);
+        self.hitArea = new PIXI.Graphics();
+        self.hitArea.beginFill(0xff0000);
+        self.bounds.forEach(bound => {
+            self.hitArea.drawRect(bound.x, bound.y, bound.width, bound.height);
         });
-        this.hitArea.endFill();
-        this.hitArea.alpha = 0;
-        this.model.addChild(this.hitArea);
-    
-        Aquarium.app.ticker.add(this.update.bind(this));
-    }
-    
-    Aquarium.emitEvent("fishCreated", this);
-    return this;
+        self.hitArea.endFill();
+        self.hitArea.alpha = 0;
+        self.model.addChild(self.hitArea);
+
+        return Promise.resolve(self);
+    })
 }
 Fish.prototype.setVisible = function (isVisible) {
     this.model.renderable = isVisible;
