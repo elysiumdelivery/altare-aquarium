@@ -190,7 +190,23 @@ async function loadData(allFishData) {
     for (var i = 0; i < allFishData.length; i++) {
         let fishData = allFishData[i];
         let newFish = new Fish(fishData);
-        fishPromises.push(newFish.init());
+        fishPromises.push(newFish.init().then((fish) => {
+            let level = fish.data["Sea Level"];
+            let lastModel = lastFishAtLevel[level] !== undefined ? allFish[lastFishAtLevel[level]].model : undefined;
+            if (lastModel) {
+                fish.model.y = (lastModel.y + (fish.model.height / 2));
+            }
+            else {
+                fish.model.y = LEVELS[level] + (fish.model.height / 2);
+            }
+            fish.model.x = randomRange(0, WORLD_WIDTH);
+
+            Aquarium.viewport.addChild(fish.model);
+            lastFishAtLevel[level] = allFish.length;
+            Aquarium.emitEvent("fishCreated", fish);
+            allFish.push(fish);
+            return Promise.resolve(fish);
+        }));
     }
 
     return Promise.allSettled(fishPromises).then((results) => {
@@ -198,15 +214,6 @@ async function loadData(allFishData) {
             console.log(loadResult)
             if (loadResult.status == "fulfilled") {
                 let fish = loadResult.value;
-                let level = fish.data["Sea Level"];
-                let lastModel = lastFishAtLevel[level] !== undefined ? allFish[lastFishAtLevel[level]].model : undefined;
-                if (lastModel) {
-                    fish.model.y = (lastModel.y + (fish.model.height / 2));
-                }
-                else {
-                    fish.model.y = LEVELS[level] + (fish.model.height / 2);
-                }
-                fish.model.x = randomRange(0, WORLD_WIDTH);
                 // model.filters = [new PIXI.filters.ColorOverlayFilter(0xFFFFFF * Math.random(), 0.5)]
                 let node = document.createElement("button");
                 node.title = fish.data["Fish Display Name"];
@@ -231,12 +238,7 @@ async function loadData(allFishData) {
                 }.bind(fish);
                 fish.node = node;
                 fishAriaDiv.appendChild(node);
-                Aquarium.viewport.addChild(fish.model);
                 Aquarium.app.ticker.add(fish.update.bind(fish));
-                Aquarium.emitEvent("fishCreated", fish);
-        
-                lastFishAtLevel[level] = allFish.length;
-                allFish.push(fish);
             }
         })
     });
