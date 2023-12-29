@@ -3,7 +3,8 @@
 	"FileReferences": {
 		"Moc": "BigFish_KillerWhale_yukinayee.moc3",
 		"Textures": [
-			"BigFish_KillerWhale_yukinayee.512/texture_00.png"
+			"BigFish_KillerWhale_yukinayee.512/texture_00.png",
+			"BigFish_KillerWhale_yukinayee.512/texture_01.png"
 		],
 		"DisplayInfo": "BigFish_KillerWhale_yukinayee.cdi3.json",
 		"Motions": {
@@ -17,12 +18,12 @@
 	"Groups": [
 		{
 			"Target": "Parameter",
-			"Name": "EyeBlink",
+			"Name": "LipSync",
 			"Ids": []
 		},
 		{
 			"Target": "Parameter",
-			"Name": "LipSync",
+			"Name": "EyeBlink",
 			"Ids": []
 		}
 	],

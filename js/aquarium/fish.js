@@ -1,6 +1,8 @@
 import { Aquarium } from "./aquarium.js";
 
 // const glowFilter = new PIXI.filters.GlowFilter({ distance: 15, outerStrength: 3 })
+const outlineFilter = new PIXI.filters.OutlineFilter(2, 0x00ffff, 0.25)
+
 
 let fishCounter = 0;
 
@@ -18,16 +20,36 @@ export function Fish (fishData) {
 Fish.prototype.init = async function () {
     let modelFilePath = `images/l2d/${this.data["Sea Level"]}/${this.data["Filename"]}/${this.data["Filename"]}.model3.json`;
     this.id = fishCounter++;
-    this.model = await PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'Idle' });
-    this.model.cullable = true;
-    this.model.filters = [];
-    this.model.anchor.set(0.5);
-    this.model.scale.set(this.scale);
-    if (this.direction === 1) {
-        this.model.scale.x *= -1;
+    try {
+        this.model = await PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'Idle' });   
     }
-    this.bounds = getActualBounds(this.model);
-    Aquarium.app.ticker.add(this.update.bind(this));
+    catch(e) {
+        console.log(e);
+    }
+
+    if (this.model) {
+        this.model.cullable = true;
+        this.model.filters = [];
+        this.model.anchor.set(0.5);
+        this.model.scale.set(this.scale);
+        if (this.direction === 1) {
+            this.model.scale.x *= -1;
+        }
+    
+        // setup hitboxes b/c model bounds are huge and go beyond the actual rendered parts
+        this.bounds = getActualBounds(this.model);
+        this.hitArea = new PIXI.Graphics();
+        this.hitArea.beginFill(0xff0000);
+        this.bounds.forEach(bound => {
+            this.hitArea.drawRect(bound.x, bound.y, bound.width, bound.height);
+        });
+        this.hitArea.endFill();
+        this.hitArea.alpha = 0;
+        this.model.addChild(this.hitArea);
+    
+        Aquarium.app.ticker.add(this.update.bind(this));
+    }
+    
     Aquarium.emitEvent("fishCreated", this);
     return this;
 }
@@ -51,10 +73,10 @@ Fish.prototype.toggleDirection = function () {
 Fish.prototype.update = function (delta) {
     this.setVisible(this.isInBounds(Aquarium.viewport.top - this.model.height, -100, Aquarium.viewport.bottom + this.model.height, Aquarium.viewport.right + 100));
     if (!Aquarium.accessibilityActive) {
-        if (Aquarium.currentActiveFish !== this && (this.model.containsPoint(Aquarium.app.renderer.events.pointer))) {
+        if (Aquarium.currentActiveFish !== this && (this.hitArea.containsPoint(Aquarium.app.renderer.events.pointer))) {
             Aquarium.emitEvent("onFishOver", this);
         }
-        else if (Aquarium.currentActiveFish === this && !(this.model.containsPoint(Aquarium.app.renderer.events.pointer))) {
+        else if (Aquarium.currentActiveFish === this && !(this.hitArea.containsPoint(Aquarium.app.renderer.events.pointer))) {
             Aquarium.emitEvent("onFishOut", this);
         }
     }
@@ -67,12 +89,14 @@ Fish.prototype.update = function (delta) {
 }
 
 Fish.prototype.toggleHighlight = function (isOn) {
-    // if (isOn && this.model.filters.length === 0) {
-    //     this.model.filters.push(glowFilter);
-    // }
-    // else if (!isOn && this.model.filters.length > 0) {
-    //     this.model.filters.pop();
-    // }
+    if (isOn && this.model.filters.length === 0) {
+        this.model.filters.push(outlineFilter);
+        document.body.style.cursor = "pointer";
+    }
+    else if (!isOn && this.model.filters.length > 0) {
+        this.model.filters.pop();
+        document.body.style.cursor = "auto";
+    }
 }
 
 function randomRange(min, max) {
@@ -98,13 +122,13 @@ function getScaleFromSize (sizeCategory) {
 
 function getActualBounds (model) {
     let drawables = model.internalModel.getDrawableIDs();
-    let actualBounds = [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY];
-    let wR = model.width / model.internalModel.originalWidth;
-    let hR = model.height / model.internalModel.originalHeight;
-    drawables.forEach((meshId, idx) => {
+    return drawables.map((meshId, idx) => {
         let bounds = model.internalModel.getDrawableBounds(idx);
-        actualBounds[0] = Math.max(actualBounds[0], ((bounds.width)) * wR);
-        actualBounds[1] = Math.max(actualBounds[1], ((bounds.height)) * hR);
+        return {
+            x: bounds.x,
+            y: bounds.y,
+            width: ((bounds.width)),
+            height: ((bounds.height)),
+        }
     });
-    return actualBounds;
 }
