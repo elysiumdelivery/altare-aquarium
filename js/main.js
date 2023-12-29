@@ -29,15 +29,15 @@ async function main() {
         switch (e.target.value) {
             case "Low": 
                 newResolution = 0.5;
-                window.aquarium.settings.filters = false;
+                window.aquarium.toggleFilters(false);
                 break;
             case "Medium":
-                newResolution = 1;
-                window.aquarium.settings.filters = true;
+                newResolution = 0.95;
+                window.aquarium.toggleFilters(true);
                 break;
             case "High": 
-                newResolution = 2;
-                window.aquarium.settings.filters = true;
+                newResolution = 1.25;
+                window.aquarium.toggleFilters(true);
                 break;
         }
         window.aquarium.app.renderer.resolution = newResolution;
@@ -45,17 +45,18 @@ async function main() {
 
     })
     let data = await parseCSV(FISH_DATA_PATH);
-    await Aquarium.init(data);
-
-    // Remove loading screen. We've loaded in everything
-    let loader = document.getElementById("loader");
-    loader.remove();
-    
-    Aquarium.addGameStateListener("onFishClicked", (fishData) => {
-        // Open dialog info on selected fish
-        updateDetailsDialog(fishData.idx, fishData.data);
-        DETAILS_DIALOG_A11Y.show();
+    Aquarium.init(data).then(() => {        
+        // Remove loading screen. We've loaded in everything
+        let loader = document.getElementById("loader");
+        loader.remove();
+        
+        Aquarium.addGameStateListener("onFishClicked", (fishData) => {
+            // Open dialog info on selected fish
+            updateDetailsDialog(fishData.idx, fishData.data);
+            DETAILS_DIALOG_A11Y.show();
+        });
     });
+
 }
 
 window.onload = () => {

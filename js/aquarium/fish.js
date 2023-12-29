@@ -1,31 +1,49 @@
 import { Aquarium } from "./aquarium.js";
 
 // const glowFilter = new PIXI.filters.GlowFilter({ distance: 15, outerStrength: 3 })
+const outlineFilter = new PIXI.filters.OutlineFilter(2, 0x00ffff, 0.25)
+
 
 let fishCounter = 0;
 
 export function Fish (fishData) {
     this.data = fishData;
     this.node = document.createElement("a");
-    this.speed = getSpeedFromSize(fishData["Size Category"]) || randomRange(0.25, 2);
+    this.speed = Number.parseFloat(this.data["Speed"]);
+    if (Number.isNaN(this.speed)) {
+        this.speed = getSpeedFromSize(fishData["Size Category"]) || randomRange(0.25, 2);
+    }
     this.scale = getScaleFromSize(fishData["Size Category"]) || randomRange(0.02, 0.125);
     this.direction = Math.random() >= 0.5 ? 1 : -1;
 }
 
 Fish.prototype.init = async function () {
-    let modelFilePath = `images/resources/${this.data["Filename"]}/${this.data["Filename"]}.model3.json`;
+    let self = this;
+    let modelFilePath = `images/l2d/${this.data["Sea Level"]}/${this.data["Filename"]}/${this.data["Filename"]}.model3.json`;
     this.id = fishCounter++;
-    this.model = await PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'idle' });
-    this.model.cullable = true;
-    this.model.filters = [];
-    this.model.anchor.set(0.5);
-    this.model.scale.set(this.scale);
-    if (this.direction === 1) {
-        this.model.scale.x *= -1;
-    }
-    Aquarium.app.ticker.add(this.update.bind(this));
-    Aquarium.emitEvent("fishCreated", this);
-    return this;
+    return PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'Idle' }).then((loadedModel) => {
+        self.model = loadedModel;
+        self.model.cullable = true;
+        self.model.filters = [];
+        self.model.anchor.set(0.5);
+        self.model.scale.set(self.scale);
+        if (self.direction === 1) {
+            self.model.scale.x *= -1;
+        }
+    
+        // setup hitboxes b/c model bounds are huge and go beyond the actual rendered parts
+        self.bounds = getActualBounds(self.model);
+        self.hitArea = new PIXI.Graphics();
+        self.hitArea.beginFill(0xff0000);
+        self.bounds.forEach(bound => {
+            self.hitArea.drawRect(bound.x, bound.y, bound.width, bound.height);
+        });
+        self.hitArea.endFill();
+        self.hitArea.alpha = 0;
+        self.model.addChild(self.hitArea);
+
+        return Promise.resolve(self);
+    })
 }
 Fish.prototype.setVisible = function (isVisible) {
     this.model.renderable = isVisible;
@@ -47,10 +65,10 @@ Fish.prototype.toggleDirection = function () {
 Fish.prototype.update = function (delta) {
     this.setVisible(this.isInBounds(Aquarium.viewport.top - this.model.height, -100, Aquarium.viewport.bottom + this.model.height, Aquarium.viewport.right + 100));
     if (!Aquarium.accessibilityActive) {
-        if (Aquarium.currentActiveFish !== this && (this.model.containsPoint(Aquarium.app.renderer.events.pointer))) {
+        if (Aquarium.currentActiveFish !== this && (this.hitArea.containsPoint(Aquarium.app.renderer.events.pointer))) {
             Aquarium.emitEvent("onFishOver", this);
         }
-        else if (Aquarium.currentActiveFish === this && !(this.model.containsPoint(Aquarium.app.renderer.events.pointer))) {
+        else if (Aquarium.currentActiveFish === this && !(this.hitArea.containsPoint(Aquarium.app.renderer.events.pointer))) {
             Aquarium.emitEvent("onFishOut", this);
         }
     }
@@ -59,16 +77,18 @@ Fish.prototype.update = function (delta) {
         this.toggleDirection();
     }
     this.model.update(Aquarium.app.ticker.elapsedMS);
-    this.model.x += this.speed * this.direction;
+    this.model.x += delta * this.speed * this.direction;
 }
 
 Fish.prototype.toggleHighlight = function (isOn) {
-    // if (isOn && this.model.filters.length === 0) {
-    //     this.model.filters.push(glowFilter);
-    // }
-    // else if (!isOn && this.model.filters.length > 0) {
-    //     this.model.filters.pop();
-    // }
+    if (isOn && this.model.filters.length === 0) {
+        this.model.filters.push(outlineFilter);
+        document.body.style.cursor = "pointer";
+    }
+    else if (!isOn && this.model.filters.length > 0) {
+        this.model.filters.pop();
+        document.body.style.cursor = "auto";
+    }
 }
 
 function randomRange(min, max) {
@@ -77,16 +97,30 @@ function randomRange(min, max) {
 
 function getSpeedFromSize (sizeCategory) {
     switch (sizeCategory) {
-        case "L": return randomRange(0.1, 0.5);
-        case "M": return randomRange(0.5, 1);
-        case "S": return randomRange(1, 3);
+        case "L": return randomRange(0.5, 1);
+        case "M": return randomRange(1, 1.5);
+        case "S": return randomRange(1.5, 2);
     }
 }
 
 function getScaleFromSize (sizeCategory) {
+    return 0.25;
     switch (sizeCategory) {
-        case "L": return randomRange(0.1, 0.2);
-        case "M": return randomRange(0.05, 0.1);
-        case "S": return randomRange(0.02, 0.05);
+        case "L": return 0.25;
+        case "M": return 0.1;
+        case "S": return 0.05;
     }
+}
+
+function getActualBounds (model) {
+    let drawables = model.internalModel.getDrawableIDs();
+    return drawables.map((meshId, idx) => {
+        let bounds = model.internalModel.getDrawableBounds(idx);
+        return {
+            x: bounds.x,
+            y: bounds.y,
+            width: ((bounds.width)),
+            height: ((bounds.height)),
+        }
+    });
 }

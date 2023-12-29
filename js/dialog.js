@@ -20,6 +20,7 @@ export async function setupDetailsDialog() {
 export function updateDetailsDialog(id, data, cardUrl) {
   // TODO;
   // Header
+  // Image -> `"images/thumbs/${data["Sea Level"]}/${data["Filename"]}.png"`
   DETAILS_DIALOG_EL.getElementsByClassName("dialog-title")[0].innerHTML = "";
   DETAILS_DIALOG_EL.getElementsByClassName(
     "dialog-title"
