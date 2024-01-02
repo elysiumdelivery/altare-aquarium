@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "devDependencies": {
     "live-server": "^1.1.0",
+    "netlify-plugin-image-optim": "^0.4.0",
     "prettier": "^2.7.1"
   }
 }
