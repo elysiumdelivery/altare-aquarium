@@ -45,17 +45,18 @@ async function main() {
 
     })
     let data = await parseCSV(FISH_DATA_PATH);
-    await Aquarium.init(data);
-
-    // Remove loading screen. We've loaded in everything
-    let loader = document.getElementById("loader");
-    loader.remove();
-    
-    Aquarium.addGameStateListener("onFishClicked", (fishData) => {
-        // Open dialog info on selected fish
-        updateDetailsDialog(fishData.idx, fishData.data);
-        DETAILS_DIALOG_A11Y.show();
+    Aquarium.init(data).then(() => {        
+        // Remove loading screen. We've loaded in everything
+        let loader = document.getElementById("loader");
+        loader.remove();
+        
+        Aquarium.addGameStateListener("onFishClicked", (fishData) => {
+            // Open dialog info on selected fish
+            updateDetailsDialog(fishData.idx, fishData.data);
+            DETAILS_DIALOG_A11Y.show();
+        });
     });
+
 }
 
 window.onload = () => {

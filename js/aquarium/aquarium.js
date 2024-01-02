@@ -116,16 +116,6 @@ async function init (data) {
         document.getElementById("loader-progress").value++;
     })
 
-    await loadData(data);
-
-    allFish.sort((a, b) => {
-        if (a.model.scale.y > b.model.scale.y) return -1;
-        else if (a.model.scale.y < b.model.scale.y) return 1;
-        else return 0
-    }).forEach((fish, i) => {
-        fish.model.zIndex = i;
-    })
-
     Aquarium.app.view.addEventListener("pointermove", (e) => {
         if (Aquarium.accessibilityActive) {
             Aquarium.accessibilityActive = false;
@@ -182,52 +172,76 @@ async function init (data) {
 
     window.addEventListener("resize", resize);
     resize();
+
+    return loadData(data).then(() => {
+        allFish.sort((a, b) => {
+            if (a.model.scale.y > b.model.scale.y) return -1;
+            else if (a.model.scale.y < b.model.scale.y) return 1;
+            else return 0
+        }).forEach((fish, i) => {
+            fish.model.zIndex = i;
+        })
+    });
 }
 
 async function loadData(allFishData) {
     let lastFishAtLevel = {};
+    let fishPromises = [];
     for (var i = 0; i < allFishData.length; i++) {
         let fishData = allFishData[i];
         let newFish = new Fish(fishData);
-        await newFish.init();
-        let level = fishData["Sea Level"];
-        let lastModel = lastFishAtLevel[level] !== undefined ? allFish[lastFishAtLevel[level]].model : undefined;
-        if (lastModel) {
-            newFish.model.y = (lastModel.y + (newFish.model.height / 2));
-        }
-        else {
-            newFish.model.y = LEVELS[level] + (newFish.model.height / 2);
-        }
-        newFish.model.x = randomRange(0, WORLD_WIDTH);
-        // model.filters = [new PIXI.filters.ColorOverlayFilter(0xFFFFFF * Math.random(), 0.5)]
-        let node = document.createElement("button");
-        node.title = fishData["Fish Display Name"];
-        node.innerText = fishData["Fish Display Name"];
-        node.role = "listitem"
-        node.ariaPosInSet = i;
-        node.tabIndex = 0;
-        node.onfocus = function () {
-            Aquarium.accessibilityActive = true;
-            Aquarium.emitEvent("onFishOver", this);
-            if ((this.model.y + (this.model.height / 2)) > Aquarium.viewport.bottom || (this.model.y - (this.model.height / 2)) <= Aquarium.viewport.top) {
-                Aquarium.viewport.animate({ time: 250, position: {x: Aquarium.viewport.center.x, y: this.model.y}, removeOnInterrupt: true })
+        fishPromises.push(newFish.init().then((fish) => {
+            let level = fish.data["Sea Level"];
+            let lastModel = lastFishAtLevel[level] !== undefined ? allFish[lastFishAtLevel[level]].model : undefined;
+            if (lastModel) {
+                fish.model.y = (lastModel.y + (fish.model.height / 2));
             }
-        }.bind(newFish)
-        node.onblur = function () {
-            Aquarium.accessibilityActive = true;
-            Aquarium.emitEvent("onFishOut", this);
-        }.bind(newFish)
-        node.onclick = function () {
-            console.log(this)
-            Aquarium.emitEvent("onFishClicked", { idx: this.id, data: this.data });
-        }.bind(newFish);
-        newFish.node = node;
-        fishAriaDiv.appendChild(node);
-        Aquarium.viewport.addChild(newFish.model);
+            else {
+                fish.model.y = LEVELS[level] + (fish.model.height / 2);
+            }
+            fish.model.x = randomRange(0, WORLD_WIDTH);
 
-        lastFishAtLevel[level] = allFish.length;
-        allFish.push(newFish);
+            Aquarium.viewport.addChild(fish.model);
+            lastFishAtLevel[level] = allFish.length;
+            Aquarium.emitEvent("fishCreated", fish);
+            allFish.push(fish);
+            return Promise.resolve(fish);
+        }));
     }
+
+    return Promise.allSettled(fishPromises).then((results) => {
+        results.forEach((loadResult, i) => {
+            console.log(loadResult)
+            if (loadResult.status == "fulfilled") {
+                let fish = loadResult.value;
+                // model.filters = [new PIXI.filters.ColorOverlayFilter(0xFFFFFF * Math.random(), 0.5)]
+                let node = document.createElement("button");
+                node.title = fish.data["Fish Display Name"];
+                node.innerText = fish.data["Fish Display Name"];
+                node.role = "listitem"
+                node.ariaPosInSet = i;
+                node.tabIndex = 0;
+                node.onfocus = function () {
+                    Aquarium.accessibilityActive = true;
+                    Aquarium.emitEvent("onFishOver", this);
+                    if ((this.model.y + (this.model.height / 2)) > Aquarium.viewport.bottom || (this.model.y - (this.model.height / 2)) <= Aquarium.viewport.top) {
+                        Aquarium.viewport.animate({ time: 250, position: {x: Aquarium.viewport.center.x, y: this.model.y}, removeOnInterrupt: true })
+                    }
+                }.bind(fish)
+                node.onblur = function () {
+                    Aquarium.accessibilityActive = true;
+                    Aquarium.emitEvent("onFishOut", this);
+                }.bind(fish)
+                node.onclick = function () {
+                    console.log(this)
+                    Aquarium.emitEvent("onFishClicked", { idx: this.id, data: this.data });
+                }.bind(fish);
+                fish.node = node;
+                fishAriaDiv.appendChild(node);
+                Aquarium.app.ticker.add(fish.update.bind(fish));
+            }
+        })
+    });
 }
 
 async function randomFishStressTest () {

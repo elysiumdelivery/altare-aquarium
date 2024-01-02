@@ -47,14 +47,14 @@
 			"Name": "Right Fin"
 		},
 		{
-			"Id": "ParamBrowLY",
+			"Id": "UpDown",
 			"GroupId": "",
-			"Name": "BrowL Y"
+			"Name": "Up Down"
 		},
 		{
-			"Id": "ParamBrowRY",
+			"Id": "Rotate",
 			"GroupId": "",
-			"Name": "BrowR Y"
+			"Name": "Rotate"
 		},
 		{
 			"Id": "ParamBrowLX",
