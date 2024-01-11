@@ -4,11 +4,11 @@ import { Fish } from "./fish.js";
 
 
 const WORLD_WIDTH = 1000;
-const WORLD_HEIGHT = 10000;
+const WORLD_HEIGHT = 15000;
 const LEVELS = {
     "Surface": 0,
-    "Mid": WORLD_HEIGHT * 1 / 3,
-    "Floor": WORLD_HEIGHT * 2 / 3
+    "Middle": WORLD_HEIGHT * (1 / 2),
+    "Floor": WORLD_HEIGHT * (2 / 3)
 }
 const debug = {};
 const allFish = [];
@@ -113,7 +113,6 @@ async function init (data) {
     loader.setAttribute("value", 0);
 
     Aquarium.addGameStateListener("fishCreated", (fish) => {
-        document.getElementById("loader-progress").value++;
     })
 
     Aquarium.app.view.addEventListener("pointermove", (e) => {
@@ -191,29 +190,36 @@ async function loadData(allFishData) {
         let fishData = allFishData[i];
         let newFish = new Fish(fishData);
         fishPromises.push(newFish.init().then((fish) => {
-            let level = fish.data["Sea Level"];
-            let lastModel = lastFishAtLevel[level] !== undefined ? allFish[lastFishAtLevel[level]].model : undefined;
-            if (lastModel) {
-                fish.model.y = (lastModel.y + (fish.model.height / 2));
-            }
-            else {
-                fish.model.y = LEVELS[level] + (fish.model.height / 2);
-            }
-            fish.model.x = randomRange(0, WORLD_WIDTH);
-
-            Aquarium.viewport.addChild(fish.model);
-            lastFishAtLevel[level] = allFish.length;
-            Aquarium.emitEvent("fishCreated", fish);
-            allFish.push(fish);
+            document.getElementById("loader-progress").value++;
             return Promise.resolve(fish);
+        }).catch(() => {
+            document.getElementById("loader-progress").max--;
+            return Promise.reject();
         }));
     }
 
     return Promise.allSettled(fishPromises).then((results) => {
         results.forEach((loadResult, i) => {
-            console.log(loadResult)
             if (loadResult.status == "fulfilled") {
                 let fish = loadResult.value;
+                let level = fish.data["Sea Level"];
+                // let lastFish = lastFishAtLevel[level] !== undefined ? allFish[lastFishAtLevel[level]] : undefined;
+                let lastFish = allFish[allFish.length - 1];
+                if (fish.data["Position Y"]) {
+                    fish.model.y = parseInt(fish.data["Position Y"])
+                }
+                else if (lastFish) {
+                    fish.model.y = (lastFish.model.y + (fish.model.getBounds().height / 2) + (randomRange(50, 200)));
+                }
+                else {
+                    fish.model.y = (fish.model.getBounds().height / 2);
+                }
+                fish.model.x = parseInt(fish.data["Position X"]) || randomRange(0, WORLD_WIDTH);
+
+                Aquarium.viewport.addChild(fish.model);
+                lastFishAtLevel[level] = allFish.length;
+                allFish.push(fish);
+
                 // model.filters = [new PIXI.filters.ColorOverlayFilter(0xFFFFFF * Math.random(), 0.5)]
                 let node = document.createElement("button");
                 node.title = fish.data["Fish Display Name"];
@@ -224,7 +230,7 @@ async function loadData(allFishData) {
                 node.onfocus = function () {
                     Aquarium.accessibilityActive = true;
                     Aquarium.emitEvent("onFishOver", this);
-                    if ((this.model.y + (this.model.height / 2)) > Aquarium.viewport.bottom || (this.model.y - (this.model.height / 2)) <= Aquarium.viewport.top) {
+                    if ((this.model.y + (this.model.getBounds().height / 2)) > Aquarium.viewport.bottom || (this.model.y - (this.model.getBounds().height / 2)) <= Aquarium.viewport.top) {
                         Aquarium.viewport.animate({ time: 250, position: {x: Aquarium.viewport.center.x, y: this.model.y}, removeOnInterrupt: true })
                     }
                 }.bind(fish)
@@ -239,51 +245,10 @@ async function loadData(allFishData) {
                 fish.node = node;
                 fishAriaDiv.appendChild(node);
                 Aquarium.app.ticker.add(fish.update.bind(fish));
+                Aquarium.emitEvent("fishCreated", fish);
             }
         })
     });
-}
-
-async function randomFishStressTest () {
-    for (var i = 0; i < 100; i++) {
-        const newFish = new Fish();
-        await newFish.init();
-        let lastModel = i > 0 ? allFish[i - 1].model : undefined;
-        if (lastModel) {
-            newFish.model.y = (lastModel.y + (WORLD_HEIGHT / 100));
-        }
-        else {
-            newFish.model.y = (newFish.model.height);
-        }
-        newFish.model.x = randomRange(0, WORLD_WIDTH);
-        // model.filters = [new PIXI.filters.ColorOverlayFilter(0xFFFFFF * Math.random(), 0.5)]
-        let node = document.createElement("button");
-        node.title = `Fish #${newFish.id}`;
-        node.innerText = `Fish #${newFish.id}`;
-        node.role = "listitem"
-        node.ariaPosInSet = i;
-        node.tabIndex = 0;
-        node.onfocus = function () {
-            Aquarium.accessibilityActive = true;
-            Aquarium.emitEvent("onFishOver", this);
-            if ((this.model.y + (this.model.height / 2)) > Aquarium.viewport.bottom || (this.model.y - (this.model.height / 2)) <= Aquarium.viewport.top) {
-                Aquarium.viewport.animate({ time: 250, position: {x: Aquarium.viewport.center.x, y: this.model.y}, removeOnInterrupt: true })
-            }
-        }.bind(newFish)
-        node.onblur = function () {
-            Aquarium.accessibilityActive = true;
-            Aquarium.emitEvent("onFishOut", this);
-        }.bind(newFish)
-        node.onclick = function () {
-            console.log(this)
-            Aquarium.emitEvent("onFishClicked", { idx: this.id });
-        }.bind(newFish);
-        newFish.node = node;
-        fishAriaDiv.appendChild(node);
-        Aquarium.viewport.addChild(newFish.model);
-
-        allFish.push(newFish);
-    }
 }
 
 function setupFilters () {

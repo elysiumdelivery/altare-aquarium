@@ -23,7 +23,7 @@ async function main() {
     await setupDetailsDialog();
     window.aquarium = Aquarium;
     // Quality settings selector for aquarium
-    let qualitySelector = document.getElementById("quality-settings");
+    let qualitySelector = document.getElementById("quality-settings-dropdown");
     qualitySelector.addEventListener("change", (e) => {
         let newResolution;
         switch (e.target.value) {
@@ -44,17 +44,26 @@ async function main() {
         window.aquarium.resize();
 
     })
+    let overlayToggle = document.getElementById("overlay-toggle-checkbox");
+    overlayToggle.addEventListener("change", (e) => {
+        aquarium.overlay.visible = e.target.checked;
+    })
     let data = await parseCSV(FISH_DATA_PATH);
     Aquarium.init(data).then(() => {        
         // Remove loading screen. We've loaded in everything
         let loader = document.getElementById("loader");
-        loader.remove();
         
         Aquarium.addGameStateListener("onFishClicked", (fishData) => {
             // Open dialog info on selected fish
             updateDetailsDialog(fishData.idx, fishData.data);
             DETAILS_DIALOG_A11Y.show();
         });
+
+        overlayToggle.checked = aquarium.overlay.visible;
+
+        setTimeout(() => {
+            loader.remove();
+        }, 1000);
     });
 
 }
