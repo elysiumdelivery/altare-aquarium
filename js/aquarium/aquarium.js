@@ -4,9 +4,10 @@ import { Fish } from "./fish.js";
 
 
 const WORLD_WIDTH = 1000;
-const WORLD_HEIGHT = 15000;
+const WORLD_HEIGHT = 25000;
 const LEVELS = {
-    "Surface": 0,
+    "Sky": 0,
+    "Surface": 1000,
     "Middle": WORLD_HEIGHT * (1 / 2),
     "Floor": WORLD_HEIGHT * (2 / 3)
 }
@@ -93,7 +94,14 @@ async function init (data) {
     Aquarium.app.stage.addChild(Aquarium.viewport)
     Aquarium.app.stage.addChild(Aquarium.overlay)
 
-    let bg = new PIXI.Sprite(generateGradient(["#D3FFE9", "#2B59C3", "#011138"], { width: 64, height: 64 }));
+    let bg = new PIXI.Sprite(generateGradient(
+        ["#82cbff", "#82cbff", "#D3FFE9", "#2B59C3", "#011138"], 
+        { 
+            stops: [0, 0.25 * LEVELS.Surface / WORLD_HEIGHT, LEVELS.Surface / WORLD_HEIGHT,  0.5 * LEVELS.Middle / WORLD_HEIGHT, 1],
+            width: 64,
+            height: 64
+        }
+    ));
     bg.width = WORLD_WIDTH;
     bg.height = WORLD_HEIGHT;
     Aquarium.viewport.addChild(bg);
@@ -156,6 +164,9 @@ async function init (data) {
             Aquarium.filters.godrayFilter.time += d / lerp(50, 100, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
             Aquarium.filters.godrayFilter.gain = lerp(0.1, 0.4, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
             Aquarium.filters.godrayFilter.lacunarity = lerp(1.8, 5, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
+            Aquarium.filters.godrayFilter.alpha = lerp(0, 0.3, clamp((Aquarium.viewport.top - LEVELS.Surface) / LEVELS.Surface, 0, 1));
+
+            Aquarium.filters.displacementFilter.enabled = Aquarium.viewport.top >= LEVELS.Surface;
         }
         updateDebugLayer();
     });
@@ -324,6 +335,9 @@ function randomRange(min, max) {
 function lerp (start, end, v){
     return (1 - v) * start + v * end;
 }
+function clamp (v, min, max) {
+    return Math.min(Math.max(v, min), max);
+};
 function border(viewport) {
     debug.viewportBorder = Aquarium.viewport.addChild(new PIXI.Graphics())
     debug.viewportBorder.lineStyle(10, 0xff0000).drawRect(0, 0, Aquarium.viewport.worldWidth, Aquarium.viewport.worldHeight)
