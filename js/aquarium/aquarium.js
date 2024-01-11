@@ -5,11 +5,10 @@ import { Fish } from "./fish.js";
 
 const WORLD_WIDTH = 1000;
 const WORLD_HEIGHT = 15000;
-// 63 fishes total
 const LEVELS = {
-    "Surface": 0, // 27
+    "Surface": 0,
     "Middle": WORLD_HEIGHT * (1 / 2),
-    "Floor": WORLD_HEIGHT * (2 / 3) // 15
+    "Floor": WORLD_HEIGHT * (2 / 3)
 }
 const debug = {};
 const allFish = [];
