@@ -44,6 +44,9 @@ body {
 
 #loader label {
     color: white;
+    font-family: 'Rowdies', sans-serif;
+    font-size: 2em;
+    margin-bottom: 0.5em;
 }
 
 #quality-settings {
