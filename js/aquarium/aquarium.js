@@ -114,7 +114,6 @@ async function init (data) {
     loader.setAttribute("value", 0);
 
     Aquarium.addGameStateListener("fishCreated", (fish) => {
-        document.getElementById("loader-progress").value++;
     })
 
     Aquarium.app.view.addEventListener("pointermove", (e) => {
@@ -191,7 +190,13 @@ async function loadData(allFishData) {
     for (var i = 0; i < allFishData.length; i++) {
         let fishData = allFishData[i];
         let newFish = new Fish(fishData);
-        fishPromises.push(newFish.init());
+        fishPromises.push(newFish.init().then((fish) => {
+            document.getElementById("loader-progress").value++;
+            return Promise.resolve(fish);
+        }).catch(() => {
+            document.getElementById("loader-progress").max--;
+            return Promise.reject();
+        }));
     }
 
     return Promise.allSettled(fishPromises).then((results) => {
@@ -214,7 +219,6 @@ async function loadData(allFishData) {
 
                 Aquarium.viewport.addChild(fish.model);
                 lastFishAtLevel[level] = allFish.length;
-                Aquarium.emitEvent("fishCreated", fish);
                 allFish.push(fish);
 
                 // model.filters = [new PIXI.filters.ColorOverlayFilter(0xFFFFFF * Math.random(), 0.5)]
@@ -242,6 +246,7 @@ async function loadData(allFishData) {
                 fish.node = node;
                 fishAriaDiv.appendChild(node);
                 Aquarium.app.ticker.add(fish.update.bind(fish));
+                Aquarium.emitEvent("fishCreated", fish);
             }
         })
     });

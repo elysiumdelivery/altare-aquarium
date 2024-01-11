@@ -52,7 +52,6 @@ async function main() {
     Aquarium.init(data).then(() => {        
         // Remove loading screen. We've loaded in everything
         let loader = document.getElementById("loader");
-        loader.remove();
         
         Aquarium.addGameStateListener("onFishClicked", (fishData) => {
             // Open dialog info on selected fish
@@ -61,6 +60,10 @@ async function main() {
         });
 
         overlayToggle.checked = aquarium.overlay.visible;
+
+        setTimeout(() => {
+            loader.remove();
+        }, 1000);
     });
 
 }
