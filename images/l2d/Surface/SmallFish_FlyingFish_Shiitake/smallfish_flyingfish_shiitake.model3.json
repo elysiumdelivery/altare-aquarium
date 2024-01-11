@@ -1,0 +1,1 @@
+{"Version":3,"FileReferences":{"Moc":"SmallFish_FlyingFish_Shiitake.moc3","Textures":["SmallFish_FlyingFish_Shiitake.256/texture_00.png"],"DisplayInfo":"SmallFish_FlyingFish_Shiitake.cdi3.json","Motions":{"Idle":[{"File":"Idle.motion3.json"}]}},"Groups":[{"Target":"Parameter","Name":"LipSync","Ids":[]},{"Target":"Parameter","Name":"EyeBlink","Ids":[]}],"HitAreas":[]}
