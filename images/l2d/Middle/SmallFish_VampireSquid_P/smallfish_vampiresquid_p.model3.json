@@ -1,0 +1,30 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "SmallFish_VampireSquid_P.moc3",
+		"Textures": [
+			"SmallFish_VampireSquid_P.256/texture_00.png"
+		],
+		"DisplayInfo": "SmallFish_VampireSquid_P.cdi3.json",
+		"Motions": {
+			"Idle": [
+				{
+					"File": "Idle.motion3.json"
+				}
+			]
+		}
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		}
+	],
+	"HitAreas": []
+}

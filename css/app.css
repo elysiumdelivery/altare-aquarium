@@ -50,6 +50,13 @@ body {
     right: 0;
 }
 
+#overlay-toggle {
+    /* TODO: temp placement for now */
+    position: absolute;
+    right: 0;
+    top: 1em;
+}
+
 .dialog-container {
     position: absolute;
     top: 0;

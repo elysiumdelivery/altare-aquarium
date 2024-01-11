@@ -13,7 +13,6 @@
     </head>
     <body>
         <main>
-            <div id="fish-aria" role="list" aria-label="Altare's Aquarium" class="visually-hidden"></div>
             <canvas id="canvas" style="width: 100%;height: 100%;"></canvas>
             <div id="loader">
                 <label for="loader-progress">Loading in aquarium...</label>
@@ -22,13 +21,19 @@
             <section id="quality-settings" aria-label="Quality Settings">
                 <label>
                     Quality: 
-                    <select id="quality-settings">
+                    <select id="quality-settings-dropdown">
                       <option value="Low" selected>Low</option>
                       <option value="Medium" selected>Medium</option>
                       <option value="High">High</option>
                     </select>
                 </label>
             </section>
+            <section id="overlay-toggle" aria-label="Toggle Overlay Color">
+                <label>Overlay Color:
+                    <input type="checkbox" id="overlay-toggle-checkbox">
+                </label>
+            </section>
+            <div id="fish-aria" role="list" aria-label="Altare's Aquarium" class="visually-hidden"></div>
             <div id="overlay" aria-hidden="true"></div>
         </main>
         <script type="text/javascript" src="js/plugins/a11y-dialog.min.js"></script>
