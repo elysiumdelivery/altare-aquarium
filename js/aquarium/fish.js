@@ -115,11 +115,9 @@ Fish.prototype.update = function (delta) {
 Fish.prototype.toggleHighlight = function (isOn) {
     if (isOn && this.model.filters.length === 0) {
         this.model.filters.push(outlineFilter);
-        document.body.style.cursor = "pointer";
     }
     else if (!isOn && this.model.filters.length > 0) {
         this.model.filters.pop();
-        document.body.style.cursor = "auto";
     }
 }
 

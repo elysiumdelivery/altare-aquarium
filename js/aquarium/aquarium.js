@@ -41,6 +41,9 @@ export const Aquarium = ((options = {}) => {
     self.resize = resize;
     self.setDebug = setDebug;
     self.toggleFilters = toggleFilters;
+
+    self.isDraggingViewport = false;
+
     self.addFish = (fish) => { allFish.push(newFish); }
     self.getActiveFish = () => { return allFish.filter(fish => fish.isVisible()) }
     self.getAllFish = () => { return allFish; }
@@ -86,6 +89,17 @@ async function init (data) {
             bounce: 0,                      // percent to decelerate when past boundaries (only applicable when viewport.bounce() is active)
             minSpeed: 0.01,                 // minimum velocity before stopping/reversing acceleration
     })
+    Aquarium.viewport.on("moved", (e) => {
+        this.isDraggingViewport = true;
+        Aquarium.emitEvent("onViewportUpdate", e.viewport);
+
+    });
+    Aquarium.viewport.on("moved-end", (e) => {
+        setTimeout(function () {
+            this.isDraggingViewport = false;
+        }.bind(this), 50)
+    });
+    
     Aquarium.viewport.eventMode = 'dynamic';
     Aquarium.viewport.alpha = 0;
     Aquarium.viewport.sortableChildren = true;
@@ -120,6 +134,13 @@ async function init (data) {
     loader.setAttribute("max", data.length);
     loader.setAttribute("value", 0);
 
+    let altareBoat = PIXI.Sprite.from("images/altare_boat_test.png");
+    altareBoat.anchor.set(0.5, 1);
+    altareBoat.scale.set(1);
+    altareBoat.x = 800;
+    altareBoat.y = LEVELS.Surface;
+    Aquarium.viewport.addChild(altareBoat);
+
     Aquarium.addGameStateListener("fishCreated", (fish) => {
     })
 
@@ -135,8 +156,8 @@ async function init (data) {
      * Click events are kinda weird w/ the L2D Model Plugin.
      * Workaround where we emit our own event that acts as the click.
      */
-    Aquarium.app.view.addEventListener('pointerdown', (e) => {
-        if (Aquarium.currentActiveFish && Aquarium.currentActiveFish.model.containsPoint(e)) {
+    Aquarium.app.view.addEventListener('pointerup', (e) => {
+        if (!Aquarium.isDraggingViewport && Aquarium.currentActiveFish && Aquarium.currentActiveFish.model.containsPoint(e)) {
             Aquarium.emitEvent("onFishClicked", { idx: Aquarium.currentActiveFish.id, data: Aquarium.currentActiveFish.data });
         }
     });
@@ -159,6 +180,7 @@ async function init (data) {
     })
 
     Aquarium.app.ticker.add(d => {
+        altareBoat.y = LEVELS.Surface + Math.sin(Date.now() / 380);
         if (Aquarium.settings.filters) {
             overlayGraphic.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
             Aquarium.filters.godrayFilter.time += d / lerp(50, 100, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
@@ -176,12 +198,8 @@ async function init (data) {
 
     Aquarium.app.start();
     Aquarium.viewport.alpha = 1;
-    Aquarium.viewport.fitWidth()
-    Aquarium.viewport.clamp({direction: "y"})
-    Aquarium.viewport.moveCenter(WORLD_WIDTH / 2, 0)
 
     window.addEventListener("resize", resize);
-    resize();
 
     return loadData(data).then(() => {
         allFish.sort((a, b) => {
@@ -190,7 +208,12 @@ async function init (data) {
             else return 0
         }).forEach((fish, i) => {
             fish.model.zIndex = i;
-        })
+        });
+
+        Aquarium.viewport.fitWidth()
+        Aquarium.viewport.clamp({direction: "y"})
+        Aquarium.viewport.moveCenter(WORLD_WIDTH / 2, 0)
+        resize();
     });
 }
 
@@ -225,7 +248,12 @@ async function loadData(allFishData) {
                 else {
                     fish.model.y = (fish.model.getBounds().height / 2);
                 }
-                fish.model.x = parseInt(fish.data["Position X"]) || randomRange(0, WORLD_WIDTH);
+                if (Number.isFinite(parseInt(fish.data["Position X"]))) {
+                    fish.model.x = parseInt(fish.data["Position X"]);
+                }
+                else {
+                    fish.model.x = randomRange(fish.rangeX[0] || 0, fish.rangeX[1] || WORLD_WIDTH);
+                }
 
                 Aquarium.viewport.addChild(fish.model);
                 lastFishAtLevel[level] = allFish.length;
@@ -369,4 +397,5 @@ function resize () {
         overlayGraphic.height = window.innerHeight;
     }
     Aquarium.viewport.fitWidth()
+    Aquarium.emitEvent("onViewportUpdate", Aquarium.viewport);
 }
