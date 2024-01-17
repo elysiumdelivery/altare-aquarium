@@ -51,7 +51,7 @@ async function main() {
     Aquarium.addGameStateListener("onViewportUpdate", (viewport) => {
         let screenCoords = viewport.toScreen(viewport.worldWidth / 2, 50);
         document.getElementById("title-header").style.top = screenCoords.y;
-        document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 6em)`;
+        document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 10vmin)`;
         
     })
     let data = await parseCSV(FISH_DATA_PATH);

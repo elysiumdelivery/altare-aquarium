@@ -51,21 +51,6 @@
             <a href="#fish-aria" class="visually-hidden skip-link"
                 >Skip to content</a
             >
-            <section id="quality-settings" aria-label="Quality Settings">
-                <label>
-                    Quality: 
-                    <select id="quality-settings-dropdown">
-                      <option value="Low" selected>Low</option>
-                      <option value="Medium" selected>Medium</option>
-                      <option value="High">High</option>
-                    </select>
-                </label>
-            </section>
-            <section id="overlay-toggle" aria-label="Toggle Overlay Color">
-                <label>Overlay Color:
-                    <input type="checkbox" id="overlay-toggle-checkbox">
-                </label>
-            </section>
             <h1 id="title-header">The Regis Altare Birthday Project 2024</h1>
             <!-- Navigation -->
             <nav id="nav">
@@ -75,14 +60,30 @@
                 <a id="nav-message-board" href="../pages/message-board.html">Message Board</a>
                 <a id="nav-credits" href="../pages/credits.html">Credits and Download</a>
                 <!-- Menu-only elements -->
-                <!-- <hr aria-hidden="true" /> -->
-                <!-- <button id="close-nav-menu" aria-label="Close menu">
+                <hr aria-hidden="true" />
+                <section id="quality-settings" class="menu-item" aria-label="Quality Settings">
+                    <label>
+                        Quality: 
+                        <select id="quality-settings-dropdown">
+                          <option value="Low" selected>Low</option>
+                          <option value="Medium" selected>Medium</option>
+                          <option value="High">High</option>
+                        </select>
+                    </label>
+                </section>
+                <section id="overlay-toggle" class="menu-item" aria-label="Toggle Overlay Color">
+                    <label>Overlay Color:
+                        <input type="checkbox" id="overlay-toggle-checkbox">
+                    </label>
+                </section>
+                <hr aria-hidden="true" />
+                <button id="close-nav-menu" aria-label="Close menu">
                 <img
                     class="icon icon-close"
                     aria-hidden="true"
                     src="../icons/Icons_Close.svg"
                 />
-                </button> -->
+                </button>
             </nav>
             <div id="fish-aria" role="list" aria-label="Altare's Aquarium" class="visually-hidden"></div>
             <div id="overlay" aria-hidden="true"></div>

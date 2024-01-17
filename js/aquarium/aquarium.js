@@ -3,11 +3,11 @@ import { Fish } from "./fish.js";
 // const spineModel = "../resources/fish/FishAnimationTest.json";
 
 
-const WORLD_WIDTH = 1000;
+const WORLD_WIDTH = 1920;
 const WORLD_HEIGHT = 25000;
 const LEVELS = {
     "Sky": 0,
-    "Surface": 1000,
+    "Surface": 1200,
     "Middle": WORLD_HEIGHT * (1 / 2),
     "Floor": WORLD_HEIGHT * (2 / 3)
 }
@@ -83,7 +83,7 @@ async function init (data) {
     });
     // activate plugins
     Aquarium.viewport
-        .drag({direction: "y", pressDrag: true, clampWheel: true })
+        .drag({direction: "all", pressDrag: true, clampWheel: true })
         .decelerate({
             friction: 0.95,                 // percent to decelerate after movement
             bounce: 0,                      // percent to decelerate when past boundaries (only applicable when viewport.bounce() is active)
@@ -137,7 +137,7 @@ async function init (data) {
     let altareBoat = PIXI.Sprite.from("images/altare_boat_test.png");
     altareBoat.anchor.set(0.5, 1);
     altareBoat.scale.set(1);
-    altareBoat.x = 800;
+    altareBoat.x = WORLD_WIDTH - 500;
     altareBoat.y = LEVELS.Surface;
     Aquarium.viewport.addChild(altareBoat);
 
@@ -211,9 +211,14 @@ async function init (data) {
         });
 
         Aquarium.viewport.fitWidth()
-        Aquarium.viewport.clamp({direction: "y"})
-        Aquarium.viewport.moveCenter(WORLD_WIDTH / 2, 0)
+        Aquarium.viewport.clamp({direction: "all"})
         resize();
+        if (window.innerHeight >= window.innerWidth) {
+            Aquarium.viewport.moveCenter(WORLD_WIDTH - 500, 0);
+        }
+        else {
+            Aquarium.viewport.moveCenter(WORLD_WIDTH / 2, 0)
+        }
     });
 }
 
@@ -391,11 +396,21 @@ function resize () {
     // Resize the renderer
     Aquarium.app.renderer.resize(window.innerWidth, window.innerHeight);
     Aquarium.app.resize();
+    // cap height to at least 480
     Aquarium.viewport.resize();
+    if (window.innerWidth <= window.innerHeight) {
+        let width = lerp(WORLD_WIDTH / 4, WORLD_WIDTH, window.innerWidth / window.innerHeight);
+        width = clamp(width, WORLD_WIDTH / 4, WORLD_WIDTH);
+        Aquarium.viewport.fitWidth(width, false, true, true);
+        Aquarium.viewport.moveCenter(WORLD_WIDTH - 500, Aquarium.viewport.center.y);
+    }
+    else {
+        Aquarium.viewport.fitWidth();
+    }
     if (overlayGraphic) {
         overlayGraphic.width = window.innerWidth;
         overlayGraphic.height = window.innerHeight;
     }
-    Aquarium.viewport.fitWidth()
+
     Aquarium.emitEvent("onViewportUpdate", Aquarium.viewport);
 }

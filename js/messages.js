@@ -23,23 +23,27 @@ function renderMessages(message_data) {
     let message = message_data[i];
     let messageNode = document.createElement("li");
     messageNode.classList.add("artist-writer-message");
-    let messageUserHeader = document.createElement("h2");
-    let messageUserInfo = document.createElement("h3");
+    let messageFromDiv = document.createElement("div");
+    let messageUserHeader = document.createElement("span");
+    let messageUserInfo = document.createElement("span");
     let messageUserMessage = document.createElement("p");
 
-    messageUserHeader.innerText = message["Participant Name"];
-    if (message["Twitter"]) {
+    messageFromDiv.classList.add("artist-writer-user");
+
+    messageUserHeader.innerText = "- " + message["Participant Name"];
+    if (message["Twitter"] && message["Twitter"] !== "-") {
       let userSocial = document.createElement("a");
       userSocial.href = `https://twitter.com/${message["Twitter"]}`;
       userSocial.setAttribute('target', '_blank');
-      userSocial.textContent = message["Twitter"];
+      userSocial.textContent = `(${message["Twitter"]})`;
       messageUserInfo.append(userSocial);
     }
     messageUserMessage.innerText = message["Birthday Message"];
 
-    messageNode.appendChild(messageUserHeader);
-    messageNode.appendChild(messageUserInfo);
     messageNode.appendChild(messageUserMessage);
+    messageFromDiv.appendChild(messageUserHeader);
+    messageFromDiv.appendChild(messageUserInfo);
+    messageNode.appendChild(messageFromDiv);
 
     messageContainer.appendChild(messageNode);
   }
@@ -47,7 +51,7 @@ function renderMessages(message_data) {
 
 function renderCredits(credits_data) {
   // these are the sections in order of display (as per the CSS)
-  let creditsHeaders = ["General / Management", "Website Development", "Accessibility", "Twitter Illustrators"];
+  let creditsHeaders = ["General / Management", "Website Development", "Animation", "Accessibility", "Sponsorship Coordinators", "Twitter Illustrators"];
   // remainder of the normal code
   let creditsContainer = document.getElementById("credits");
   let roleMapping = [[]];
@@ -114,11 +118,11 @@ function renderTwitterArtCredits(twitter_art_data) {
     img.src = `../images/twitter/${artData["Artwork"]}`;
     img.alt = artData["Alt"];
     artContainer.append(img);
-    if (artData["Twitter"]) {
+    if (artData["Twitter"] && artData["Twitter"] !== "-") {
       let creditTwitter = document.createElement("a");
       creditTwitter.href = `https://twitter.com/${artData["Twitter"]}`;
       creditTwitter.setAttribute('target', '_blank');
-      creditTwitter.textContent = artData["Staff name"];
+      creditTwitter.textContent = `By @${artData["Staff name"]}`;
       artContainer.append(creditTwitter);
     }
     artList.append(artContainer);
