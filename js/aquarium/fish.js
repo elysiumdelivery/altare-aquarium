@@ -116,6 +116,7 @@ Fish.prototype.update = function (delta) {
         this.model.update(Aquarium.app.ticker.elapsedMS);
     }
     this.model.x += delta * this.speed * this.direction;
+    this.model.y += delta * 0.25 * Math.sin((Date.now() + randomRange(20, 100))/ 600);
 }
 
 Fish.prototype.toggleHighlight = function (isOn) {

@@ -232,16 +232,22 @@ async function loadAltare () {
     return PIXI.Assets.load(spineModel).then((resource) => {
 
         Aquarium.altareBoat = new PIXI.spine.Spine(resource.spineData);
-        let waterRepeatingTex = PIXI.Sprite.from("../images/spine/water.png");
-        Aquarium.altareBoat.scale.set(0.65)
+        let waterRepeatingTexRight = PIXI.Sprite.from("../images/spine/water.png");
+        let waterRepeatingTexLeft = PIXI.Sprite.from("../images/spine/water.png");
+        Aquarium.altareBoat.scale.set(0.5)
         Aquarium.altareBoat.x = WORLD_WIDTH - 500;
         Aquarium.altareBoat.y = LEVELS.Top;
 
-        waterRepeatingTex.anchor.set(1, 0);
-        waterRepeatingTex.x = 650;
-        waterRepeatingTex.y = -110;
-        waterRepeatingTex.scale.set(-1, 1.28);
-        Aquarium.altareBoat.addChild(waterRepeatingTex);
+        waterRepeatingTexRight.anchor.set(1, 0);
+        waterRepeatingTexLeft.anchor.set(0, 0);
+        waterRepeatingTexRight.x = 650;
+        waterRepeatingTexLeft.x = -3180;
+        waterRepeatingTexRight.y = -110;
+        waterRepeatingTexLeft.y = -110;
+        waterRepeatingTexRight.scale.set(-1, 1.28);
+        waterRepeatingTexLeft.scale.set(1, 1.28);
+        Aquarium.altareBoat.addChild(waterRepeatingTexRight);
+        Aquarium.altareBoat.addChild(waterRepeatingTexLeft);
         
         // add the animation to the scene and render...
         Aquarium.viewport.addChild(Aquarium.altareBoat);
