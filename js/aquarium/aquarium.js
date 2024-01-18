@@ -7,7 +7,7 @@ const WORLD_WIDTH = 1920;
 const WORLD_HEIGHT = 23000;
 const LEVELS = {
     "Sky": 0,
-    "Top": 1200,
+    "Top": 1500,
     "Surface": 1800,
     "Middle": WORLD_HEIGHT * (1 / 2),
     "Floor": WORLD_HEIGHT * 0.75
@@ -96,6 +96,7 @@ async function init (data) {
 
     });
     Aquarium.viewport.on("moved-end", (e) => {
+        console.log("end")
         setTimeout(function () {
             this.isDraggingViewport = false;
         }.bind(this), 50)
@@ -232,22 +233,20 @@ async function loadAltare () {
     return PIXI.Assets.load(spineModel).then((resource) => {
 
         Aquarium.altareBoat = new PIXI.spine.Spine(resource.spineData);
-        let waterRepeatingTexRight = PIXI.Sprite.from("../images/spine/water.png");
-        let waterRepeatingTexLeft = PIXI.Sprite.from("../images/spine/water.png");
-        Aquarium.altareBoat.scale.set(0.5)
+        Aquarium.altareBoat.scale.set(0.8)
         Aquarium.altareBoat.x = WORLD_WIDTH - 500;
         Aquarium.altareBoat.y = LEVELS.Top;
 
-        waterRepeatingTexRight.anchor.set(1, 0);
-        waterRepeatingTexLeft.anchor.set(0, 0);
-        waterRepeatingTexRight.x = 650;
-        waterRepeatingTexLeft.x = -3180;
-        waterRepeatingTexRight.y = -110;
-        waterRepeatingTexLeft.y = -110;
-        waterRepeatingTexRight.scale.set(-1, 1.28);
-        waterRepeatingTexLeft.scale.set(1, 1.28);
-        Aquarium.altareBoat.addChild(waterRepeatingTexRight);
-        Aquarium.altareBoat.addChild(waterRepeatingTexLeft);
+        // waterRepeatingTexRight.anchor.set(1, 0);
+        // waterRepeatingTexLeft.anchor.set(0, 0);
+        // waterRepeatingTexRight.x = 650;
+        // waterRepeatingTexLeft.x = -3180;
+        // waterRepeatingTexRight.y = -110;
+        // waterRepeatingTexLeft.y = -110;
+        // waterRepeatingTexRight.scale.set(-1, 1.28);
+        // waterRepeatingTexLeft.scale.set(1, 1.28);
+        // Aquarium.altareBoat.addChild(waterRepeatingTexRight);
+        // Aquarium.altareBoat.addChild(waterRepeatingTexLeft);
         
         // add the animation to the scene and render...
         Aquarium.viewport.addChild(Aquarium.altareBoat);

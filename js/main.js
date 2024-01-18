@@ -56,7 +56,7 @@ async function main() {
         }
         else {
             document.getElementById("title-header").style.top = screenCoords.y;
-            document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 10vmin)`;
+            document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 15vmin)`;
         }
         
     })
