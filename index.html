@@ -1,8 +1,39 @@
 <html>
     <head>
-        <title>Regis Altare Birthday Project 2024</title>
-        
+        <meta charset="utf-8" />
+        <meta
+          name="description"
+          content="Regis Altare themed interactive aquarium. Explore what lies in the waters in this free web game!"
+        />
+        <meta
+          name="keywords"
+          content="regis,altare,holopro,holostars,aquarium,fish,fishes,ocean,free,online,app,games,game,interactive,animated"
+        />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Regis Altare Interactive Aquarium" />
+        <meta
+          name="twitter:description"
+          content="Regis Altare themed interactive aquarium. Explore what lies in the waters in this free web game!"
+        />
+        <!-- Enables media queries on mobile -->
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Favicon related code -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+        <link rel="manifest" href="/icons/site.webmanifest">
+        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#2d89ef">
+        <meta name="theme-color" content="#ffffff">
+        <!-- Font -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Rowdies&display=swap" rel="stylesheet">
+        <!-- CSS -->
+        <link rel="stylesheet" href="css/base.css"/>
         <link rel="stylesheet" href="css/app.css"/>
+        <link rel="stylesheet" href="css/nav.css"/>
+        <!-- Libraries -->
         <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.3.0/dist/pixi.min.js"></script>
         <script src="js/plugins/pixi/pixi-filters.min.js"></script>
         <script src="js/plugins/pixi/pixi_viewport.umd.cjs"></script>
@@ -10,37 +41,74 @@
         <script src="js/plugins/pixi/live2dcubismcore.min.js"></script>
         <script src="js/plugins/l2d_sdk/cubism4.min.js"></script>
         <script src="js/plugins/pixi/pixi-spine.js"></script>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Rowdies&display=swap" rel="stylesheet">
+
+        <title>Regis Altare Interactive Aquarium</title>
     </head>
     <body>
         <main>
             <canvas id="canvas" style="width: 100%;height: 100%;"></canvas>
-            <div id="loader">
-                <label for="loader-progress">Loading in aquarium...</label>
-                <progress id="loader-progress"></progress>
-            </div>
-            <section id="quality-settings" aria-label="Quality Settings">
-                <label>
-                    Quality: 
-                    <select id="quality-settings-dropdown">
-                      <option value="Low" selected>Low</option>
-                      <option value="Medium" selected>Medium</option>
-                      <option value="High">High</option>
-                    </select>
-                </label>
-            </section>
-            <section id="overlay-toggle" aria-label="Toggle Overlay Color">
-                <label>Overlay Color:
-                    <input type="checkbox" id="overlay-toggle-checkbox">
-                </label>
-            </section>
+
+            <a href="#fish-aria" class="visually-hidden skip-link"
+                >Skip to content</a
+            >
+            <h1 id="title-header">The Regis Altare Birthday Project 2024</h1>
+             <!-- Burger menu for responsive layout -->
+            <button id="nav-hamburger" aria-label="Toggle site navigation">
+                <img
+                class="icon icon-menu"
+                aria-hidden="true"
+                src="../icons/Icons_Hamburger.svg"
+                />
+            </button>
+            <!-- Navigation -->
+            <nav id="nav">
+                <a id="nav-aquarium" class="active" href="#">Interactive Aquarium</a>
+                <!-- <a id="nav-collection" class="active" href="../pages/collection.html">Collection</a> -->
+                <a id="nav-artist-writer-board" href="../pages/contributor-board.html">Contributor Messages</a>
+                <a id="nav-message-board" href="../pages/message-board.html">Message Board</a>
+                <a id="nav-credits" href="../pages/credits.html">Credits and Download</a>
+                <!-- Menu-only elements -->
+                <hr aria-hidden="true" />
+                <section id="quality-settings" class="menu-item" aria-label="Quality Settings">
+                    <label>
+                        Quality: 
+                        <select id="quality-settings-dropdown">
+                          <option value="Low" selected>Low</option>
+                          <option value="Medium" selected>Medium</option>
+                          <option value="High">High</option>
+                        </select>
+                    </label>
+                </section>
+                <section id="overlay-toggle" class="menu-item" aria-label="Toggle Overlay Color">
+                    <label>Overlay Color:
+                        <input type="checkbox" id="overlay-toggle-checkbox">
+                    </label>
+                </section>
+                <hr aria-hidden="true" />
+                <button id="close-nav-menu" aria-label="Close menu">
+                <img
+                    class="icon icon-close"
+                    aria-hidden="true"
+                    src="../icons/Icons_Close.svg"
+                />
+                </button>
+            </nav>
             <div id="fish-aria" role="list" aria-label="Altare's Aquarium" class="visually-hidden"></div>
             <div id="overlay" aria-hidden="true"></div>
+            <div id="loader" role="status" aria-live="polite" aria-label='Loading...'>
+                <div class="spinner-container">
+                    <picture>
+                        <img src="images/loader.png" alt="Loading spinner with the words HBD Altare 01.29, with Altare and Cultare swimming along the border"/>
+                        <!-- <img src="images/loader_full.png" alt="Loading spinner with the words HBD Altare 01.29, with Altare and Cultare swimming along the border"> -->
+                      </picture>                  
+                    <label for="loader-progress">Loading...</label>
+                    <progress id="loader-progress"></progress>
+                </div>
+            </div>
         </main>
         <script type="text/javascript" src="js/plugins/a11y-dialog.min.js"></script>
         <script type="text/javascript" src="js/plugins/papaparse.min.js"></script>
+        <script type="module" src="js/nav.js"></script>
         <script type="module" src="js/main.js"></script>
     </body>
 </html>

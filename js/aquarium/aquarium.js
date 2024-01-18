@@ -1,13 +1,13 @@
 import { Fish } from "./fish.js";
 
-// const spineModel = "../resources/fish/FishAnimationTest.json";
+const spineModel = "../images/spine/AltareBoatBdayAnimationPrep.json";
 
 
-const WORLD_WIDTH = 1000;
+const WORLD_WIDTH = 1920;
 const WORLD_HEIGHT = 25000;
 const LEVELS = {
     "Sky": 0,
-    "Surface": 1000,
+    "Surface": 1200,
     "Middle": WORLD_HEIGHT * (1 / 2),
     "Floor": WORLD_HEIGHT * (2 / 3)
 }
@@ -41,6 +41,9 @@ export const Aquarium = ((options = {}) => {
     self.resize = resize;
     self.setDebug = setDebug;
     self.toggleFilters = toggleFilters;
+
+    self.isDraggingViewport = false;
+
     self.addFish = (fish) => { allFish.push(newFish); }
     self.getActiveFish = () => { return allFish.filter(fish => fish.isVisible()) }
     self.getAllFish = () => { return allFish; }
@@ -80,12 +83,23 @@ async function init (data) {
     });
     // activate plugins
     Aquarium.viewport
-        .drag({direction: "y", pressDrag: true, clampWheel: true })
+        .drag({direction: "all", pressDrag: true, clampWheel: true })
         .decelerate({
             friction: 0.95,                 // percent to decelerate after movement
             bounce: 0,                      // percent to decelerate when past boundaries (only applicable when viewport.bounce() is active)
             minSpeed: 0.01,                 // minimum velocity before stopping/reversing acceleration
     })
+    Aquarium.viewport.on("moved", (e) => {
+        this.isDraggingViewport = true;
+        Aquarium.emitEvent("onViewportUpdate", e.viewport);
+
+    });
+    Aquarium.viewport.on("moved-end", (e) => {
+        setTimeout(function () {
+            this.isDraggingViewport = false;
+        }.bind(this), 50)
+    });
+    
     Aquarium.viewport.eventMode = 'dynamic';
     Aquarium.viewport.alpha = 0;
     Aquarium.viewport.sortableChildren = true;
@@ -95,9 +109,16 @@ async function init (data) {
     Aquarium.app.stage.addChild(Aquarium.overlay)
 
     let bg = new PIXI.Sprite(generateGradient(
-        ["#82cbff", "#82cbff", "#D3FFE9", "#2B59C3", "#011138"], 
+        ["#74b9ff", "#D2E9FF", "#D2E9FF", "#2973c4", "#2973c4", "#011138"], 
         { 
-            stops: [0, 0.25 * LEVELS.Surface / WORLD_HEIGHT, LEVELS.Surface / WORLD_HEIGHT,  0.5 * LEVELS.Middle / WORLD_HEIGHT, 1],
+            stops: [
+                0,
+                (LEVELS.Surface) / WORLD_HEIGHT, 
+                (LEVELS.Surface + 100) / WORLD_HEIGHT, 
+                (LEVELS.Surface + 200) / WORLD_HEIGHT, 
+                0.5 * LEVELS.Middle / WORLD_HEIGHT,
+                1
+            ],
             width: 64,
             height: 64
         }
@@ -135,8 +156,8 @@ async function init (data) {
      * Click events are kinda weird w/ the L2D Model Plugin.
      * Workaround where we emit our own event that acts as the click.
      */
-    Aquarium.app.view.addEventListener('pointerdown', (e) => {
-        if (Aquarium.currentActiveFish && Aquarium.currentActiveFish.model.containsPoint(e)) {
+    Aquarium.app.view.addEventListener('pointerup', (e) => {
+        if (!Aquarium.isDraggingViewport && Aquarium.currentActiveFish && Aquarium.currentActiveFish.model.containsPoint(e)) {
             Aquarium.emitEvent("onFishClicked", { idx: Aquarium.currentActiveFish.id, data: Aquarium.currentActiveFish.data });
         }
     });
@@ -159,6 +180,9 @@ async function init (data) {
     })
 
     Aquarium.app.ticker.add(d => {
+        if (Aquarium.altareBoat) {
+            Aquarium.altareBoat.y = LEVELS.Surface + Math.sin(Date.now() / 380);
+        }
         if (Aquarium.settings.filters) {
             overlayGraphic.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
             Aquarium.filters.godrayFilter.time += d / lerp(50, 100, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
@@ -176,21 +200,52 @@ async function init (data) {
 
     Aquarium.app.start();
     Aquarium.viewport.alpha = 1;
-    Aquarium.viewport.fitWidth()
-    Aquarium.viewport.clamp({direction: "y"})
-    Aquarium.viewport.moveCenter(WORLD_WIDTH / 2, 0)
 
     window.addEventListener("resize", resize);
-    resize();
 
-    return loadData(data).then(() => {
+    return loadAltare().then(() => loadData(data)).then(() => {
         allFish.sort((a, b) => {
             if (a.model.scale.y > b.model.scale.y) return -1;
             else if (a.model.scale.y < b.model.scale.y) return 1;
             else return 0
         }).forEach((fish, i) => {
             fish.model.zIndex = i;
-        })
+        });
+
+        Aquarium.viewport.fitWidth()
+        Aquarium.viewport.clamp({direction: "all"})
+        resize();
+        if (window.innerHeight >= window.innerWidth) {
+            Aquarium.viewport.moveCenter(WORLD_WIDTH - 500, 0);
+        }
+        else {
+            Aquarium.viewport.moveCenter(WORLD_WIDTH / 2, 0)
+        }
+    });
+}
+
+async function loadAltare () {
+    return PIXI.Assets.load(spineModel).then((resource) => {
+
+        Aquarium.altareBoat = new PIXI.spine.Spine(resource.spineData);
+        console.log(Aquarium.altareBoat)
+        console.log(Aquarium.altareBoat.height)
+        Aquarium.altareBoat.x = WORLD_WIDTH - 500;
+        Aquarium.altareBoat.y = LEVELS.Surface;
+        
+        // add the animation to the scene and render...
+        Aquarium.viewport.addChild(Aquarium.altareBoat);
+        
+        if (Aquarium.altareBoat.state.hasAnimation("animation")) {
+            // run forever, little boy!
+            Aquarium.altareBoat.state.setAnimation(0, "animation", true);
+            // // dont run too fast
+            // animation.state.timeScale = 0.1;
+            // // update yourself
+            // animation.autoUpdate = true;
+        }
+
+        return Promise.resolve();
     });
 }
 
@@ -225,7 +280,12 @@ async function loadData(allFishData) {
                 else {
                     fish.model.y = (fish.model.getBounds().height / 2);
                 }
-                fish.model.x = parseInt(fish.data["Position X"]) || randomRange(0, WORLD_WIDTH);
+                if (Number.isFinite(parseInt(fish.data["Position X"]))) {
+                    fish.model.x = parseInt(fish.data["Position X"]);
+                }
+                else {
+                    fish.model.x = randomRange(fish.rangeX[0] || 0, fish.rangeX[1] || WORLD_WIDTH);
+                }
 
                 Aquarium.viewport.addChild(fish.model);
                 lastFishAtLevel[level] = allFish.length;
@@ -363,10 +423,22 @@ function resize () {
     // Resize the renderer
     Aquarium.app.renderer.resize(window.innerWidth, window.innerHeight);
     Aquarium.app.resize();
+    // cap height to at least 480
     Aquarium.viewport.resize();
+    if (window.innerWidth <= window.innerHeight) {
+        let width = lerp(WORLD_WIDTH / 8, WORLD_WIDTH * 0.9, (window.innerWidth / window.innerHeight));
+        width = clamp(width, WORLD_WIDTH / 8, WORLD_WIDTH * 0.9);
+        console.log(width)
+        Aquarium.viewport.fitWidth(width, false, true, true);
+        Aquarium.viewport.moveCenter(WORLD_WIDTH - 500, Aquarium.viewport.center.y);
+    }
+    else {
+        Aquarium.viewport.fitWidth();
+    }
     if (overlayGraphic) {
         overlayGraphic.width = window.innerWidth;
         overlayGraphic.height = window.innerHeight;
     }
-    Aquarium.viewport.fitWidth()
+
+    Aquarium.emitEvent("onViewportUpdate", Aquarium.viewport);
 }

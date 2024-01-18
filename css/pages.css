@@ -1,0 +1,374 @@
+h1 {
+	width: 100%;
+    text-align: center;
+    font-size: 4vmin;
+}
+
+nav {
+	height: 25vh;
+}
+
+main {
+	background: linear-gradient(to bottom, rgba(130,203,255,1) 0%, rgba(130,203,255,1) 10%, rgba(211,255,233,1) 25%, rgba(43,89,195,1) 79%, rgba(1,17,56,1) 100%);
+	background-repeat: no-repeat;
+	height: auto;
+}
+
+section {
+    padding: 30px;
+}
+
+section#artist-writer-board ul {
+	column-count: 2;
+	column-gap: 0.5em;
+	column-gap: 1em;
+	margin: 0;
+	padding: 0;
+}
+
+section#artist-writer-board ul li {
+	list-style: none;
+	display: block;
+}
+
+section#artist-writer-board .header-message {
+	column-span: all;
+	text-align: center;
+	margin: 4em;
+}
+section#artist-writer-board h1 {
+	color: white;
+	text-align: center;
+	font-size: 1.5em;
+	margin-bottom: 2em;
+}
+
+section#artist-writer-board .artist-writer-message {
+	padding: 1.5em 2em;
+	/* background: radial-gradient(circle at 50% 150%, rgba(255,245,218,1) 0%, rgba(34,151,195,1) 100%); */
+	background: rgb(255 255 255 / 50%);
+	margin: 1.5em 0.5em;
+	text-align: center;
+	/* avoid breaking the message box between columns */
+	break-inside: avoid;
+
+	animation: 1s slide-up ease;
+	animation-fill-mode: both;
+	animation-iteration-count: 1;
+	will-change: transform;
+}
+
+section#artist-writer-board .artist-writer-message:first-child {
+	margin-top: 0px;
+}
+
+section#artist-writer-board .artist-writer-message a {
+	color: var(--bg-color);
+}
+
+section#artist-writer-board .artist-writer-message a:visited {
+	color: var(--bg-color-lighten-50);
+}
+
+section#artist-writer-board .artist-writer-message:nth-child(odd) {
+	animation-delay: 0.5s;
+}
+section#artist-writer-board .artist-writer-message:nth-child(even) {
+	animation-delay: 0.75s;
+}
+section#artist-writer-board .artist-writer-message:nth-child(3n) {
+	animation-delay: 1s;
+}
+
+section#artist-writer-board .artist-writer-message h2,
+section#artist-writer-board .artist-writer-message h3 {
+	margin-top: 0;
+	margin-bottom: 0.5em;
+}
+
+section#artist-writer-board .artist-writer-message h2 {
+	font-size: 1.25em;
+}
+
+section#artist-writer-board .artist-writer-message .artist-writer-user {
+    width: 100%;
+    text-align: right;
+}
+
+section#artist-writer-board .artist-writer-message .artist-writer-user span {
+	margin-right: 0.25em;
+	font-size: 0.9em;
+}
+
+section#artist-writer-board .artist-writer-message h3 {
+	font-size: 1em;
+}
+
+section#credits {
+	position: relative;
+	display: grid;
+	grid-template-areas:
+		"downloadheader downloadheader"
+		"downloadlinks downloadlinks"
+		"creditsheader creditsheader"
+		"general       general"
+		"devs          animation"
+		"accessibility sponsorship"
+		"twitillust    twitillust"
+		"twitter       twitter";
+}
+
+section#credits h1 {
+	font-size: 1.5em;
+	margin-bottom: 2em;
+
+	width: 100%;
+	text-align: center;
+	column-span: all;
+	color: white;
+}
+section#credits h1#download-header {
+	grid-area: downloadheader;
+}
+section#credits h1#credits-header {
+	grid-area: creditsheader;
+}
+section#download-links {
+	display: flex;
+	justify-content: center;
+	background-color:transparent;
+}
+section#download-links a {
+	color: white;
+	text-decoration: none;
+	margin: 0px 5px;
+	font-size: 1em;
+	background-color: var(--bg-color);
+}
+
+section.credits-column {
+	min-height: auto;
+	padding: 1.5em;
+	background: rgb(255 255 255 / 50%);
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	margin-top: 0;
+	margin-bottom: 1.5em;
+	/* avoid breaking the message box between columns */
+	break-inside: avoid;
+
+	animation: 1s slide-up ease;
+	animation-fill-mode: both;
+	animation-iteration-count: 1;
+	will-change: transform;
+}
+section.credits-column h2 {
+	text-align: center;
+	font-size: 1.4em;
+	/* this is the credits background color */
+	border-bottom: 3px solid rgba(0, 0, 0, 0.5);
+	padding-bottom: 1em;
+	column-span: all;
+}
+section.credits-column ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+
+	box-sizing: border-box;
+	text-align: center;
+
+	break-inside: avoid;
+    display: inline-block;
+    width: 100%;
+}
+
+section.credits-column#download-links {
+	grid-area: downloadlinks;
+	animation-delay: 0.5s;
+	text-align: center;
+	margin: 0 0 2em 0;
+	padding: 0;
+}
+section.credits-column#credits-role-id-0 {
+	grid-area: general;
+	animation-delay: 1s;
+	margin-top: 0;
+	columns: 25vw auto;
+}
+section.credits-column#credits-role-id-1 {
+	grid-area: devs;
+	animation-delay: 1.5s;
+}
+section.credits-column#credits-role-id-2 {
+	grid-area: animation;
+	animation-delay: 1.5s;
+}
+section.credits-column#credits-role-id-3 {
+	grid-area: accessibility;
+	animation-delay: 2s;
+}
+section.credits-column#credits-role-id-4 {
+	grid-area: twitillust;
+	animation-delay: 2.5s;
+}
+
+section.credits-column li {
+	margin: 2em 0;
+}
+section.credits-column#twitter-images {
+	grid-area: twitter;
+	animation-delay: 3s;
+}
+section.credits-column#twitter-images ul {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	row-gap: 0em;
+	column-gap: 2vmin;
+}
+section.credits-column#twitter-images li {
+	display: flex;
+	flex-direction: column;
+}
+section.credits-column#twitter-images li img {
+	height: auto;
+	width: 50vmin;
+	max-width: 300px;
+}
+section.credits-column#twitter-images li a {
+	color: var(--bg-color);
+	font-weight: bold;
+	margin-top: 0.5em;
+}
+
+section.credits-column h3 {
+	font-size: 1.25em;
+	margin-bottom: 0.25em;
+}
+
+section.credits-column h4 {
+	font-size: 1em;
+	margin: 0.5em 0;
+}
+
+section.credits-column a {
+	color: var(--bg-color);
+}
+
+section.credits-column a:visited {
+	color: var(--bg-color-lighten-50);
+}
+
+section.credits-column p {
+	margin-top: 0.25em;
+	font-size: 1em;
+}
+
+
+/* youtube video container */
+
+#youtube-video {
+	width: 90vw;
+	height: calc(90vw * 0.563);
+	margin: 0 auto 2em 0;
+}
+
+/* message board text specific */
+
+#message-board {
+	color: white;
+	text-align: center;
+}
+#message-board p {
+	line-height: 1.3;
+}
+#message-board a {
+	color: white;
+	white-space: nowrap;
+}
+
+@media only screen and (max-width:1020px){
+	#youtube-video {
+		width: 80vw;
+		height: calc(80vw * 0.563);
+	}
+}
+
+@media only screen and (max-width:1020px){
+	#youtube-video {
+		width: 80vw;
+		height: calc(80vw * 0.563);
+	}
+}
+
+@media only screen and (max-width: 800px) {
+	/* mobile / portrait styling */
+
+	html {
+		height: fit-content;
+		width: fit-content;
+	}
+
+	section#artist-writer-board ul {
+		column-count: 1;
+	}
+
+	section#credits {
+		grid-template-areas:
+			"downloadheader"
+			"downloadlinks"
+			"creditsheader"
+			"general"
+			"devs"
+			"animation"
+			"accessibility"
+			"sponsorship"
+			"twitillust"
+			"twitter";
+	}
+
+	#collection-stats h2 {
+		flex-basis: 50%;
+		flex-grow: 1;
+		text-align: center;
+	}
+	#collection-stats #gacha-pull-count {
+		/* force the numbers to flow to the 2nd line */
+		flex-basis: 30%;
+	}
+}
+
+@media only screen and (min-width: 800px) {
+	/* desktop / wide styling */
+	main {
+		padding: 1em;
+	}
+}
+	
+@media only screen and (max-width:420px){
+	section.credits-column#credits-role-id-0 {
+		columns: 1;
+	}
+	section.credits-column#twitter-images li img {
+		width: 100%;
+	}
+	#youtube-video {
+		width: 70vw;
+		height: calc(70vw * 0.563);
+	}
+}
+
+
+@keyframes slide-up {
+	0% {
+		opacity: 0;
+		/* 250px defined as set value to fix the large gap that appears at the very bottom of the credits page */
+		transform: translateY(250px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0%);
+	}
+}

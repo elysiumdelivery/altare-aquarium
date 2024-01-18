@@ -48,6 +48,18 @@ async function main() {
     overlayToggle.addEventListener("change", (e) => {
         aquarium.overlay.visible = e.target.checked;
     })
+    Aquarium.addGameStateListener("onViewportUpdate", (viewport) => {
+        let screenCoords = viewport.toScreen(viewport.worldWidth / 2, 50);
+        if (window.innerHeight > window.innerWidth) {
+            document.getElementById("title-header").style.top = null;
+            document.getElementById("nav").style.top = null;
+        }
+        else {
+            document.getElementById("title-header").style.top = screenCoords.y;
+            document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 10vmin)`;
+        }
+        
+    })
     let data = await parseCSV(FISH_DATA_PATH);
     Aquarium.init(data).then(() => {        
         // Remove loading screen. We've loaded in everything
@@ -61,9 +73,10 @@ async function main() {
 
         overlayToggle.checked = aquarium.overlay.visible;
 
+        loader.classList.add("fade");
         setTimeout(() => {
             loader.remove();
-        }, 1000);
+        }, 750);
     });
 
 }
