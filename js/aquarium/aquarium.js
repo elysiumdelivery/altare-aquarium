@@ -4,7 +4,7 @@ const spineModel = "../images/spine/AltareBoatBdayAnimationPrep.json";
 
 
 const WORLD_WIDTH = 1920;
-const WORLD_HEIGHT = 25000;
+const WORLD_HEIGHT = 23000;
 const LEVELS = {
     "Sky": 0,
     "Top": 1200,
