@@ -7,9 +7,10 @@ const WORLD_WIDTH = 1920;
 const WORLD_HEIGHT = 25000;
 const LEVELS = {
     "Sky": 0,
-    "Surface": 1200,
+    "Top": 1200,
+    "Surface": 1800,
     "Middle": WORLD_HEIGHT * (1 / 2),
-    "Floor": WORLD_HEIGHT * (2 / 3)
+    "Floor": WORLD_HEIGHT * 0.75
 }
 const debug = {};
 const allFish = [];
@@ -109,14 +110,17 @@ async function init (data) {
     Aquarium.app.stage.addChild(Aquarium.overlay)
 
     let bg = new PIXI.Sprite(generateGradient(
-        ["#74b9ff", "#D2E9FF", "#D2E9FF", "#2973c4", "#2973c4", "#011138"], 
+        // ["#82cbff", "#82cbff", "#D3FFE9", "#2B59C3", "#011138"]
+        // ["#74b9ff", "#D2E9FF", "#D2E9FF", "#2973c4", "#2973c4", "#011138"], 
+        ["#74b9ff", "#D2E9FF", "#2a75c5", "#ccfff6", "#82cbff", "#2973c4", "#011138"], 
         { 
             stops: [
                 0,
+                (LEVELS.Top) / WORLD_HEIGHT, 
+                (LEVELS.Top + 100) / WORLD_HEIGHT, 
                 (LEVELS.Surface) / WORLD_HEIGHT, 
-                (LEVELS.Surface + 100) / WORLD_HEIGHT, 
-                (LEVELS.Surface + 200) / WORLD_HEIGHT, 
                 0.5 * LEVELS.Middle / WORLD_HEIGHT,
+                LEVELS.Middle / WORLD_HEIGHT,
                 1
             ],
             width: 64,
@@ -129,7 +133,7 @@ async function init (data) {
 
     overlayGraphic = new PIXI.Graphics();
     overlayGraphic.blendMode = PIXI.BLEND_MODES.MULTIPLY
-    overlayGraphic.beginFill("#253C78", 1);
+    overlayGraphic.beginFill("#253C78", 0.5);
     overlayGraphic.drawRect(0, 0, window.innerWidth, window.innerHeight);
     overlayGraphic.endFill();
     Aquarium.overlay.addChild(overlayGraphic);
@@ -181,7 +185,7 @@ async function init (data) {
 
     Aquarium.app.ticker.add(d => {
         if (Aquarium.altareBoat) {
-            Aquarium.altareBoat.y = LEVELS.Surface + Math.sin(Date.now() / 380);
+            Aquarium.altareBoat.y = LEVELS.Top + Math.sin(Date.now() / 380);
         }
         if (Aquarium.settings.filters) {
             overlayGraphic.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
@@ -228,10 +232,16 @@ async function loadAltare () {
     return PIXI.Assets.load(spineModel).then((resource) => {
 
         Aquarium.altareBoat = new PIXI.spine.Spine(resource.spineData);
-        console.log(Aquarium.altareBoat)
-        console.log(Aquarium.altareBoat.height)
+        let waterRepeatingTex = PIXI.Sprite.from("../images/spine/water.png");
+        Aquarium.altareBoat.scale.set(0.65)
         Aquarium.altareBoat.x = WORLD_WIDTH - 500;
-        Aquarium.altareBoat.y = LEVELS.Surface;
+        Aquarium.altareBoat.y = LEVELS.Top;
+
+        waterRepeatingTex.anchor.set(1, 0);
+        waterRepeatingTex.x = 650;
+        waterRepeatingTex.y = -110;
+        waterRepeatingTex.scale.set(-1, 1.28);
+        Aquarium.altareBoat.addChild(waterRepeatingTex);
         
         // add the animation to the scene and render...
         Aquarium.viewport.addChild(Aquarium.altareBoat);
