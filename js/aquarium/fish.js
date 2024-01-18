@@ -54,8 +54,14 @@ Fish.prototype.init = async function () {
             self.bounds.forEach(bound => {
                 self.hitArea.drawRect(bound.x, bound.y, bound.width, bound.height);
             });
-            self.hitArea.endFill();
             self.hitArea.alpha = 0;
+            let minSize = 800;
+            if (self.hitArea.width < minSize || self.hitArea.height < minSize) {
+                let bounds = self.hitArea.getBounds();
+                self.hitArea.drawRect(bounds.x + (bounds.width/2) - (minSize/2), bounds.y + (bounds.y/2) - (minSize/2), minSize, minSize);
+            }
+            self.hitArea.endFill();
+           
             self.model.addChild(self.hitArea); 
     
             return Promise.resolve(self);
@@ -134,11 +140,11 @@ function getSpeedFromSize (sizeCategory) {
 }
 
 function getScaleFromSize (sizeCategory) {
-    return 0.25;
+    // return 0.25;
     switch (sizeCategory) {
-        case "L": return 0.25;
-        case "M": return 0.1;
-        case "S": return 0.05;
+        case "L": return 0.35;
+        case "M": return 0.25;
+        case "S": return 0.25;
     }
 }
 

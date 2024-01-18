@@ -1,6 +1,6 @@
 import { Fish } from "./fish.js";
 
-// const spineModel = "../resources/fish/FishAnimationTest.json";
+const spineModel = "../images/spine/AltareBoatBdayAnimationPrep.json";
 
 
 const WORLD_WIDTH = 1920;
@@ -109,9 +109,16 @@ async function init (data) {
     Aquarium.app.stage.addChild(Aquarium.overlay)
 
     let bg = new PIXI.Sprite(generateGradient(
-        ["#82cbff", "#82cbff", "#D3FFE9", "#2B59C3", "#011138"], 
+        ["#74b9ff", "#D2E9FF", "#D2E9FF", "#2973c4", "#2973c4", "#011138"], 
         { 
-            stops: [0, 0.25 * LEVELS.Surface / WORLD_HEIGHT, LEVELS.Surface / WORLD_HEIGHT,  0.5 * LEVELS.Middle / WORLD_HEIGHT, 1],
+            stops: [
+                0,
+                (LEVELS.Surface) / WORLD_HEIGHT, 
+                (LEVELS.Surface + 100) / WORLD_HEIGHT, 
+                (LEVELS.Surface + 200) / WORLD_HEIGHT, 
+                0.5 * LEVELS.Middle / WORLD_HEIGHT,
+                1
+            ],
             width: 64,
             height: 64
         }
@@ -133,13 +140,6 @@ async function init (data) {
     let loader = document.getElementById("loader-progress");
     loader.setAttribute("max", data.length);
     loader.setAttribute("value", 0);
-
-    let altareBoat = PIXI.Sprite.from("images/altare_boat_test.png");
-    altareBoat.anchor.set(0.5, 1);
-    altareBoat.scale.set(1);
-    altareBoat.x = WORLD_WIDTH - 500;
-    altareBoat.y = LEVELS.Surface;
-    Aquarium.viewport.addChild(altareBoat);
 
     Aquarium.addGameStateListener("fishCreated", (fish) => {
     })
@@ -180,7 +180,9 @@ async function init (data) {
     })
 
     Aquarium.app.ticker.add(d => {
-        altareBoat.y = LEVELS.Surface + Math.sin(Date.now() / 380);
+        if (Aquarium.altareBoat) {
+            Aquarium.altareBoat.y = LEVELS.Surface + Math.sin(Date.now() / 380);
+        }
         if (Aquarium.settings.filters) {
             overlayGraphic.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
             Aquarium.filters.godrayFilter.time += d / lerp(50, 100, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
@@ -201,7 +203,7 @@ async function init (data) {
 
     window.addEventListener("resize", resize);
 
-    return loadData(data).then(() => {
+    return loadAltare().then(() => loadData(data)).then(() => {
         allFish.sort((a, b) => {
             if (a.model.scale.y > b.model.scale.y) return -1;
             else if (a.model.scale.y < b.model.scale.y) return 1;
@@ -219,6 +221,31 @@ async function init (data) {
         else {
             Aquarium.viewport.moveCenter(WORLD_WIDTH / 2, 0)
         }
+    });
+}
+
+async function loadAltare () {
+    return PIXI.Assets.load(spineModel).then((resource) => {
+
+        Aquarium.altareBoat = new PIXI.spine.Spine(resource.spineData);
+        console.log(Aquarium.altareBoat)
+        console.log(Aquarium.altareBoat.height)
+        Aquarium.altareBoat.x = WORLD_WIDTH - 500;
+        Aquarium.altareBoat.y = LEVELS.Surface;
+        
+        // add the animation to the scene and render...
+        Aquarium.viewport.addChild(Aquarium.altareBoat);
+        
+        if (Aquarium.altareBoat.state.hasAnimation("animation")) {
+            // run forever, little boy!
+            Aquarium.altareBoat.state.setAnimation(0, "animation", true);
+            // // dont run too fast
+            // animation.state.timeScale = 0.1;
+            // // update yourself
+            // animation.autoUpdate = true;
+        }
+
+        return Promise.resolve();
     });
 }
 
@@ -399,8 +426,9 @@ function resize () {
     // cap height to at least 480
     Aquarium.viewport.resize();
     if (window.innerWidth <= window.innerHeight) {
-        let width = lerp(WORLD_WIDTH / 4, WORLD_WIDTH, window.innerWidth / window.innerHeight);
-        width = clamp(width, WORLD_WIDTH / 4, WORLD_WIDTH);
+        let width = lerp(WORLD_WIDTH / 8, WORLD_WIDTH * 0.9, (window.innerWidth / window.innerHeight));
+        width = clamp(width, WORLD_WIDTH / 8, WORLD_WIDTH * 0.9);
+        console.log(width)
         Aquarium.viewport.fitWidth(width, false, true, true);
         Aquarium.viewport.moveCenter(WORLD_WIDTH - 500, Aquarium.viewport.center.y);
     }

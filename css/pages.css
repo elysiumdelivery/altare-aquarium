@@ -4,6 +4,10 @@ h1 {
     font-size: 4vmin;
 }
 
+nav {
+	height: 25vh;
+}
+
 main {
 	background: linear-gradient(to bottom, rgba(130,203,255,1) 0%, rgba(130,203,255,1) 10%, rgba(211,255,233,1) 25%, rgba(43,89,195,1) 79%, rgba(1,17,56,1) 100%);
 	background-repeat: no-repeat;

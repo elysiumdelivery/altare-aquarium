@@ -9,32 +9,6 @@ nav {
 	gap: 1em;
 }
 
-nav a {
-	position: relative;
-	width: 20vw;
-	height: 10vw;
-	padding: 1em 3em;
-    padding-top: 1.9em;
-	box-sizing: border-box;
-	background-image: url(../images/cloud.png);
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-position: center;
-
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-
-	text-align: center;
-
-	transition: 0.25s transform ease;
-	transform: translateY(0);
-	transform-origin: 50% 0%;
-
-	text-decoration: none;
-}
-
 nav a:hover {
 	transform: scale(1.1) translateY(5%);
 }
@@ -182,7 +156,7 @@ footer {
 	transition: background-color 0.3s ease;
   }
 
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-aspect-ratio: 1/1) {
 	/* portrait / small width styling, show burger menu */
 	#nav-hamburger {
 		display: block;
@@ -223,6 +197,12 @@ footer {
 		background-color: transparent !important;
 		padding: 0.5em 0;
 		margin: 0.5em 0;
+		color: white;
+		text-decoration: none;
+	}
+
+	nav .menu-item {
+		color: white;
 	}
 
 	nav a.active {
@@ -263,11 +243,37 @@ footer {
 	}
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-aspect-ratio: 1/1) {
 	/* wide styling, for when the tabs are all visible on screen */
 	
 	nav a:not(#nav-home).active {
 		/* font-size: 0.75em; */
+	}
+
+	nav a {
+		position: relative;
+		width: 20vw;
+		height: 10vw;
+		padding: 1em 3em;
+		padding-top: 1.9em;
+		box-sizing: border-box;
+		background-image: url(../images/cloud.png);
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-position: center;
+	
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	
+		text-align: center;
+	
+		transition: 0.25s transform ease;
+		transform: translateY(0);
+		transform-origin: 50% 0%;
+	
+		text-decoration: none;
 	}
 
 	#close-nav-menu,
