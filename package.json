@@ -5,5 +5,8 @@
     "live-server": "^1.1.0",
     "netlify-plugin-image-optim": "^0.4.0",
     "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "mathjs-expression-parser": "^1.0.2"
   }
 }

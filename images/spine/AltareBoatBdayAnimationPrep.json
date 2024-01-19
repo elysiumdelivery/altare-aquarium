@@ -1,10 +1,10 @@
 {
 "skeleton": {
-	"hash": "1ROnatFfUoY",
+	"hash": "Merg3I9DM/E",
 	"spine": "4.1.24",
-	"x": -2186,
+	"x": -2185.71,
 	"y": -298,
-	"width": 2842,
+	"width": 2841.71,
 	"height": 1444,
 	"images": "./images/",
 	"audio": "/Users/binglin07/Drawing/2023/AltareBdayAnimation"
@@ -374,13 +374,13 @@
 				"Boat_Front": { "x": -40.01, "y": 212.3, "width": 1035, "height": 496 }
 			},
 			"OceanBack_1": {
-				"OceanBack_1": { "x": -1685, "y": 22.5, "width": 1002, "height": 187 }
+				"OceanBack_1": { "x": -1684.71, "y": 22.22, "width": 1002, "height": 187 }
 			},
 			"OceanBack_2": {
 				"OceanBack_2": { "x": -265, "y": 22.5, "width": 1842, "height": 187 }
 			},
 			"OceanFront_1": {
-				"OceanFront_1": { "x": -1685, "y": -135.5, "width": 1002, "height": 323 }
+				"OceanFront_1": { "x": -1684.71, "y": -135.78, "width": 1002, "height": 323 }
 			},
 			"OceanFront_2": {
 				"OceanFront_2": { "x": -265, "y": -136, "width": 1842, "height": 324 }

@@ -1,11 +1,11 @@
-import { Fish } from "./fish.js";
+import { Fish, parseMath } from "./fish.js";
 
 const spineModel = "../images/spine/AltareBoatBdayAnimationPrep.json";
 
 
-const WORLD_WIDTH = 1920;
-const WORLD_HEIGHT = 23000;
-const LEVELS = {
+export const WORLD_WIDTH = 1920;
+export const WORLD_HEIGHT = 23000;
+export const LEVELS = {
     "Sky": 0,
     "Top": 1500,
     "Surface": 1800,
@@ -131,6 +131,25 @@ async function init (data) {
     bg.width = WORLD_WIDTH;
     bg.height = WORLD_HEIGHT;
     Aquarium.viewport.addChild(bg);
+
+    let bgOceanRight = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorRight.png");
+    let bgOceanLeft = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorLeft.png");
+    let bgOceanBottom = PIXI.Sprite.from("../images/AltareBGElements_OceanBottom.png");
+    bgOceanRight.x = WORLD_WIDTH;
+    bgOceanLeft.x = 0;
+    bgOceanRight.y = 11500 - 300;
+    bgOceanLeft.y = 11500 + 50;
+
+    bgOceanLeft.scale.set(0.85);
+    bgOceanRight.scale.set(0.85);
+
+    bgOceanRight.anchor.set(1, 1);
+    bgOceanLeft.anchor.set(0, 1);
+    bgOceanBottom.anchor.set(0, 1);
+    bgOceanBottom.width = WORLD_WIDTH;
+    bgOceanBottom.y = WORLD_HEIGHT;
+    Aquarium.viewport.addChild(bgOceanLeft, bgOceanRight, bgOceanBottom)
+
 
     overlayGraphic = new PIXI.Graphics();
     overlayGraphic.blendMode = PIXI.BLEND_MODES.MULTIPLY
@@ -287,7 +306,7 @@ async function loadData(allFishData) {
                 // let lastFish = lastFishAtLevel[level] !== undefined ? allFish[lastFishAtLevel[level]] : undefined;
                 let lastFish = allFish[allFish.length - 1];
                 if (fish.data["Position Y"]) {
-                    fish.model.y = parseInt(fish.data["Position Y"])
+                    fish.model.y = parseMath(fish.data["Position Y"]);
                 }
                 else if (lastFish) {
                     fish.model.y = (lastFish.model.y + (fish.model.getBounds().height / 2) + (randomRange(50, 200)));
@@ -295,8 +314,8 @@ async function loadData(allFishData) {
                 else {
                     fish.model.y = (fish.model.getBounds().height / 2);
                 }
-                if (Number.isFinite(parseInt(fish.data["Position X"]))) {
-                    fish.model.x = parseInt(fish.data["Position X"]);
+                if (fish.data["Position X"]) {
+                    fish.model.x = parseMath(fish.data["Position X"]);
                 }
                 else {
                     fish.model.x = randomRange(fish.rangeX[0] || 0, fish.rangeX[1] || WORLD_WIDTH);
@@ -384,11 +403,14 @@ function setupDebug () {
 function updateDebugLayer () {
     if (!Aquarium.settings.debug) return;
     // if (Aquarium.currentActiveFish) Aquarium.checkActiveFish(Aquarium.currentActiveFish);
+    let pointer = Aquarium.app.renderer.events.rootPointerEvent
+    let screenToWorld = Aquarium.viewport.toWorld(pointer.screenX, pointer.screenY);
     debug.fps.text = `Debug Window:\n` +
                         `${PIXI.Ticker.shared.FPS.toFixed(0)} fps\n` +
                         `Viewport: ${Aquarium.app.renderer.width}px x ${Aquarium.app.renderer.height}px\n` +
                         `World: ${Aquarium.viewport.worldWidth}px x ${Aquarium.viewport.worldHeight}px\n` +
-                        `${Aquarium.getActiveFish().length}/${Aquarium.getAllFish().length} active fish`
+                        `${Aquarium.getActiveFish().length}/${Aquarium.getAllFish().length} active fish\n` + 
+                        `Mouse Coord: ${screenToWorld.x.toFixed(0)}, ${screenToWorld.y.toFixed(0)}`
 }
 
 function updateDebugHitbox(options) {
