@@ -1,0 +1,33 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "SmallFish_Cephalopod_Chambered Nautilus_Amanda_AirArtist.moc3",
+		"Textures": [
+			"SmallFish_Cephalopod_Chambered Nautilus_Amanda_AirArtist.256/texture_00.png",
+			"SmallFish_Cephalopod_Chambered Nautilus_Amanda_AirArtist.256/texture_01.png",
+			"SmallFish_Cephalopod_Chambered Nautilus_Amanda_AirArtist.256/texture_02.png",
+			"SmallFish_Cephalopod_Chambered Nautilus_Amanda_AirArtist.256/texture_03.png"
+		],
+		"DisplayInfo": "SmallFish_Cephalopod_Chambered Nautilus_Amanda_AirArtist.cdi3.json",
+		"Motions": {
+			"Idle": [
+				{
+					"File": "Idle.motion3.json"
+				}
+			]
+		}
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	],
+	"HitAreas": []
+}

@@ -1,0 +1,37 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "",
+			"Name": "Angle X"
+		},
+		{
+			"Id": "UD",
+			"GroupId": "",
+			"Name": "Up Down"
+		},
+		{
+			"Id": "T1",
+			"GroupId": "",
+			"Name": "Tentacle1"
+		},
+		{
+			"Id": "T2",
+			"GroupId": "",
+			"Name": "Tentacle2"
+		},
+		{
+			"Id": "T3",
+			"GroupId": "",
+			"Name": "Tentacle3"
+		},
+		{
+			"Id": "T4",
+			"GroupId": "",
+			"Name": "Tentacle4"
+		}
+	],
+	"ParameterGroups": [],
+	"Parts": []
+}

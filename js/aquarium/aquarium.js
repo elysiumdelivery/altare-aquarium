@@ -12,6 +12,10 @@ export const LEVELS = {
     "Middle": WORLD_HEIGHT * (1 / 2),
     "Floor": WORLD_HEIGHT * 0.75
 }
+const LAYERS = {
+    "Grounded": 0,
+    "Moving": 100
+}
 const debug = {};
 const allFish = [];
 
@@ -91,12 +95,13 @@ async function init (data) {
             minSpeed: 0.01,                 // minimum velocity before stopping/reversing acceleration
     })
     Aquarium.viewport.on("moved", (e) => {
-        this.isDraggingViewport = true;
+        if (e.type == "drag") {
+            this.isDraggingViewport = true;
+        }
         Aquarium.emitEvent("onViewportUpdate", e.viewport);
 
     });
     Aquarium.viewport.on("moved-end", (e) => {
-        console.log("end")
         setTimeout(function () {
             this.isDraggingViewport = false;
         }.bind(this), 50)
@@ -170,7 +175,7 @@ async function init (data) {
 
     overlayGraphic = new PIXI.Graphics();
     overlayGraphic.blendMode = PIXI.BLEND_MODES.MULTIPLY
-    overlayGraphic.beginFill("#253C78", 0.5);
+    overlayGraphic.beginFill("#253C78", 1);
     overlayGraphic.drawRect(0, 0, window.innerWidth, window.innerHeight);
     overlayGraphic.endFill();
     Aquarium.overlay.addChild(overlayGraphic);
@@ -246,11 +251,16 @@ async function init (data) {
 
     return loadAltare().then(() => loadData(data)).then(() => {
         allFish.sort((a, b) => {
-            if (a.model.scale.y > b.model.scale.y) return -1;
-            else if (a.model.scale.y < b.model.scale.y) return 1;
+            if (a.model.y > b.model.y) return 1;
+            else if (a.model.y < b.model.y) return -1;
             else return 0
         }).forEach((fish, i) => {
-            fish.model.zIndex = i;
+            if (fish.data["Movement"] === "Moving") {
+                fish.model.zIndex = LAYERS.Moving + i;
+            }
+            if (fish.data["Grounded"] === "Moving") {
+                fish.model.zIndex = LAYERS.Grounded + i;
+            }
         });
 
         Aquarium.viewport.fitWidth()
@@ -326,7 +336,7 @@ async function loadData(allFishData) {
                     fish.model.y = parseMath(fish.data["Position Y"]);
                 }
                 else if (lastFish) {
-                    fish.model.y = (lastFish.model.y + (fish.model.getBounds().height / 2) + (randomRange(50, 200)));
+                    fish.model.y = (lastFish.model.y + (fish.model.getBounds().height / 2) + (randomRange(20, 50)));
                 }
                 else {
                     fish.model.y = (fish.model.getBounds().height / 2);

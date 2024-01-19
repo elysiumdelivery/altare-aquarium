@@ -1,0 +1,57 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "",
+			"Name": "Angle X"
+		},
+		{
+			"Id": "UD",
+			"GroupId": "",
+			"Name": "Up Down"
+		},
+		{
+			"Id": "Rotate",
+			"GroupId": "",
+			"Name": "Rotate"
+		},
+		{
+			"Id": "Head",
+			"GroupId": "",
+			"Name": "Head"
+		},
+		{
+			"Id": "BodyT",
+			"GroupId": "",
+			"Name": "Body Top"
+		},
+		{
+			"Id": "ArmR",
+			"GroupId": "",
+			"Name": "Arm Right"
+		},
+		{
+			"Id": "ArmL",
+			"GroupId": "",
+			"Name": "Arm Left"
+		},
+		{
+			"Id": "LBody",
+			"GroupId": "",
+			"Name": "Lower Body"
+		},
+		{
+			"Id": "Tail",
+			"GroupId": "",
+			"Name": "Tail"
+		},
+		{
+			"Id": "TailW",
+			"GroupId": "",
+			"Name": "Tail Wiggle"
+		}
+	],
+	"ParameterGroups": [],
+	"Parts": []
+}

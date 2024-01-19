@@ -1,0 +1,57 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "UD",
+			"GroupId": "",
+			"Name": "Up Down"
+		},
+		{
+			"Id": "Head",
+			"GroupId": "",
+			"Name": "Head"
+		},
+		{
+			"Id": "BodyBottom",
+			"GroupId": "",
+			"Name": "Body Bottom"
+		},
+		{
+			"Id": "Gonad",
+			"GroupId": "",
+			"Name": "Gonads"
+		},
+		{
+			"Id": "TentaclesB",
+			"GroupId": "",
+			"Name": "TentaclesB"
+		},
+		{
+			"Id": "TentacleBE",
+			"GroupId": "",
+			"Name": "TentacleB End"
+		},
+		{
+			"Id": "TentacleTL",
+			"GroupId": "",
+			"Name": "TentacleTL"
+		},
+		{
+			"Id": "TentacleTLE",
+			"GroupId": "",
+			"Name": "TentacleTL End"
+		},
+		{
+			"Id": "TentacleTR",
+			"GroupId": "",
+			"Name": "TentacleTR"
+		},
+		{
+			"Id": "TentacleTRE",
+			"GroupId": "",
+			"Name": "TentacleTR End"
+		}
+	],
+	"ParameterGroups": [],
+	"Parts": []
+}

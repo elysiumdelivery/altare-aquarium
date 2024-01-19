@@ -1,0 +1,47 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "Tail",
+			"GroupId": "",
+			"Name": "Tail"
+		},
+		{
+			"Id": "Back",
+			"GroupId": "",
+			"Name": "Back"
+		},
+		{
+			"Id": "BackM",
+			"GroupId": "",
+			"Name": "Back Mid"
+		},
+		{
+			"Id": "ParamAngleZ",
+			"GroupId": "",
+			"Name": "Angle Z"
+		},
+		{
+			"Id": "LightShards",
+			"GroupId": "",
+			"Name": "Light Shards"
+		},
+		{
+			"Id": "jaw",
+			"GroupId": "",
+			"Name": "Jaw"
+		},
+		{
+			"Id": "FinF",
+			"GroupId": "",
+			"Name": "Fin Front"
+		},
+		{
+			"Id": "FinB",
+			"GroupId": "",
+			"Name": "Fin Back"
+		}
+	],
+	"ParameterGroups": [],
+	"Parts": []
+}

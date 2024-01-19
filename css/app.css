@@ -149,6 +149,26 @@ nav a {
     transition: 0.5s transform ease, 0.5s opacity ease;
     transform: translateY(25%);
     opacity: 0;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.details-dialog-fish {
+    width: 100%;
+}
+
+.details-dialog-fish.size_S {
+    width: 60%;
+}
+.details-dialog-fish.size_M {
+    width: 80%;
+}
+.details-dialog-fish.size_L {
+    width: 100%;
 }
 
 .dialog-container:not([aria-hidden="true"]) #fish-details-dialog, 

@@ -1,0 +1,36 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "SmallFish_HadalJellyfish_mmmonstruo.moc3",
+		"Textures": [
+			"SmallFish_HadalJellyfish_mmmonstruo.256/texture_00.png",
+			"SmallFish_HadalJellyfish_mmmonstruo.256/texture_01.png",
+			"SmallFish_HadalJellyfish_mmmonstruo.256/texture_02.png",
+			"SmallFish_HadalJellyfish_mmmonstruo.256/texture_03.png",
+			"SmallFish_HadalJellyfish_mmmonstruo.256/texture_04.png",
+			"SmallFish_HadalJellyfish_mmmonstruo.256/texture_05.png",
+			"SmallFish_HadalJellyfish_mmmonstruo.256/texture_06.png"
+		],
+		"DisplayInfo": "SmallFish_HadalJellyfish_mmmonstruo.cdi3.json",
+		"Motions": {
+			"Idle": [
+				{
+					"File": "Idle.motion3.json"
+				}
+			]
+		}
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		}
+	],
+	"HitAreas": []
+}
