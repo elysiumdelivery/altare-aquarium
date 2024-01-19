@@ -132,6 +132,23 @@ async function init (data) {
     bg.height = WORLD_HEIGHT;
     Aquarium.viewport.addChild(bg);
 
+    let clouds = new PIXI.Container();
+    let bgCloud1 = PIXI.Sprite.from("../images/AltareBGElements_cloud-5.png");
+    let bgCloud2 = PIXI.Sprite.from("../images/AltareBGElements_cloud-6.png");
+    let bgCloud3 = PIXI.Sprite.from("../images/AltareBGElements_cloud-5.png");
+    let bgCloud4 = PIXI.Sprite.from("../images/AltareBGElements_cloud-6.png");
+
+    bgCloud1.x = 100;
+    bgCloud2.x = WORLD_WIDTH - 100;
+    bgCloud3.x = 300;
+    bgCloud4.x = WORLD_WIDTH - 600;
+    bgCloud1.y = LEVELS.Sky + 100;
+    bgCloud2.y = LEVELS.Sky + 200;
+    bgCloud3.y = LEVELS.Sky + 600;
+    bgCloud4.y = LEVELS.Sky + 700;
+    clouds.alpha = 0.65;
+    clouds.addChild(bgCloud1, bgCloud2, bgCloud3, bgCloud4)
+
     let bgOceanRight = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorRight.png");
     let bgOceanLeft = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorLeft.png");
     let bgOceanBottom = PIXI.Sprite.from("../images/AltareBGElements_OceanBottom.png");
@@ -148,7 +165,7 @@ async function init (data) {
     bgOceanBottom.anchor.set(0, 1);
     bgOceanBottom.width = WORLD_WIDTH;
     bgOceanBottom.y = WORLD_HEIGHT;
-    Aquarium.viewport.addChild(bgOceanLeft, bgOceanRight, bgOceanBottom)
+    Aquarium.viewport.addChild(clouds, bgOceanLeft, bgOceanRight, bgOceanBottom)
 
 
     overlayGraphic = new PIXI.Graphics();
