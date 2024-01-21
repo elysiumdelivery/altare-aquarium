@@ -141,10 +141,10 @@ async function init (data) {
     Aquarium.viewport.addChild(bg);
 
     let clouds = new PIXI.Container();
-    let bgCloud1 = PIXI.Sprite.from("../images/AltareBGElements_cloud-5.png");
-    let bgCloud2 = PIXI.Sprite.from("../images/AltareBGElements_cloud-6.png");
-    let bgCloud3 = PIXI.Sprite.from("../images/AltareBGElements_cloud-5.png");
-    let bgCloud4 = PIXI.Sprite.from("../images/AltareBGElements_cloud-6.png");
+    let bgCloud1 = PIXI.Sprite.from(formatStaticCDN("images/AltareBGElements_cloud-5.png"));
+    let bgCloud2 = PIXI.Sprite.from(formatStaticCDN("images/AltareBGElements_cloud-6.png"));
+    let bgCloud3 = PIXI.Sprite.from(formatStaticCDN("images/AltareBGElements_cloud-5.png"));
+    let bgCloud4 = PIXI.Sprite.from(formatStaticCDN("images/AltareBGElements_cloud-6.png"));
 
     bgCloud1.x = 100;
     bgCloud2.x = WORLD_WIDTH - 100;
@@ -157,9 +157,9 @@ async function init (data) {
     clouds.alpha = 0.65;
     clouds.addChild(bgCloud1, bgCloud2, bgCloud3, bgCloud4)
 
-    let bgOceanRight = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorRight.png");
-    let bgOceanLeft = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorLeft.png");
-    let bgOceanBottom = PIXI.Sprite.from("../images/AltareBGElements_OceanBottom.png");
+    let bgOceanRight = PIXI.Sprite.from(formatStaticCDN("images/AltareBGElements_OceanFloorRight.png"));
+    let bgOceanLeft = PIXI.Sprite.from(formatStaticCDN("images/AltareBGElements_OceanFloorLeft.png"));
+    let bgOceanBottom = PIXI.Sprite.from(formatStaticCDN("images/AltareBGElements_OceanBottom.png"));
     bgOceanRight.x = WORLD_WIDTH;
     bgOceanLeft.x = 0;
     bgOceanRight.y = 11500 - 300;
@@ -299,8 +299,8 @@ async function loadAltare () {
         Aquarium.altareBoat.x = WORLD_WIDTH - 500;
         Aquarium.altareBoat.y = LEVELS.Top;
 
-        Aquarium.altareFloat = PIXI.Sprite.from("../images/Altare.png")
-        Aquarium.altareSlime = PIXI.Sprite.from("../images/Slime.png")
+        Aquarium.altareFloat = PIXI.Sprite.from(formatStaticCDN("images/Altare.png"))
+        Aquarium.altareSlime = PIXI.Sprite.from(formatStaticCDN("images/Slime.png"))
         Aquarium.altareFloat.anchor.set(0.5);
         Aquarium.altareSlime.anchor.set(0.5);
         Aquarium.altareFloat.scale.set(0.5);
@@ -662,8 +662,17 @@ let particleConfig = {
         {
             type: 'textureSingle',
             config: {
-                texture: PIXI.Texture.from('../images/particle.png')
+                texture: PIXI.Texture.from(formatStaticCDN('images/particle.png'))
             }
         }
     ]
+}
+
+function formatStaticCDN(path) {
+    if (location.hostname == "hostname") {
+        return `../${path}`;
+    }
+    else {
+        return `https://cdn.statically.io/img/altarebday2024.netlify.app/f=auto/${path}`
+    }
 }
