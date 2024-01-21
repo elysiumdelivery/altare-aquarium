@@ -20,7 +20,7 @@ Fish.prototype.init = async function () {
     self.isStatic = staticFish.includes(this.data["Filename"]);
     this.id = fishCounter++;
     if (staticFish.includes(this.data["Filename"])) {
-        let modelFilePath = `images/static/${this.data["Filename"]}.png`;
+        let modelFilePath = `images/static/${this.data["Filename"]}.webp`;
         self.model = PIXI.Sprite.from(modelFilePath);
         self.model.cullable = true;
         self.model.filters = [];

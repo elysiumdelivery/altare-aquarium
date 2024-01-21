@@ -141,10 +141,10 @@ async function init (data) {
     Aquarium.viewport.addChild(bg);
 
     let clouds = new PIXI.Container();
-    let bgCloud1 = PIXI.Sprite.from("../images/AltareBGElements_cloud-5.png");
-    let bgCloud2 = PIXI.Sprite.from("../images/AltareBGElements_cloud-6.png");
-    let bgCloud3 = PIXI.Sprite.from("../images/AltareBGElements_cloud-5.png");
-    let bgCloud4 = PIXI.Sprite.from("../images/AltareBGElements_cloud-6.png");
+    let bgCloud1 = PIXI.Sprite.from("../images/AltareBGElements_cloud-5.webp");
+    let bgCloud2 = PIXI.Sprite.from("../images/AltareBGElements_cloud-6.webp");
+    let bgCloud3 = PIXI.Sprite.from("../images/AltareBGElements_cloud-5.webp");
+    let bgCloud4 = PIXI.Sprite.from("../images/AltareBGElements_cloud-6.webp");
 
     bgCloud1.x = 100;
     bgCloud2.x = WORLD_WIDTH - 100;
@@ -157,9 +157,9 @@ async function init (data) {
     clouds.alpha = 0.65;
     clouds.addChild(bgCloud1, bgCloud2, bgCloud3, bgCloud4)
 
-    let bgOceanRight = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorRight.png");
-    let bgOceanLeft = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorLeft.png");
-    let bgOceanBottom = PIXI.Sprite.from("../images/AltareBGElements_OceanBottom.png");
+    let bgOceanRight = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorRight.webp");
+    let bgOceanLeft = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorLeft.webp");
+    let bgOceanBottom = PIXI.Sprite.from("../images/AltareBGElements_OceanBottom.webp");
     bgOceanRight.x = WORLD_WIDTH;
     bgOceanLeft.x = 0;
     bgOceanRight.y = 11500 - 300;
@@ -299,8 +299,8 @@ async function loadAltare () {
         Aquarium.altareBoat.x = WORLD_WIDTH - 500;
         Aquarium.altareBoat.y = LEVELS.Top;
 
-        Aquarium.altareFloat = PIXI.Sprite.from("../images/Altare.png")
-        Aquarium.altareSlime = PIXI.Sprite.from("../images/Slime.png")
+        Aquarium.altareFloat = PIXI.Sprite.from("../images/Altare.webp")
+        Aquarium.altareSlime = PIXI.Sprite.from("../images/Slime.webp")
         Aquarium.altareFloat.anchor.set(0.5);
         Aquarium.altareSlime.anchor.set(0.5);
         Aquarium.altareFloat.scale.set(0.5);
@@ -407,7 +407,7 @@ async function loadData(allFishData) {
 }
 
 function setupFilters () {
-    const displacementMap = "https://cdn.jsdelivr.net/gh/pixijs/pixi-filters/tools/demo/images/displacement_map.png";
+    const displacementMap = "displacement_map.webp";
     const displacementSprite = PIXI.Sprite.from(displacementMap, {
         wrapMode: PIXI.WRAP_MODES.REPEAT
     });
@@ -445,7 +445,7 @@ function toggleFilters (isOn) {
 
 function setupSound () {
     Aquarium.bgm = PIXI.sound.Sound.from({
-        url: '../sounds/bgm_long.mp3',
+        url: '../sounds/bgm.mp3',
         loop: true,
         complete: function() {
             console.log('Sound finished');
@@ -662,7 +662,7 @@ let particleConfig = {
         {
             type: 'textureSingle',
             config: {
-                texture: PIXI.Texture.from('../images/particle.png')
+                texture: PIXI.Texture.from('../images/particle.webp')
             }
         }
     ]
