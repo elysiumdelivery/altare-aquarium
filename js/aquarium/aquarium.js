@@ -114,6 +114,7 @@ async function init (data) {
     Aquarium.viewport.sortableChildren = true;
 
     Aquarium.overlay = new PIXI.Container();
+    setupEmitter(Aquarium.overlay);
     Aquarium.app.stage.addChild(Aquarium.viewport)
     Aquarium.app.stage.addChild(Aquarium.overlay)
 
@@ -223,7 +224,6 @@ async function init (data) {
         if (Aquarium.currentActiveFish === fish) {
             Aquarium.currentActiveFish.node.blur();
             Aquarium.currentActiveFish = undefined;
-            setCursor("default");
         }
         fish.toggleHighlight(false);
     })
@@ -240,12 +240,15 @@ async function init (data) {
         }
         if (Aquarium.settings.filters) {
             overlayGraphic.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
+            Aquarium.emitter.parent.alpha = clamp(lerp(0, 1, (Aquarium.viewport.top - LEVELS.Top) / (LEVELS.Top + 100)), 0, 1);
             Aquarium.filters.godrayFilter.time += d / lerp(50, 100, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
             Aquarium.filters.godrayFilter.gain = lerp(0.1, 0.4, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
             Aquarium.filters.godrayFilter.lacunarity = lerp(1.8, 5, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
             Aquarium.filters.godrayFilter.alpha = lerp(0, 0.3, clamp((Aquarium.viewport.top - LEVELS.Surface) / LEVELS.Surface, 0, 1));
 
             Aquarium.filters.displacementFilter.enabled = Aquarium.viewport.top >= LEVELS.Surface;
+
+            Aquarium.emitter.update(d * 0.001);
         }
         updateDebugLayer();
     });
@@ -253,7 +256,11 @@ async function init (data) {
     Aquarium.toggleFilters(Aquarium.settings.filters);
     Aquarium.resize = resize;
 
+    setupSound();
+
     Aquarium.app.start();
+    Aquarium.emitter.emitNow();
+    Aquarium.bgm.play();
     Aquarium.viewport.alpha = 1;
 
     window.addEventListener("resize", resize);
@@ -414,6 +421,14 @@ function setupFilters () {
         angle: 30,
         alpha: 0.3
     });
+    
+}
+
+function setupEmitter (container) {
+    let emitterContainer = new PIXI.ParticleContainer();
+    container.addChildAt(emitterContainer);
+    Aquarium.emitter = new PIXI.particles.Emitter(emitterContainer, particleConfig);
+    Aquarium.emitter.emit = true;
 }
 
 function toggleFilters (isOn) {
@@ -426,6 +441,16 @@ function toggleFilters (isOn) {
         Aquarium.overlay.visible = false;
         Aquarium.viewport.filters = [];
     }
+}
+
+function setupSound () {
+    Aquarium.bgm = PIXI.sound.Sound.from({
+        url: '../sounds/bgm_long.mp3',
+        loop: true,
+        complete: function() {
+            console.log('Sound finished');
+        }
+    });
 }
 
 function setupDebug () {
@@ -523,7 +548,122 @@ function resize () {
     Aquarium.emitEvent("onViewportUpdate", Aquarium.viewport);
 }
 
-function setCursor (cursorMode) {
-    Aquarium.app.renderer.events.rootBoundary.cursor = (cursorMode);
-    Aquarium.app.renderer.events.setCursor(cursorMode);
+
+let particleConfig = {
+    "lifetime": {
+        "min": 5,
+        "max": 10
+    },
+    "frequency": 0.001,
+    "emitterLifetime": -1,
+    "maxParticles": 1000,
+    "addAtBack": false,
+    "pos": {
+        "x": 0,
+        "y": 0
+    },
+    "behaviors": [
+        {
+            "type": "alpha",
+            "config": {
+                "alpha": {
+                    "list": [
+                        {
+                            "time": 0,
+                            "value": 0
+                        },
+                        {
+                            "time": 0.25,
+                            "value": 0.75
+                        },
+                        {
+                            "time": 0.5,
+                            "value": 1
+                        },
+                        {
+                            "time": 1,
+                            "value": 0
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            type: 'moveSpeedStatic',
+            config: {
+                "min": 200,
+                "max": 200
+            }
+        },
+        {
+            "type": "rotation",
+            "config": {
+                "accel": 0,
+                "minSpeed": 0,
+                "maxSpeed": 50,
+                "minStart": 260,
+                "maxStart": 280
+            }
+        },
+        {
+            "type": "scale",
+            "config": {
+                "scale": {
+                    "list": [
+                        {
+                            "time": 0,
+                            "value": 0.1
+                        },
+                        {
+                            "time": 1,
+                            "value": 0.05
+                        }
+                    ]
+                },
+                "minMult": 1
+            }
+        },
+        {
+            type: 'color',
+            config: {
+                color: {
+                    list: [
+                        {
+                            value: "#ffffff",
+                            time: 0
+                        },
+                        {
+                            value: "#3fcbff",
+                            time: 1
+                        }
+                    ],
+                },
+            }
+        },
+        {
+            "type": "rotationStatic",
+            "config": {
+                "min": 0,
+                "max": 360
+            }
+        },
+        {
+            "type": "spawnShape",
+            "config": {
+                "type": "rect",
+                "data": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 1920,
+                    "h": 1080
+                }
+            }
+        },
+        {
+            type: 'textureSingle',
+            config: {
+                texture: PIXI.Texture.from('../images/particle.png')
+            }
+        }
+    ]
 }

@@ -62,11 +62,11 @@ async function main() {
         if (window.innerHeight > window.innerWidth) {
             document.getElementById("nav").style.top = null;
         }
-        else {
+        else if (window.aquarium.viewport.top < LEVELS.Surface) {
             document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 15vmin)`;
+            document.getElementById("title-header").style.top = screenCoords.y;
         }
         
-        document.getElementById("title-header").style.top = screenCoords.y;
         document.getElementById("back-to-top").style.opacity = clamp(lerp(0, 1, (window.aquarium.viewport.center.y - LEVELS.Top) / (LEVELS.Top + 100)), 0, 1);
         
     })

@@ -12,3 +12,4 @@ magick mogrify -resize 256x256\> images/static/SmallFish_*.png
 
 magick mogrify -trim +repage images/thumbs/*.png
 magick mogrify -resize 1024x1024\> images/thumbs/*.png
+magick mogrify -resize 512x512\> images/twitter/*.png
