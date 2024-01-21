@@ -28,8 +28,28 @@ export function updateDetailsDialog(id, data, cardUrl) {
     "beforeend",
     `
     <h2 class="fish-name">${data["Fish Display Name"]}</h2>
-    <p class="fish-description">${data["Description"]}</p>
+    <p><span><strong>Artist:</strong> ${data["Artist Credit"]}</span> | <span><strong>Writer:</strong> ${data["Writer Credit"]}</span></p>
   `
-  // TODO add more to this section
   );
+  let fishImage = DETAILS_DIALOG_EL.getElementsByClassName(
+    "details-dialog-fish"
+  )[0];
+  fishImage.className = "details-dialog-fish";
+  fishImage.classList.add(`size_${data["Size Category"]}`);
+  fishImage.src = `images/thumbs/${data["Filename"]}.png`;
+
+  // Clear + set card metadata
+  DETAILS_DIALOG_EL.getElementsByClassName("details-dialog-text")[0].innerHTML =
+    "";
+    let detailsHTML = `<p class="fish-info">Size: ${data["Size"]} | Weight: ${data["Weight"]}</p>`
+  detailsHTML += `<h3>Image Description</h3><p>${data["Fish Image Alt Text Description"]}</p>`;
+  if (data["Description"]) {
+    // Item card without attacks
+    detailsHTML += `
+      <h3>Description</h3>
+      <p class="fish-description">${data["Description"]}</p>`;
+  }
+  DETAILS_DIALOG_EL.getElementsByClassName(
+    "details-dialog-text"
+  )[0].insertAdjacentHTML("beforeend", detailsHTML);
 }

@@ -23,6 +23,8 @@ html {
     width: 100%;
     text-align: center;
     font-size: 4vmin;
+
+    color: white;
 }
 
 nav {
@@ -110,6 +112,41 @@ nav a {
 #overlay-toggle {
 }
 
+#back-to-top {
+    position: absolute;
+    background-image: url(../images/fish_bob.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    right: 4vmax;
+    bottom: 2vmax;
+    width: 5vmax;
+    height: 5vmax;
+    border: none;
+
+    appearance: none;
+    cursor: pointer;
+}
+
+#back-to-top::before {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 20vmax;
+    bottom: 100%;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+}
+
+#back-to-top span {
+    position: absolute;
+    width: 9vmax;
+    bottom: calc(100% + 0.75vmax);
+    background: white;
+    padding: 0.5em;
+    border-radius: 1em;
+    transform: translateX(-50%);
+}
+
 .dialog-container {
     position: absolute;
     top: 0;
@@ -149,6 +186,26 @@ nav a {
     transition: 0.5s transform ease, 0.5s opacity ease;
     transform: translateY(25%);
     opacity: 0;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.details-dialog-fish {
+    width: 100%;
+}
+
+.details-dialog-fish.size_S {
+    width: 60%;
+}
+.details-dialog-fish.size_M {
+    width: 80%;
+}
+.details-dialog-fish.size_L {
+    width: 100%;
 }
 
 .dialog-container:not([aria-hidden="true"]) #fish-details-dialog, 

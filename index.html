@@ -28,13 +28,16 @@
         <!-- Font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Rowdies&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Belanosima&family=Montserrat&family=Rampart+One&family=Rowdies&display=swap" rel="stylesheet">
         <!-- CSS -->
         <link rel="stylesheet" href="css/base.css"/>
         <link rel="stylesheet" href="css/app.css"/>
         <link rel="stylesheet" href="css/nav.css"/>
         <!-- Libraries -->
         <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.3.0/dist/pixi.min.js"></script>
+        <script src="https://unpkg.com/@pixi/sound/dist/pixi-sound.js"></script>
+        <script src="js/plugins/pixi/pixi-particles.min.js"></script>
+        <script src="js/plugins/pixi/particle-emitter.min.js"></script>
         <script src="js/plugins/pixi/pixi-filters.min.js"></script>
         <script src="js/plugins/pixi/pixi_viewport.umd.cjs"></script>
         <script src="https://cdn.jsdelivr.net/npm/@pixi/assets@6.x/dist/browser/assets.min.js"></script>
@@ -66,6 +69,7 @@
                 <!-- <a id="nav-collection" class="active" href="../pages/collection.html">Collection</a> -->
                 <a id="nav-artist-writer-board" href="../pages/contributor-board.html">Contributor Messages</a>
                 <a id="nav-message-board" href="../pages/message-board.html">Message Board</a>
+                <a id="nav-sponsorships" href="../pages/sponsorships.html">Sponsorship Gifts</a>
                 <a id="nav-credits" href="../pages/credits.html">Credits and Download</a>
                 <!-- Menu-only elements -->
                 <hr aria-hidden="true" />
@@ -95,6 +99,9 @@
             </nav>
             <div id="fish-aria" role="list" aria-label="Altare's Aquarium" class="visually-hidden"></div>
             <div id="overlay" aria-hidden="true"></div>
+            <button id="back-to-top">
+                <span>Back to Top</span>
+            </button> 
             <div id="loader" role="status" aria-live="polite" aria-label='Loading...'>
                 <div class="spinner-container">
                     <picture>

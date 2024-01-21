@@ -1,33 +1,30 @@
-import { Aquarium } from "./aquarium.js";
+import { Aquarium, LEVELS, WORLD_WIDTH, WORLD_HEIGHT } from "./aquarium.js";
 
 // const glowFilter = new PIXI.filters.GlowFilter({ distance: 15, outerStrength: 3 })
 const outlineFilter = new PIXI.filters.OutlineFilter(2, 0x00ffff, 0.25)
 
-
+let staticFish = ["SmallFish_SandDollar_Semiluminary"];
 let fishCounter = 0;
 
 export function Fish (fishData) {
     this.data = fishData;
     this.node = document.createElement("a");
-    this.speed = Number.parseFloat(this.data["Speed"]);
-    if (Number.isNaN(this.speed)) {
-        this.speed = getSpeedFromSize(fishData["Size Category"]) || randomRange(0.25, 2);
-    }
-    this.scale = getScaleFromSize(fishData["Size Category"]) || randomRange(0.02, 0.125);
+    this.speed = getSpeedFromData(this.data);
+    this.scale = getScaleFromSize(this.data["Size Category"]) || randomRange(0.02, 0.125);
     this.direction = Math.random() >= 0.5 ? 1 : -1;
     this.rangeX = this.data["Position X Range"].split("-").map((n) => Number.parseInt(n));
 }
 
 Fish.prototype.init = async function () {
     let self = this;
-    self.isStatic = self.data["Is Static"] == "TRUE";
+    self.isStatic = staticFish.includes(this.data["Filename"]);
     this.id = fishCounter++;
-    if (self.isStatic) {
+    if (staticFish.includes(this.data["Filename"])) {
         let modelFilePath = `images/static/${this.data["Filename"]}.png`;
         self.model = PIXI.Sprite.from(modelFilePath);
         self.model.cullable = true;
         self.model.filters = [];
-        self.model.anchor.set(0.5);
+        self.model.anchor.set(0.5, 0.5);
         self.model.scale.set(self.scale);
         if (self.direction === 1) {
             self.model.scale.x *= -1;
@@ -61,7 +58,8 @@ Fish.prototype.init = async function () {
                 self.hitArea.drawRect(bounds.x + (bounds.width/2) - (minSize/2), bounds.y + (bounds.y/2) - (minSize/2), minSize, minSize);
             }
             self.hitArea.endFill();
-           
+            self.hitArea.cursor = "pointer";
+            self.hitArea.interactive = true;
             self.model.addChild(self.hitArea); 
     
             return Promise.resolve(self);
@@ -116,6 +114,9 @@ Fish.prototype.update = function (delta) {
         this.model.update(Aquarium.app.ticker.elapsedMS);
     }
     this.model.x += delta * this.speed * this.direction;
+    if (this.data["Movement"] === "Moving") {
+        this.model.y += delta * this.speed * 0.5 * Math.sin((Date.now() + randomRange(20, 100))/ 600);
+    }
 }
 
 Fish.prototype.toggleHighlight = function (isOn) {
@@ -131,12 +132,10 @@ function randomRange(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-function getSpeedFromSize (sizeCategory) {
-    switch (sizeCategory) {
-        case "L": return randomRange(0.5, 1);
-        case "M": return randomRange(1, 1.5);
-        case "S": return randomRange(1.5, 2);
-    }
+function getSpeedFromData (data) {
+    if (data["Slow"] == "TRUE") return randomRange(0.5, 1);
+    if (data["Fast"] == "TRUE") return randomRange(1, 1.5);
+    if (data["Stationary"] == "TRUE") return 0;
 }
 
 function getScaleFromSize (sizeCategory) {
@@ -160,3 +159,38 @@ function getActualBounds (model) {
         }
     });
 }
+
+export function parseMath (string) {
+    string = string.replace(/\s/g, "");
+    string = string.replace("top", LEVELS.Top);
+    string = string.replace("surface", LEVELS.Surface);
+    string = string.replace("middle", LEVELS.Middle);
+    string = string.replace("bottom", WORLD_HEIGHT);
+    return parsePlusSeparatedExpression(string);
+}
+
+const parseMultiplicationSeparatedExpression = (expression) => {
+	const numbersString = expression.split('*');
+	const numbers = numbersString.map(noStr => +noStr);
+	const initialValue = 1.0;
+	const result = numbers.reduce((acc, no) => acc * no, initialValue);
+	return result;
+};
+
+// both * -
+const parseMinusSeparatedExpression = (expression) => {
+	const numbersString = expression.split('-');
+	const numbers = numbersString.map(noStr => parseMultiplicationSeparatedExpression(noStr));
+	const initialValue = numbers[0];
+	const result = numbers.slice(1).reduce((acc, no) => acc - no, initialValue);
+	return result;
+};
+
+// * - + 
+const parsePlusSeparatedExpression = (expression) => {
+	const numbersString = expression.split('+');
+	const numbers = numbersString.map(noStr => parseMinusSeparatedExpression(noStr));
+	const initialValue = 0.0;
+	const result = numbers.reduce((acc, no) => acc + no, initialValue);
+	return result;
+};

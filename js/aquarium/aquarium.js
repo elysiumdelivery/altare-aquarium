@@ -1,15 +1,20 @@
-import { Fish } from "./fish.js";
+import { Fish, parseMath } from "./fish.js";
 
 const spineModel = "../images/spine/AltareBoatBdayAnimationPrep.json";
 
 
-const WORLD_WIDTH = 1920;
-const WORLD_HEIGHT = 25000;
-const LEVELS = {
+export const WORLD_WIDTH = 1920;
+export const WORLD_HEIGHT = 23000;
+export const LEVELS = {
     "Sky": 0,
-    "Surface": 1200,
+    "Top": 1500,
+    "Surface": 1800,
     "Middle": WORLD_HEIGHT * (1 / 2),
-    "Floor": WORLD_HEIGHT * (2 / 3)
+    "Floor": WORLD_HEIGHT * 0.75
+}
+const LAYERS = {
+    "Grounded": 0,
+    "Moving": 100
 }
 const debug = {};
 const allFish = [];
@@ -26,7 +31,7 @@ export const Aquarium = ((options = {}) => {
     self.settings = {
         worldWidth: options.worldWidth || WORLD_WIDTH,
         worldHeight: options.worldHeight || WORLD_HEIGHT,
-        debug: options.debug || true,
+        debug: options.debug || false,
         filters: options.filters || true
     };
     self.emitEvent = (e, data) => {
@@ -81,6 +86,8 @@ async function init (data) {
 
         events: Aquarium.app.renderer.events
     });
+
+    Aquarium.app.renderer.events.cursorStyles.grab = "grab";
     // activate plugins
     Aquarium.viewport
         .drag({direction: "all", pressDrag: true, clampWheel: true })
@@ -90,7 +97,9 @@ async function init (data) {
             minSpeed: 0.01,                 // minimum velocity before stopping/reversing acceleration
     })
     Aquarium.viewport.on("moved", (e) => {
-        this.isDraggingViewport = true;
+        if (e.type == "drag") {
+            this.isDraggingViewport = true;
+        }
         Aquarium.emitEvent("onViewportUpdate", e.viewport);
 
     });
@@ -105,18 +114,22 @@ async function init (data) {
     Aquarium.viewport.sortableChildren = true;
 
     Aquarium.overlay = new PIXI.Container();
+    setupEmitter(Aquarium.overlay);
     Aquarium.app.stage.addChild(Aquarium.viewport)
     Aquarium.app.stage.addChild(Aquarium.overlay)
 
     let bg = new PIXI.Sprite(generateGradient(
-        ["#74b9ff", "#D2E9FF", "#D2E9FF", "#2973c4", "#2973c4", "#011138"], 
+        // ["#82cbff", "#82cbff", "#D3FFE9", "#2B59C3", "#011138"]
+        // ["#74b9ff", "#D2E9FF", "#D2E9FF", "#2973c4", "#2973c4", "#011138"], 
+        ["#4c8bda", "#D2E9FF", "#2a75c5", "#ccfff6", "#82cbff", "#2973c4", "#011138"], 
         { 
             stops: [
                 0,
+                (LEVELS.Top) / WORLD_HEIGHT, 
+                (LEVELS.Top + 100) / WORLD_HEIGHT, 
                 (LEVELS.Surface) / WORLD_HEIGHT, 
-                (LEVELS.Surface + 100) / WORLD_HEIGHT, 
-                (LEVELS.Surface + 200) / WORLD_HEIGHT, 
                 0.5 * LEVELS.Middle / WORLD_HEIGHT,
+                LEVELS.Middle / WORLD_HEIGHT,
                 1
             ],
             width: 64,
@@ -126,6 +139,42 @@ async function init (data) {
     bg.width = WORLD_WIDTH;
     bg.height = WORLD_HEIGHT;
     Aquarium.viewport.addChild(bg);
+
+    let clouds = new PIXI.Container();
+    let bgCloud1 = PIXI.Sprite.from("../images/AltareBGElements_cloud-5.png");
+    let bgCloud2 = PIXI.Sprite.from("../images/AltareBGElements_cloud-6.png");
+    let bgCloud3 = PIXI.Sprite.from("../images/AltareBGElements_cloud-5.png");
+    let bgCloud4 = PIXI.Sprite.from("../images/AltareBGElements_cloud-6.png");
+
+    bgCloud1.x = 100;
+    bgCloud2.x = WORLD_WIDTH - 100;
+    bgCloud3.x = 300;
+    bgCloud4.x = WORLD_WIDTH - 600;
+    bgCloud1.y = LEVELS.Sky + 100;
+    bgCloud2.y = LEVELS.Sky + 200;
+    bgCloud3.y = LEVELS.Sky + 600;
+    bgCloud4.y = LEVELS.Sky + 700;
+    clouds.alpha = 0.65;
+    clouds.addChild(bgCloud1, bgCloud2, bgCloud3, bgCloud4)
+
+    let bgOceanRight = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorRight.png");
+    let bgOceanLeft = PIXI.Sprite.from("../images/AltareBGElements_OceanFloorLeft.png");
+    let bgOceanBottom = PIXI.Sprite.from("../images/AltareBGElements_OceanBottom.png");
+    bgOceanRight.x = WORLD_WIDTH;
+    bgOceanLeft.x = 0;
+    bgOceanRight.y = 11500 - 300;
+    bgOceanLeft.y = 11500 + 50;
+
+    bgOceanLeft.scale.set(0.85);
+    bgOceanRight.scale.set(0.85);
+
+    bgOceanRight.anchor.set(1, 1);
+    bgOceanLeft.anchor.set(0, 1);
+    bgOceanBottom.anchor.set(0, 1);
+    bgOceanBottom.width = WORLD_WIDTH;
+    bgOceanBottom.y = WORLD_HEIGHT;
+    Aquarium.viewport.addChild(clouds, bgOceanLeft, bgOceanRight, bgOceanBottom)
+
 
     overlayGraphic = new PIXI.Graphics();
     overlayGraphic.blendMode = PIXI.BLEND_MODES.MULTIPLY
@@ -181,16 +230,25 @@ async function init (data) {
 
     Aquarium.app.ticker.add(d => {
         if (Aquarium.altareBoat) {
-            Aquarium.altareBoat.y = LEVELS.Surface + Math.sin(Date.now() / 380);
+            Aquarium.altareBoat.y = LEVELS.Top + Math.sin(Date.now() / 380);
+        }
+        if (Aquarium.altareFloat) {
+            Aquarium.altareFloat.y = 14500 + Math.sin(Date.now() / 500) * 50;
+            Aquarium.altareSlime.y = 14500 + Math.sin(50 + Date.now() / 500) * 20;
+            Aquarium.altareFloat.rotation = Math.sin(Date.now() / 380) / 10;
+            Aquarium.altareSlime.rotation = Math.sin(100 + Date.now() / 380) / 10;
         }
         if (Aquarium.settings.filters) {
             overlayGraphic.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
+            Aquarium.emitter.parent.alpha = clamp(lerp(0, 1, (Aquarium.viewport.top - LEVELS.Top) / (LEVELS.Top + 100)), 0, 1);
             Aquarium.filters.godrayFilter.time += d / lerp(50, 100, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
             Aquarium.filters.godrayFilter.gain = lerp(0.1, 0.4, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
             Aquarium.filters.godrayFilter.lacunarity = lerp(1.8, 5, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
             Aquarium.filters.godrayFilter.alpha = lerp(0, 0.3, clamp((Aquarium.viewport.top - LEVELS.Surface) / LEVELS.Surface, 0, 1));
 
             Aquarium.filters.displacementFilter.enabled = Aquarium.viewport.top >= LEVELS.Surface;
+
+            Aquarium.emitter.update(d * 0.001);
         }
         updateDebugLayer();
     });
@@ -198,18 +256,27 @@ async function init (data) {
     Aquarium.toggleFilters(Aquarium.settings.filters);
     Aquarium.resize = resize;
 
+    // setupSound();
+
     Aquarium.app.start();
+    Aquarium.emitter.emitNow();
+    Aquarium.bgm.play();
     Aquarium.viewport.alpha = 1;
 
     window.addEventListener("resize", resize);
 
     return loadAltare().then(() => loadData(data)).then(() => {
         allFish.sort((a, b) => {
-            if (a.model.scale.y > b.model.scale.y) return -1;
-            else if (a.model.scale.y < b.model.scale.y) return 1;
+            if (a.model.y > b.model.y) return 1;
+            else if (a.model.y < b.model.y) return -1;
             else return 0
         }).forEach((fish, i) => {
-            fish.model.zIndex = i;
+            if (fish.data["Movement"] === "Moving") {
+                fish.model.zIndex = LAYERS.Moving + i;
+            }
+            if (fish.data["Grounded"] === "Moving") {
+                fish.model.zIndex = LAYERS.Grounded + i;
+            }
         });
 
         Aquarium.viewport.fitWidth()
@@ -228,12 +295,29 @@ async function loadAltare () {
     return PIXI.Assets.load(spineModel).then((resource) => {
 
         Aquarium.altareBoat = new PIXI.spine.Spine(resource.spineData);
-        console.log(Aquarium.altareBoat)
-        console.log(Aquarium.altareBoat.height)
+        Aquarium.altareBoat.scale.set(0.8)
         Aquarium.altareBoat.x = WORLD_WIDTH - 500;
-        Aquarium.altareBoat.y = LEVELS.Surface;
+        Aquarium.altareBoat.y = LEVELS.Top;
+
+        Aquarium.altareFloat = PIXI.Sprite.from("../images/Altare.png")
+        Aquarium.altareSlime = PIXI.Sprite.from("../images/Slime.png")
+        Aquarium.altareFloat.anchor.set(0.5);
+        Aquarium.altareSlime.anchor.set(0.5);
+        Aquarium.altareFloat.scale.set(0.5);
+        Aquarium.altareSlime.scale.set(0.5);
+        Aquarium.altareFloat.x = 200;
+        Aquarium.altareFloat.y = 14500;
+        Aquarium.altareSlime.x = 400;
+        Aquarium.altareSlime.y = 14500;
+
+        Aquarium.altareFloat.interactive = true;
+        Aquarium.altareSlime.interactive = true;
+        Aquarium.altareFloat.cursor = "grab";
+        Aquarium.altareSlime.cursor = "grab";
         
         // add the animation to the scene and render...
+        Aquarium.viewport.addChild(Aquarium.altareFloat);
+        Aquarium.viewport.addChild(Aquarium.altareSlime);
         Aquarium.viewport.addChild(Aquarium.altareBoat);
         
         if (Aquarium.altareBoat.state.hasAnimation("animation")) {
@@ -272,16 +356,16 @@ async function loadData(allFishData) {
                 // let lastFish = lastFishAtLevel[level] !== undefined ? allFish[lastFishAtLevel[level]] : undefined;
                 let lastFish = allFish[allFish.length - 1];
                 if (fish.data["Position Y"]) {
-                    fish.model.y = parseInt(fish.data["Position Y"])
+                    fish.model.y = parseMath(fish.data["Position Y"]);
                 }
                 else if (lastFish) {
-                    fish.model.y = (lastFish.model.y + (fish.model.getBounds().height / 2) + (randomRange(50, 200)));
+                    fish.model.y = (lastFish.model.y + (fish.model.getBounds().height / 2) + (randomRange(20, 50)));
                 }
                 else {
                     fish.model.y = (fish.model.getBounds().height / 2);
                 }
-                if (Number.isFinite(parseInt(fish.data["Position X"]))) {
-                    fish.model.x = parseInt(fish.data["Position X"]);
+                if (fish.data["Position X"]) {
+                    fish.model.x = parseMath(fish.data["Position X"]);
                 }
                 else {
                     fish.model.x = randomRange(fish.rangeX[0] || 0, fish.rangeX[1] || WORLD_WIDTH);
@@ -337,6 +421,14 @@ function setupFilters () {
         angle: 30,
         alpha: 0.3
     });
+    
+}
+
+function setupEmitter (container) {
+    let emitterContainer = new PIXI.ParticleContainer();
+    container.addChildAt(emitterContainer);
+    Aquarium.emitter = new PIXI.particles.Emitter(emitterContainer, particleConfig);
+    Aquarium.emitter.emit = true;
 }
 
 function toggleFilters (isOn) {
@@ -349,6 +441,16 @@ function toggleFilters (isOn) {
         Aquarium.overlay.visible = false;
         Aquarium.viewport.filters = [];
     }
+}
+
+function setupSound () {
+    Aquarium.bgm = PIXI.sound.Sound.from({
+        url: '../sounds/bgm_long.mp3',
+        loop: true,
+        complete: function() {
+            console.log('Sound finished');
+        }
+    });
 }
 
 function setupDebug () {
@@ -369,11 +471,14 @@ function setupDebug () {
 function updateDebugLayer () {
     if (!Aquarium.settings.debug) return;
     // if (Aquarium.currentActiveFish) Aquarium.checkActiveFish(Aquarium.currentActiveFish);
+    let pointer = Aquarium.app.renderer.events.rootPointerEvent
+    let screenToWorld = Aquarium.viewport.toWorld(pointer.screenX, pointer.screenY);
     debug.fps.text = `Debug Window:\n` +
                         `${PIXI.Ticker.shared.FPS.toFixed(0)} fps\n` +
                         `Viewport: ${Aquarium.app.renderer.width}px x ${Aquarium.app.renderer.height}px\n` +
                         `World: ${Aquarium.viewport.worldWidth}px x ${Aquarium.viewport.worldHeight}px\n` +
-                        `${Aquarium.getActiveFish().length}/${Aquarium.getAllFish().length} active fish`
+                        `${Aquarium.getActiveFish().length}/${Aquarium.getAllFish().length} active fish\n` + 
+                        `Mouse Coord: ${screenToWorld.x.toFixed(0)}, ${screenToWorld.y.toFixed(0)}`
 }
 
 function updateDebugHitbox(options) {
@@ -392,10 +497,10 @@ function setDebug (isActive) {
 function randomRange(min, max) {
     return Math.random() * (max - min) + min;
 }
-function lerp (start, end, v){
+export function lerp (start, end, v){
     return (1 - v) * start + v * end;
 }
-function clamp (v, min, max) {
+export function clamp (v, min, max) {
     return Math.min(Math.max(v, min), max);
 };
 function border(viewport) {
@@ -441,4 +546,124 @@ function resize () {
     }
 
     Aquarium.emitEvent("onViewportUpdate", Aquarium.viewport);
+}
+
+
+let particleConfig = {
+    "lifetime": {
+        "min": 5,
+        "max": 10
+    },
+    "frequency": 0.001,
+    "emitterLifetime": -1,
+    "maxParticles": 1000,
+    "addAtBack": false,
+    "pos": {
+        "x": 0,
+        "y": 0
+    },
+    "behaviors": [
+        {
+            "type": "alpha",
+            "config": {
+                "alpha": {
+                    "list": [
+                        {
+                            "time": 0,
+                            "value": 0
+                        },
+                        {
+                            "time": 0.25,
+                            "value": 0.75
+                        },
+                        {
+                            "time": 0.5,
+                            "value": 1
+                        },
+                        {
+                            "time": 1,
+                            "value": 0
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            type: 'moveSpeedStatic',
+            config: {
+                "min": 200,
+                "max": 200
+            }
+        },
+        {
+            "type": "rotation",
+            "config": {
+                "accel": 0,
+                "minSpeed": 0,
+                "maxSpeed": 50,
+                "minStart": 260,
+                "maxStart": 280
+            }
+        },
+        {
+            "type": "scale",
+            "config": {
+                "scale": {
+                    "list": [
+                        {
+                            "time": 0,
+                            "value": 0.1
+                        },
+                        {
+                            "time": 1,
+                            "value": 0.05
+                        }
+                    ]
+                },
+                "minMult": 1
+            }
+        },
+        {
+            type: 'color',
+            config: {
+                color: {
+                    list: [
+                        {
+                            value: "#ffffff",
+                            time: 0
+                        },
+                        {
+                            value: "#3fcbff",
+                            time: 1
+                        }
+                    ],
+                },
+            }
+        },
+        {
+            "type": "rotationStatic",
+            "config": {
+                "min": 0,
+                "max": 360
+            }
+        },
+        {
+            "type": "spawnShape",
+            "config": {
+                "type": "rect",
+                "data": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 1920,
+                    "h": 1080
+                }
+            }
+        },
+        {
+            type: 'textureSingle',
+            config: {
+                texture: PIXI.Texture.from('../images/particle.png')
+            }
+        }
+    ]
 }

@@ -51,7 +51,7 @@ function renderMessages(message_data) {
 
 function renderCredits(credits_data) {
   // these are the sections in order of display (as per the CSS)
-  let creditsHeaders = ["General / Management", "Website Development", "Animation", "Accessibility", "Sponsorship Coordinators", "Twitter Illustrators"];
+  let creditsHeaders = ["General / Management", "Accessibility", "Website Development", "Animation", "Sponsorship Coordinators", "Twitter Illustrators"];
   // remainder of the normal code
   let creditsContainer = document.getElementById("credits");
   let roleMapping = [[]];
@@ -84,7 +84,7 @@ function renderCredits(credits_data) {
       let creditRole = document.createElement("p");
       creditName.textContent = credit["Staff name"];
       creditListing.append(creditName);
-      if (credit["Twitter"]) {
+      if (credit["Twitter"] && credit["Twitter"].trim() != "-") {
         let creditTwitterHeader = document.createElement("h4");
         let creditTwitter = document.createElement("a");
         creditTwitter.href = `https://twitter.com/${credit["Twitter"]}`;
@@ -118,7 +118,7 @@ function renderTwitterArtCredits(twitter_art_data) {
     img.src = `../images/twitter/${artData["Artwork"]}`;
     img.alt = artData["Alt"];
     artContainer.append(img);
-    if (artData["Twitter"] && artData["Twitter"] !== "-") {
+    if (artData["Twitter"] && artData["Twitter"].trim() != "-") {
       let creditTwitter = document.createElement("a");
       creditTwitter.href = `https://twitter.com/${artData["Twitter"]}`;
       creditTwitter.setAttribute('target', '_blank');

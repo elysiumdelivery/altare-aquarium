@@ -1,5 +1,5 @@
 import { setupDetailsDialog, updateDetailsDialog, DETAILS_DIALOG_A11Y } from "./dialog.js";
-import { Aquarium } from "./aquarium/aquarium.js"
+import { Aquarium, LEVELS, WORLD_WIDTH, WORLD_HEIGHT, lerp, clamp } from "./aquarium/aquarium.js"
 
 const FISH_DATA_PATH = "fish.csv";
 
@@ -22,6 +22,15 @@ async function main() {
     window.fishAriaDiv = document.getElementById("fish-aria");
     await setupDetailsDialog();
     window.aquarium = Aquarium;
+    let backToTopButton = document.getElementById("back-to-top");
+    backToTopButton.addEventListener("click", () => {
+        window.aquarium.viewport.animate({
+            time: (window.aquarium.viewport.top / WORLD_HEIGHT) * 3000,
+            position: new PIXI.Point(window.aquarium.viewport.left, 0),
+            ease: "easeInOutCirc",
+            removeOnInterrupt: true
+        });
+    })
     // Quality settings selector for aquarium
     let qualitySelector = document.getElementById("quality-settings-dropdown");
     qualitySelector.addEventListener("change", (e) => {
@@ -51,13 +60,16 @@ async function main() {
     Aquarium.addGameStateListener("onViewportUpdate", (viewport) => {
         let screenCoords = viewport.toScreen(viewport.worldWidth / 2, 50);
         if (window.innerHeight > window.innerWidth) {
-            document.getElementById("title-header").style.top = null;
             document.getElementById("nav").style.top = null;
         }
         else {
-            document.getElementById("title-header").style.top = screenCoords.y;
-            document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 10vmin)`;
+            document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 15vmin)`;
         }
+        if (window.aquarium.viewport.top < LEVELS.Surface) {
+            document.getElementById("title-header").style.top = screenCoords.y;
+        }
+        
+        document.getElementById("back-to-top").style.opacity = clamp(lerp(0, 1, (window.aquarium.viewport.center.y - LEVELS.Top) / (LEVELS.Top + 100)), 0, 1);
         
     })
     let data = await parseCSV(FISH_DATA_PATH);

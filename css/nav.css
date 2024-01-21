@@ -252,19 +252,19 @@ footer {
 
 	nav a {
 		position: relative;
-		width: 20vw;
-		height: 10vw;
-		padding: 1em 3em;
-		padding-top: 1.9em;
+	    width: 21vw;
+		height: 12vw;
+		padding: 3.4vmax 3.4vmax;
+		padding-top: 1.9rem;
+		font-size: 1.7vmax;
 		box-sizing: border-box;
-		background-image: url(../images/cloud.png);
 		background-repeat: no-repeat;
 		background-size: contain;
 		background-position: center;
 	
 		display: flex;
 		flex-direction: row;
-		align-items: center;
+		align-items: flex-end;
 		justify-content: center;
 	
 		text-align: center;
@@ -274,6 +274,36 @@ footer {
 		transform-origin: 50% 0%;
 	
 		text-decoration: none;
+
+		font-family: "Belanosima";
+
+		color: #074f80;
+
+		gap: 0;
+	}
+
+	nav a:nth-of-type(1) {
+		background-image: url(../images/AltareBGElements_cloud-1.png);
+		padding-bottom: 1.5em;
+		left: 2em;
+	}
+	nav a:nth-of-type(2) {
+		background-image: url(../images/AltareBGElements_cloud-2.png);
+		padding-bottom: 1.7em;
+		left: 1em;
+	}
+	nav a:nth-of-type(3) {
+		background-image: url(../images/AltareBGElements_cloud-3.png);
+	}
+	nav a:nth-of-type(4) {
+		background-image: url(../images/AltareBGElements_cloud-7.png);
+		background-position: 50% 35%;
+	}
+	nav a:nth-of-type(5) {
+		background-image: url(../images/AltareBGElements_cloud-4.png);
+		background-position: 50% 40%;
+		left: -1em;
+		top: 2em;
 	}
 
 	#close-nav-menu,
