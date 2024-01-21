@@ -31,7 +31,7 @@ export const Aquarium = ((options = {}) => {
     self.settings = {
         worldWidth: options.worldWidth || WORLD_WIDTH,
         worldHeight: options.worldHeight || WORLD_HEIGHT,
-        debug: options.debug || true,
+        debug: options.debug || false,
         filters: options.filters || true
     };
     self.emitEvent = (e, data) => {
@@ -86,6 +86,8 @@ async function init (data) {
 
         events: Aquarium.app.renderer.events
     });
+
+    Aquarium.app.renderer.events.cursorStyles.grab = "grab";
     // activate plugins
     Aquarium.viewport
         .drag({direction: "all", pressDrag: true, clampWheel: true })
@@ -118,7 +120,7 @@ async function init (data) {
     let bg = new PIXI.Sprite(generateGradient(
         // ["#82cbff", "#82cbff", "#D3FFE9", "#2B59C3", "#011138"]
         // ["#74b9ff", "#D2E9FF", "#D2E9FF", "#2973c4", "#2973c4", "#011138"], 
-        ["#74b9ff", "#D2E9FF", "#2a75c5", "#ccfff6", "#82cbff", "#2973c4", "#011138"], 
+        ["#4c8bda", "#D2E9FF", "#2a75c5", "#ccfff6", "#82cbff", "#2973c4", "#011138"], 
         { 
             stops: [
                 0,
@@ -221,6 +223,7 @@ async function init (data) {
         if (Aquarium.currentActiveFish === fish) {
             Aquarium.currentActiveFish.node.blur();
             Aquarium.currentActiveFish = undefined;
+            setCursor("default");
         }
         fish.toggleHighlight(false);
     })
@@ -228,6 +231,12 @@ async function init (data) {
     Aquarium.app.ticker.add(d => {
         if (Aquarium.altareBoat) {
             Aquarium.altareBoat.y = LEVELS.Top + Math.sin(Date.now() / 380);
+        }
+        if (Aquarium.altareFloat) {
+            Aquarium.altareFloat.y = 14500 + Math.sin(Date.now() / 500) * 50;
+            Aquarium.altareSlime.y = 14500 + Math.sin(50 + Date.now() / 500) * 20;
+            Aquarium.altareFloat.rotation = Math.sin(Date.now() / 380) / 10;
+            Aquarium.altareSlime.rotation = Math.sin(100 + Date.now() / 380) / 10;
         }
         if (Aquarium.settings.filters) {
             overlayGraphic.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
@@ -283,18 +292,25 @@ async function loadAltare () {
         Aquarium.altareBoat.x = WORLD_WIDTH - 500;
         Aquarium.altareBoat.y = LEVELS.Top;
 
-        // waterRepeatingTexRight.anchor.set(1, 0);
-        // waterRepeatingTexLeft.anchor.set(0, 0);
-        // waterRepeatingTexRight.x = 650;
-        // waterRepeatingTexLeft.x = -3180;
-        // waterRepeatingTexRight.y = -110;
-        // waterRepeatingTexLeft.y = -110;
-        // waterRepeatingTexRight.scale.set(-1, 1.28);
-        // waterRepeatingTexLeft.scale.set(1, 1.28);
-        // Aquarium.altareBoat.addChild(waterRepeatingTexRight);
-        // Aquarium.altareBoat.addChild(waterRepeatingTexLeft);
+        Aquarium.altareFloat = PIXI.Sprite.from("../images/Altare.png")
+        Aquarium.altareSlime = PIXI.Sprite.from("../images/Slime.png")
+        Aquarium.altareFloat.anchor.set(0.5);
+        Aquarium.altareSlime.anchor.set(0.5);
+        Aquarium.altareFloat.scale.set(0.5);
+        Aquarium.altareSlime.scale.set(0.5);
+        Aquarium.altareFloat.x = 200;
+        Aquarium.altareFloat.y = 14500;
+        Aquarium.altareSlime.x = 400;
+        Aquarium.altareSlime.y = 14500;
+
+        Aquarium.altareFloat.interactive = true;
+        Aquarium.altareSlime.interactive = true;
+        Aquarium.altareFloat.cursor = "grab";
+        Aquarium.altareSlime.cursor = "grab";
         
         // add the animation to the scene and render...
+        Aquarium.viewport.addChild(Aquarium.altareFloat);
+        Aquarium.viewport.addChild(Aquarium.altareSlime);
         Aquarium.viewport.addChild(Aquarium.altareBoat);
         
         if (Aquarium.altareBoat.state.hasAnimation("animation")) {
@@ -456,10 +472,10 @@ function setDebug (isActive) {
 function randomRange(min, max) {
     return Math.random() * (max - min) + min;
 }
-function lerp (start, end, v){
+export function lerp (start, end, v){
     return (1 - v) * start + v * end;
 }
-function clamp (v, min, max) {
+export function clamp (v, min, max) {
     return Math.min(Math.max(v, min), max);
 };
 function border(viewport) {
@@ -505,4 +521,9 @@ function resize () {
     }
 
     Aquarium.emitEvent("onViewportUpdate", Aquarium.viewport);
+}
+
+function setCursor (cursorMode) {
+    Aquarium.app.renderer.events.rootBoundary.cursor = (cursorMode);
+    Aquarium.app.renderer.events.setCursor(cursorMode);
 }

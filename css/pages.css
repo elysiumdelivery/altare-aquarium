@@ -2,6 +2,7 @@ h1 {
 	width: 100%;
     text-align: center;
     font-size: 4vmin;
+	color: white;
 }
 
 nav {
@@ -9,7 +10,7 @@ nav {
 }
 
 main {
-	background: linear-gradient(to bottom, rgba(130,203,255,1) 0%, rgba(130,203,255,1) 10%, rgba(211,255,233,1) 25%, rgba(43,89,195,1) 79%, rgba(1,17,56,1) 100%);
+	background: linear-gradient(to bottom, rgba(76, 139, 218,1) 0%, rgba(130,203,255,1) 10%, rgba(211,255,233,1) 25%, rgba(43,89,195,1) 79%, rgba(1,17,56,1) 100%);
 	background-repeat: no-repeat;
 	height: auto;
 }

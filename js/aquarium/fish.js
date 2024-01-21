@@ -58,7 +58,8 @@ Fish.prototype.init = async function () {
                 self.hitArea.drawRect(bounds.x + (bounds.width/2) - (minSize/2), bounds.y + (bounds.y/2) - (minSize/2), minSize, minSize);
             }
             self.hitArea.endFill();
-           
+            self.hitArea.cursor = "pointer";
+            self.hitArea.interactive = true;
             self.model.addChild(self.hitArea); 
     
             return Promise.resolve(self);
@@ -100,6 +101,9 @@ Fish.prototype.update = function (delta) {
     if (!Aquarium.accessibilityActive) {
         if (Aquarium.currentActiveFish !== this && (this.containsPoint(Aquarium.app.renderer.events.pointer))) {
             Aquarium.emitEvent("onFishOver", this);
+        }
+        else if (Aquarium.currentActiveFish === this && (this.containsPoint(Aquarium.app.renderer.events.pointer))) {
+            Aquarium.emitEvent("onFishMove", this);
         }
         else if (Aquarium.currentActiveFish === this && !(this.containsPoint(Aquarium.app.renderer.events.pointer))) {
             Aquarium.emitEvent("onFishOut", this);
