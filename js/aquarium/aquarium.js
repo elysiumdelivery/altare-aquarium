@@ -407,7 +407,7 @@ async function loadData(allFishData) {
 }
 
 function setupFilters () {
-    const displacementMap = "https://cdn.jsdelivr.net/gh/pixijs/pixi-filters/tools/demo/images/displacement_map.png";
+    const displacementMap = "displacement_map.webp";
     const displacementSprite = PIXI.Sprite.from(displacementMap, {
         wrapMode: PIXI.WRAP_MODES.REPEAT
     });
