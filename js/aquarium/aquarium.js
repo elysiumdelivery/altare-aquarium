@@ -260,7 +260,7 @@ async function init (data) {
 
     Aquarium.app.start();
     Aquarium.emitter.emitNow();
-    Aquarium.bgm.play();
+    // Aquarium.bgm.play();
     Aquarium.viewport.alpha = 1;
 
     window.addEventListener("resize", resize);
