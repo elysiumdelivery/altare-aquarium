@@ -256,7 +256,7 @@ async function init (data) {
     Aquarium.toggleFilters(Aquarium.settings.filters);
     Aquarium.resize = resize;
 
-    setupSound();
+    // setupSound();
 
     Aquarium.app.start();
     Aquarium.emitter.emitNow();

@@ -102,9 +102,6 @@ Fish.prototype.update = function (delta) {
         if (Aquarium.currentActiveFish !== this && (this.containsPoint(Aquarium.app.renderer.events.pointer))) {
             Aquarium.emitEvent("onFishOver", this);
         }
-        else if (Aquarium.currentActiveFish === this && (this.containsPoint(Aquarium.app.renderer.events.pointer))) {
-            Aquarium.emitEvent("onFishMove", this);
-        }
         else if (Aquarium.currentActiveFish === this && !(this.containsPoint(Aquarium.app.renderer.events.pointer))) {
             Aquarium.emitEvent("onFishOut", this);
         }

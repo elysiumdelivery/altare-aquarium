@@ -62,8 +62,10 @@ async function main() {
         if (window.innerHeight > window.innerWidth) {
             document.getElementById("nav").style.top = null;
         }
-        else if (window.aquarium.viewport.top < LEVELS.Surface) {
+        else {
             document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 15vmin)`;
+        }
+        if (window.aquarium.viewport.top < LEVELS.Surface) {
             document.getElementById("title-header").style.top = screenCoords.y;
         }
         
