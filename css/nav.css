@@ -283,24 +283,24 @@ footer {
 	}
 
 	nav a:nth-of-type(1) {
-		background-image: url(../images/AltareBGElements_cloud-1.png);
+		background-image: url(../images/AltareBGElements_cloud-1.webp);
 		padding-bottom: 1.5em;
 		left: 2em;
 	}
 	nav a:nth-of-type(2) {
-		background-image: url(../images/AltareBGElements_cloud-2.png);
+		background-image: url(../images/AltareBGElements_cloud-2.webp);
 		padding-bottom: 1.7em;
 		left: 1em;
 	}
 	nav a:nth-of-type(3) {
-		background-image: url(../images/AltareBGElements_cloud-3.png);
+		background-image: url(../images/AltareBGElements_cloud-3.webp);
 	}
 	nav a:nth-of-type(4) {
-		background-image: url(../images/AltareBGElements_cloud-7.png);
+		background-image: url(../images/AltareBGElements_cloud-7.webp);
 		background-position: 50% 35%;
 	}
 	nav a:nth-of-type(5) {
-		background-image: url(../images/AltareBGElements_cloud-4.png);
+		background-image: url(../images/AltareBGElements_cloud-4.webp);
 		background-position: 50% 40%;
 		left: -1em;
 		top: 2em;

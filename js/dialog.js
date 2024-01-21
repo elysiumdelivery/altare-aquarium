@@ -20,7 +20,7 @@ export async function setupDetailsDialog() {
 export function updateDetailsDialog(id, data, cardUrl) {
   // TODO;
   // Header
-  // Image -> `"images/thumbs/${data["Sea Level"]}/${data["Filename"]}.png"`
+  // Image -> `"images/thumbs/${data["Sea Level"]}/${data["Filename"]}.webp"`
   DETAILS_DIALOG_EL.getElementsByClassName("dialog-title")[0].innerHTML = "";
   DETAILS_DIALOG_EL.getElementsByClassName(
     "dialog-title"
@@ -36,7 +36,7 @@ export function updateDetailsDialog(id, data, cardUrl) {
   )[0];
   fishImage.className = "details-dialog-fish";
   fishImage.classList.add(`size_${data["Size Category"]}`);
-  fishImage.src = `images/thumbs/${data["Filename"]}.png`;
+  fishImage.src = `images/thumbs/${data["Filename"]}.webp`;
 
   // Clear + set card metadata
   DETAILS_DIALOG_EL.getElementsByClassName("details-dialog-text")[0].innerHTML =

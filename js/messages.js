@@ -115,7 +115,7 @@ function renderTwitterArtCredits(twitter_art_data) {
   twitter_art_data.forEach((artData) => {
     const artContainer = document.createElement("li");
     const img = document.createElement("img");
-    img.src = `../images/twitter/${artData["Artwork"]}`;
+    img.src = `../images/twitter/${artData["Artwork"].replace(/\.png|\.gif/i, ".webp")}`;
     img.alt = artData["Alt"];
     artContainer.append(img);
     if (artData["Twitter"] && artData["Twitter"].trim() != "-") {
