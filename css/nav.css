@@ -160,8 +160,8 @@ footer {
 #bgm-controls button {
     position: relative;
     appearance: none;
-    width: 5vmax;
-    height: 5vmax;
+    width: 3.5vmax;
+    height: 3.5vmax;
     border-radius: 50%;
     background: white;
     padding: 0;
