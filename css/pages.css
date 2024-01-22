@@ -6,15 +6,16 @@
     --bg-color-lighten-50: #6c8bd7;
 }
 
+#title-header {
+	margin-top: 0;
+	padding-top: 1em;
+}
+
 h1 {
 	width: 100%;
     text-align: center;
     font-size: 4vmin;
 	color: white;
-}
-
-nav {
-	height: 25vh;
 }
 
 main {
