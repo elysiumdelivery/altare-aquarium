@@ -160,8 +160,8 @@ footer {
 #bgm-controls button {
     position: relative;
     appearance: none;
-    width: 5vmax;
-    height: 5vmax;
+    width: 3.5vmax;
+    height: 3.5vmax;
     border-radius: 50%;
     background: white;
     padding: 0;
@@ -283,6 +283,11 @@ footer {
 @media only screen and (min-aspect-ratio: 1/1) {
 	/* wide styling, for when the tabs are all visible on screen */
 	
+
+	nav {
+		height: 25vh;
+	}
+
 	nav a:not(#nav-home).active {
 		/* font-size: 0.75em; */
 	}

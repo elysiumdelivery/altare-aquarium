@@ -76,12 +76,18 @@ nav a {
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
-
-    pointer-events: none;
 }
 
 #loader.done .spinner-container img {
     animation: none;
+    cursor: pointer;
+    transition: 0.5s transform ease;
+    transform: scale(1);
+}
+
+#loader.done .spinner-container img:hover,
+#loader.done .spinner-container img:active {
+    transform: scale(1.05);
 }
 
 #loader .spinner-container label {
@@ -112,8 +118,7 @@ nav a {
     background-color: rgba(255, 255, 255, 1);
 }
 
-#loader button {
-    appearance: none;
+#loader p {
     padding: 0.5em 1em;
     border: 0;
     font-family: 'ADLaM Display';
@@ -121,6 +126,8 @@ nav a {
     background: transparent;
     font-size: 2.5vmax;
     cursor: pointer;
+    margin-left: 2vmin;
+    text-align: center;
 }
 
 #quality-settings {

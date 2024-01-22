@@ -78,7 +78,7 @@ async function main() {
             document.getElementById("nav").style.top = null;
         }
         else {
-            document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 15vmin)`;
+            document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 12vmin)`;
         }
         if (window.aquarium.viewport.top < LEVELS.Surface) {
             document.getElementById("title-header").style.top = screenCoords.y;
@@ -111,11 +111,11 @@ async function main() {
         loader.querySelector("progress").remove();
         loader.querySelector("label").remove();
 
-        let enterButton = document.createElement("button");
-        enterButton.ariaLabel = "Enter Interactive Aquarium";
-        enterButton.innerText = "Click to \n Enter";
-        loader.querySelector(".spinner-container").appendChild(enterButton);
-        enterButton.onclick = () => {
+        let enterPrompt = document.createElement("p");
+        loader.ariaLabel = "Click to enter Interactive Aquarium";
+        enterPrompt.innerText = "Click to \n Enter";
+        loader.querySelector(".spinner-container").appendChild(enterPrompt);
+        loader.onclick = () => {
             loader.classList.add("fade");
             setTimeout(() => {
                 loader.remove();
