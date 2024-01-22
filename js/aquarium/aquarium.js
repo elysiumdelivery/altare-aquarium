@@ -1,4 +1,5 @@
 import { Fish, parseMath } from "./fish.js";
+import { Particles } from "./particle.js";
 
 const spineModel = "../images/spine/AltareBoatBdayAnimationPrep.json";
 
@@ -100,10 +101,14 @@ async function init (data) {
         if (e.type == "drag") {
             this.isDraggingViewport = true;
         }
+        Aquarium.particlesFront.particleContainer.y = e.viewport.top;
+        Aquarium.particlesBack.particleContainer.y = e.viewport.top;
         Aquarium.emitEvent("onViewportUpdate", e.viewport);
 
     });
+
     Aquarium.viewport.on("moved-end", (e) => {
+        console.log(e)
         setTimeout(function () {
             this.isDraggingViewport = false;
         }.bind(this), 50)
@@ -114,7 +119,6 @@ async function init (data) {
     Aquarium.viewport.sortableChildren = true;
 
     Aquarium.overlay = new PIXI.Container();
-    setupEmitter(Aquarium.overlay);
     Aquarium.app.stage.addChild(Aquarium.viewport)
     Aquarium.app.stage.addChild(Aquarium.overlay)
 
@@ -240,7 +244,11 @@ async function init (data) {
         }
         if (Aquarium.settings.filters) {
             overlayGraphic.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
-            Aquarium.emitter.parent.alpha = clamp(lerp(0, 1, (Aquarium.viewport.top - LEVELS.Top) / (LEVELS.Top + 100)), 0, 1);
+            if (Aquarium.particlesFront && Aquarium.particlesBack) {
+                Aquarium.particlesFront.particleContainer.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
+                Aquarium.particlesBack.particleContainer.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
+            }
+            // Aquarium.emitter.parent.alpha = clamp(lerp(0, 1, (Aquarium.viewport.top - LEVELS.Top) / (LEVELS.Top + 100)), 0, 1);
             Aquarium.filters.godrayFilter.time += d / lerp(50, 100, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
             Aquarium.filters.godrayFilter.gain = lerp(0.1, 0.4, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
             Aquarium.filters.godrayFilter.lacunarity = lerp(1.8, 5, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
@@ -248,19 +256,20 @@ async function init (data) {
 
             Aquarium.filters.displacementFilter.enabled = Aquarium.viewport.top >= LEVELS.Surface;
 
-            Aquarium.emitter.update(d * 0.001);
+            // Aquarium.emitter.update(d * 0.001);
         }
+        
         updateDebugLayer();
     });
 
     Aquarium.toggleFilters(Aquarium.settings.filters);
     Aquarium.resize = resize;
 
-    // setupSound();
+    setupSound();
 
     Aquarium.app.start();
-    Aquarium.emitter.emitNow();
-    // Aquarium.bgm.play();
+    // Aquarium.emitter.emitNow();
+    Aquarium.bgm.play();
     Aquarium.viewport.alpha = 1;
 
     window.addEventListener("resize", resize);
@@ -279,6 +288,15 @@ async function init (data) {
             }
         });
 
+        Aquarium.particlesFront = new Particles();
+        Aquarium.particlesBack = new Particles();
+        Aquarium.viewport.addChild(Aquarium.particlesFront.particleContainer)
+        Aquarium.viewport.addChild(Aquarium.particlesBack.particleContainer)
+        Aquarium.particlesFront.particleContainer.zIndex = LAYERS.Moving + 1000;
+        Aquarium.viewport.on("wheel", (e) => {
+            Aquarium.particlesFront.handleScroll(e);
+            Aquarium.particlesBack.handleScroll(e);
+        });
         Aquarium.viewport.fitWidth()
         Aquarium.viewport.clamp({direction: "all"})
         resize();
@@ -407,7 +425,7 @@ async function loadData(allFishData) {
 }
 
 function setupFilters () {
-    const displacementMap = "displacement_map.webp";
+    const displacementMap = "images/displacement_map.webp";
     const displacementSprite = PIXI.Sprite.from(displacementMap, {
         wrapMode: PIXI.WRAP_MODES.REPEAT
     });
@@ -424,13 +442,6 @@ function setupFilters () {
     
 }
 
-function setupEmitter (container) {
-    let emitterContainer = new PIXI.ParticleContainer();
-    container.addChildAt(emitterContainer);
-    Aquarium.emitter = new PIXI.particles.Emitter(emitterContainer, particleConfig);
-    Aquarium.emitter.emit = true;
-}
-
 function toggleFilters (isOn) {
     Aquarium.settings.filters = isOn;
     if (Aquarium.settings.filters) {
@@ -444,13 +455,9 @@ function toggleFilters (isOn) {
 }
 
 function setupSound () {
-    Aquarium.bgm = PIXI.sound.Sound.from({
-        url: '../sounds/bgm.mp3',
-        loop: true,
-        complete: function() {
-            console.log('Sound finished');
-        }
-    });
+    Aquarium.bgm = PIXI.sound.add('bgm', 'sounds/bgm.mp3');
+    Aquarium.bgm.loop = true;
+    Aquarium.bgm.volume = 0.5;
 }
 
 function setupDebug () {
@@ -544,126 +551,10 @@ function resize () {
         overlayGraphic.width = window.innerWidth;
         overlayGraphic.height = window.innerHeight;
     }
+    Aquarium.particlesFront.width = WORLD_WIDTH;
+    Aquarium.particlesBack.width = WORLD_WIDTH;
+    Aquarium.particlesFront.height = Aquarium.viewport.bottom - Aquarium.viewport.top;
+    Aquarium.particlesBack.height = Aquarium.viewport.bottom - Aquarium.viewport.top;
 
     Aquarium.emitEvent("onViewportUpdate", Aquarium.viewport);
-}
-
-
-let particleConfig = {
-    "lifetime": {
-        "min": 5,
-        "max": 10
-    },
-    "frequency": 0.001,
-    "emitterLifetime": -1,
-    "maxParticles": 1000,
-    "addAtBack": false,
-    "pos": {
-        "x": 0,
-        "y": 0
-    },
-    "behaviors": [
-        {
-            "type": "alpha",
-            "config": {
-                "alpha": {
-                    "list": [
-                        {
-                            "time": 0,
-                            "value": 0
-                        },
-                        {
-                            "time": 0.25,
-                            "value": 0.75
-                        },
-                        {
-                            "time": 0.5,
-                            "value": 1
-                        },
-                        {
-                            "time": 1,
-                            "value": 0
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            type: 'moveSpeedStatic',
-            config: {
-                "min": 200,
-                "max": 200
-            }
-        },
-        {
-            "type": "rotation",
-            "config": {
-                "accel": 0,
-                "minSpeed": 0,
-                "maxSpeed": 50,
-                "minStart": 260,
-                "maxStart": 280
-            }
-        },
-        {
-            "type": "scale",
-            "config": {
-                "scale": {
-                    "list": [
-                        {
-                            "time": 0,
-                            "value": 0.1
-                        },
-                        {
-                            "time": 1,
-                            "value": 0.05
-                        }
-                    ]
-                },
-                "minMult": 1
-            }
-        },
-        {
-            type: 'color',
-            config: {
-                color: {
-                    list: [
-                        {
-                            value: "#ffffff",
-                            time: 0
-                        },
-                        {
-                            value: "#3fcbff",
-                            time: 1
-                        }
-                    ],
-                },
-            }
-        },
-        {
-            "type": "rotationStatic",
-            "config": {
-                "min": 0,
-                "max": 360
-            }
-        },
-        {
-            "type": "spawnShape",
-            "config": {
-                "type": "rect",
-                "data": {
-                    "x": 0,
-                    "y": 0,
-                    "w": 1920,
-                    "h": 1080
-                }
-            }
-        },
-        {
-            type: 'textureSingle',
-            config: {
-                texture: PIXI.Texture.from('../images/particle.webp')
-            }
-        }
-    ]
 }

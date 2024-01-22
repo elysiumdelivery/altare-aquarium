@@ -76,6 +76,8 @@ async function main() {
     Aquarium.init(data).then(() => {        
         // Remove loading screen. We've loaded in everything
         let loader = document.getElementById("loader");
+
+        // loader.
         
         Aquarium.addGameStateListener("onFishClicked", (fishData) => {
             // Open dialog info on selected fish
