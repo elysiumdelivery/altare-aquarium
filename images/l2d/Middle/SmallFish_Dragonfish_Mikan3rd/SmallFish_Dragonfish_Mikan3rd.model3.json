@@ -1,0 +1,1 @@
+{"Version":3,"FileReferences":{"Moc":"SmallFish_Dragonfish_Mikan3rd.moc3","Textures":["SmallFish_Dragonfish_Mikan3rd.256/texture_00.webp"],"DisplayInfo":"SmallFish_Dragonfish_Mikan3rd.cdi3.json","Motions":{"Idle":[{"File":"Idle.motion3.json"}]}},"Groups":[{"Target":"Parameter","Name":"LipSync","Ids":[]},{"Target":"Parameter","Name":"EyeBlink","Ids":[]}],"HitAreas":[]}

@@ -1,0 +1,1 @@
+{"Version":3,"FileReferences":{"Moc":"BigFish_Luminousa_Danboru.moc3","Textures":["BigFish_Luminousa_Danboru.512/texture_00.webp"],"DisplayInfo":"BigFish_Luminousa_Danboru.cdi3.json","Motions":{"Idle":[{"File":"Idle.motion3.json"}]}},"Groups":[{"Target":"Parameter","Name":"LipSync","Ids":[]},{"Target":"Parameter","Name":"EyeBlink","Ids":[]}],"HitAreas":[]}
