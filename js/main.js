@@ -22,6 +22,21 @@ async function main() {
     window.fishAriaDiv = document.getElementById("fish-aria");
     await setupDetailsDialog();
     window.aquarium = Aquarium;
+    let volumeButton = document.getElementById("bgm-toggle");
+    volumeButton.onclick = function () {
+        let states = ["full", "low", "mute"];
+        let state = this.getAttribute("state");
+        let stateIdx = states.indexOf(state);
+        stateIdx++;
+        if (stateIdx < 0 || stateIdx >= states.length) stateIdx = 0;
+        switch (states[stateIdx]) {
+            case "full": document.getElementById("bgm").volume = 1; break;
+            case "low": document.getElementById("bgm").volume = 0.25; break;
+            case "mute": document.getElementById("bgm").volume = 0; break;
+        }
+        this.setAttribute("state", states[stateIdx]);
+        this.ariaLabel = `Volume set to ${states[stateIdx]}. Toggle to change.`
+    }
     let backToTopButton = document.getElementById("back-to-top");
     backToTopButton.addEventListener("click", () => {
         window.aquarium.viewport.animate({
@@ -70,12 +85,44 @@ async function main() {
         }
         
         document.getElementById("back-to-top").style.opacity = clamp(lerp(0, 1, (window.aquarium.viewport.center.y - LEVELS.Top) / (LEVELS.Top + 100)), 0, 1);
+
+        if (window.innerWidth < window.innerHeight) {
+            let bgmNode = document.getElementById("bgm-controls");
+            let bgmVolume = bgmNode.parentNode.removeChild(bgmNode);
+            let nav = document.getElementById("quality-settings").parentNode;
+            nav.insertBefore(bgmVolume, document.getElementById("quality-settings"));
+            bgmVolume.classList.add("menu-item")
+        }
+        else {
+            let bgmNode = document.getElementById("bgm-controls");
+            let bgmVolume = bgmNode.parentNode.removeChild(bgmNode);
+            let mainSection = document.getElementById("bgm").parentNode;
+            mainSection.insertBefore(bgmVolume, document.getElementById("bgm").nextSibling);
+            bgmVolume.classList.remove("menu-item")
+        }
         
     })
     let data = await parseCSV(FISH_DATA_PATH);
     Aquarium.init(data).then(() => {        
         // Remove loading screen. We've loaded in everything
         let loader = document.getElementById("loader");
+
+        loader.classList.add("done");
+        loader.querySelector("progress").remove();
+        loader.querySelector("label").remove();
+
+        let enterButton = document.createElement("button");
+        enterButton.ariaLabel = "Enter Interactive Aquarium";
+        enterButton.innerText = "Enter";
+        loader.querySelector(".spinner-container").appendChild(enterButton);
+        enterButton.onclick = () => {
+            loader.classList.add("fade");
+            setTimeout(() => {
+                loader.remove();
+            }, 600);
+
+            document.getElementById("bgm").play();
+        }
         
         Aquarium.addGameStateListener("onFishClicked", (fishData) => {
             // Open dialog info on selected fish
@@ -84,11 +131,6 @@ async function main() {
         });
 
         overlayToggle.checked = aquarium.overlay.visible;
-
-        loader.classList.add("fade");
-        setTimeout(() => {
-            loader.remove();
-        }, 750);
     });
 
 }

@@ -156,7 +156,38 @@ footer {
 	transition: background-color 0.3s ease;
   }
 
-  @media only screen and (max-aspect-ratio: 1/1) {
+
+#bgm-controls button {
+    position: relative;
+    appearance: none;
+    width: 5vmax;
+    height: 5vmax;
+    border-radius: 50%;
+    background: white;
+    padding: 0;
+    border: 0;
+}
+
+#bgm-controls button img {
+    position: absolute;
+    left: 15%;
+    top: 15%;
+    width: 70%;
+    height: 70%;
+}
+
+#bgm-toggle[state="full"] img:not([track-state="full"]),
+#bgm-toggle[state="low"] img:not([track-state="low"]),
+#bgm-toggle[state="mute"] img:not([track-state="mute"]) {
+    display: none;
+}
+
+#bgm-controls input[type="range"] {
+    appearance: slider-vertical;
+    width: 5vmax;
+}
+
+@media only screen and (max-aspect-ratio: 1/1) {
 	/* portrait / small width styling, show burger menu */
 	#nav-hamburger {
 		display: block;
@@ -241,6 +272,12 @@ footer {
 	#nav-mobile-download-pdf, #nav-mobile-download-a11y {
 		display: flex;
 	}
+
+	#bgm-controls {
+		position: relative;
+		top: auto;
+		right: auto;
+	}
 }
 
 @media only screen and (min-aspect-ratio: 1/1) {
@@ -310,5 +347,15 @@ footer {
 	nav .menu-item,
 	nav hr {
 		display: none;
+	}
+
+	#bgm-controls {
+		position: absolute;
+		top: 1vw;
+		right: 1vw;
+	}
+
+	#bgm-controls label {
+		visibility: hidden;
 	}
 }
