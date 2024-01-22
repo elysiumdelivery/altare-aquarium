@@ -1,0 +1,1 @@
+{"Version":3,"FileReferences":{"Moc":"BigFish_GiantTubeWorms_Irisnoira.moc3","Textures":["BigFish_GiantTubeWorms_Irisnoira.512/texture_00.webp"],"DisplayInfo":"BigFish_GiantTubeWorms_Irisnoira.cdi3.json","Motions":{"Idle":[{"File":"Idle.motion3.json"}]}},"Groups":[{"Target":"Parameter","Name":"EyeBlink","Ids":[]},{"Target":"Parameter","Name":"LipSync","Ids":[]}],"HitAreas":[]}

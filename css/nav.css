@@ -1,0 +1,314 @@
+nav {
+	position: relative;
+	width: 100%;
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 1em;
+}
+
+nav a:hover {
+	transform: scale(1.1) translateY(5%);
+}
+
+nav a:nth-child(1) {
+	top: 1em;
+}
+
+nav a:nth-child(2) {
+	top: -1em;
+}
+
+nav a:nth-child(3) {
+	top: 1.5em;
+}
+
+nav a:nth-child(4) {
+	top: -0.5em;
+}
+
+nav hr {
+	width: 30%;
+	margin: 1em 0;
+}
+
+nav a .icon,
+footer a .icon,
+#download-links a .icon {
+	position: relative;
+	width: 2em;
+	height: 2em;
+	margin-right: 0.5em;
+}
+
+#nav-hamburger {
+	/* hamburger stays up top while user is scrolling down */
+	position: sticky;
+	top: 0.5em;
+	right: 0;
+	height: 4em;
+	width: 4em;
+	background: rgb(59 71 179);
+	margin: 1em 0.25em;
+	margin-left: auto;
+	border: 0;
+	cursor: pointer;
+	/* enforces hamburger button to stay on top */
+	z-index: 1;
+
+	display: none;
+}
+
+#nav-hamburger:hover,
+#nav-hamburger:focus-visible {
+		background-color: #6f79cf;
+}
+
+#nav-hamburger img {
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+}
+
+#nav-mobile-download-pdf, #nav-mobile-download-a11y {
+	display:none;
+}
+
+/* back to scheduled programming */
+#close-nav-menu {
+	position: relative;
+	width: 2em;
+	height: 2em;
+	padding: 0;
+	margin-top: 1em;
+	border-radius: 50%;
+	background: transparent;
+	border: 2px solid white;
+
+	cursor: pointer;
+}
+
+#close-nav-menu img {
+	position: absolute;
+	width: 50%;
+	height: 50%;
+	left: 25%;
+	top: 25%;
+}
+
+footer {
+	color: white;
+	text-align: center;
+	padding: 30px;
+  }
+  
+  footer p {
+	font-size: 0.8em;
+  }
+  
+  #footer-nav {
+	color: white;
+	display: flex;
+	justify-content: center;
+	column-gap: 2vh;
+  }
+  
+  footer svg {
+	width:1em;
+	margin-right: 5px;
+  }
+  
+  footer a,
+  #download-links a {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	font-size: 0.8em;
+	color: white;
+  }
+  
+  #download-links a,
+  #footer-nav a {
+	padding: 7px 13px !important;
+	background-color: var(--bg-color-lighten-30);
+	border-radius: 3px;
+	cursor: pointer;
+  }
+  
+  footer a .icon,
+  #download-links a .icon {
+	position: relative;
+	width: 2em;
+	height: 2em;
+	margin-right: 0.5em;
+  }
+  
+  #download-links a:hover, #download-links a:active,
+  #footer-nav a:hover, #footer-nav a:active {
+	background-color: var(--accent-color);
+	transition: background-color 0.3s ease;
+  }
+
+  @media only screen and (max-aspect-ratio: 1/1) {
+	/* portrait / small width styling, show burger menu */
+	#nav-hamburger {
+		display: block;
+		/* ensure that this always stays above gacha cards, but below the card dialog */
+		z-index: 15;
+	}
+
+	nav {
+		/* prevent nav menu from being scrolled away */
+		position: fixed;
+		top: 0;
+		right: 0;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 100vw;
+		height: 100vh;
+		z-index: 999;
+
+		background-color: rgb(59 71 179 / 80%);
+		/* blur background for readability */
+		backdrop-filter: blur(5px);
+
+		visibility: hidden;
+		transition: 0.25s opacity ease;
+		opacity: 0;
+
+		pointer-events: none;
+	}
+
+	nav > * {
+		transition: 0.5s transform ease, 0.5s opacity ease;
+		transform: translateY(-2em);
+		opacity: 0;
+	}
+
+	nav a {
+		background-color: transparent !important;
+		padding: 0.5em 0;
+		margin: 0.5em 0;
+		color: white;
+		text-decoration: none;
+	}
+
+	nav .menu-item {
+		color: white;
+	}
+
+	nav a.active {
+		transform: translateY(-50%) scale(1.1);
+		border-bottom: 3px solid white;
+		border-bottom-style: double;
+	}
+
+	nav a:hover:not(.active),
+	nav button:hover:not(.active),
+	nav a:focus-visible:not(.active),
+	nav button:focus-visible:not(.active) {
+		transition-duration: 0.25s;
+		transform: scale(1.1);
+	}
+
+	nav.active {
+		visibility: visible;
+	}
+
+	nav.open {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	nav.open > * {
+		transform: translateY(0%);
+		opacity: 1;
+	}
+
+	nav.open a.active {
+		transform: translateY(0%) scale(1.1);
+		opacity: 1;
+	}
+
+	#nav-mobile-download-pdf, #nav-mobile-download-a11y {
+		display: flex;
+	}
+}
+
+@media only screen and (min-aspect-ratio: 1/1) {
+	/* wide styling, for when the tabs are all visible on screen */
+	
+	nav a:not(#nav-home).active {
+		/* font-size: 0.75em; */
+	}
+
+	nav a {
+		position: relative;
+	    width: 21vw;
+		height: 12vw;
+		padding: 3.4vmax 3.4vmax;
+		padding-top: 1.9rem;
+		font-size: 1.7vmax;
+		box-sizing: border-box;
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-position: center;
+	
+		display: flex;
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: center;
+	
+		text-align: center;
+	
+		transition: 0.25s transform ease;
+		transform: translateY(0);
+		transform-origin: 50% 0%;
+	
+		text-decoration: none;
+
+		font-family: "Belanosima";
+
+		color: #074f80;
+
+		gap: 0;
+	}
+
+	nav a:nth-of-type(1) {
+		background-image: url(../images/AltareBGElements_cloud-1.webp);
+		padding-bottom: 1.5em;
+		left: 2em;
+	}
+	nav a:nth-of-type(2) {
+		background-image: url(../images/AltareBGElements_cloud-2.webp);
+		padding-bottom: 1.7em;
+		left: 1em;
+	}
+	nav a:nth-of-type(3) {
+		background-image: url(../images/AltareBGElements_cloud-3.webp);
+	}
+	nav a:nth-of-type(4) {
+		background-image: url(../images/AltareBGElements_cloud-7.webp);
+		background-position: 50% 35%;
+	}
+	nav a:nth-of-type(5) {
+		background-image: url(../images/AltareBGElements_cloud-4.webp);
+		background-position: 50% 40%;
+		left: -1em;
+		top: 2em;
+	}
+
+	#close-nav-menu,
+	nav .menu-item,
+	nav hr {
+		display: none;
+	}
+}

@@ -1,0 +1,1 @@
+{"Version":3,"FileReferences":{"Moc":"LargeFish_UtopiasForsaken_Fluor.moc3","Textures":["LargeFish_UtopiasForsaken_Fluor.512/texture_00.webp"],"DisplayInfo":"LargeFish_UtopiasForsaken_Fluor.cdi3.json","Motions":{"Idle":[{"File":"Idle.motion3.json"}]}},"Groups":[{"Target":"Parameter","Name":"EyeBlink","Ids":[]},{"Target":"Parameter","Name":"LipSync","Ids":[]}],"HitAreas":[]}
