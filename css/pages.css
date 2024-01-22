@@ -1,3 +1,11 @@
+:root {
+    --accent-color: #4c8bda;
+    --accent-color-lighten-50: #a9d5ed;
+    --bg-color: #1d346d;
+    --bg-color-lighten-30: #345ec5;
+    --bg-color-lighten-50: #6c8bd7;
+}
+
 h1 {
 	width: 100%;
     text-align: center;
@@ -147,7 +155,9 @@ section#download-links a {
 	background-color: var(--bg-color);
 }
 
-section.credits-column {
+section.credits-column,
+section.sponsor-column,
+section.message-column {
 	min-height: auto;
 	padding: 1.5em;
 	background: rgb(255 255 255 / 50%);
@@ -163,7 +173,8 @@ section.credits-column {
 	animation-iteration-count: 1;
 	will-change: transform;
 }
-section.credits-column h2 {
+section.credits-column h2,
+section.sponsor-column h2 {
 	text-align: center;
 	font-size: 1.4em;
 	/* this is the credits background color */
@@ -244,27 +255,36 @@ section.credits-column#twitter-images li a {
 	margin-top: 0.5em;
 }
 
-section.credits-column h3 {
+section.credits-column h3,
+section.sponsor-column h3 {
 	font-size: 1.25em;
 	margin-bottom: 0.25em;
 }
 
-section.credits-column h4 {
+section.credits-column h4,
+section.sponsor-column h4 {
 	font-size: 1em;
 	margin: 0.5em 0;
 }
 
-section.credits-column a {
+section.credits-column a,
+section.sponsor-column a {
 	color: var(--bg-color);
 }
 
-section.credits-column a:visited {
+section.credits-column a:visited,
+section.sponsor-column a:visited {
 	color: var(--bg-color-lighten-50);
 }
 
-section.credits-column p {
+section.credits-column p,
+section.sponsor-column p {
 	margin-top: 0.25em;
 	font-size: 1em;
+}
+
+section.sponsor-column p {
+	text-align: center;
 }
 
 
@@ -279,14 +299,14 @@ section.credits-column p {
 /* message board text specific */
 
 #message-board {
-	color: white;
+	color: var(--bg-color);
 	text-align: center;
 }
 #message-board p {
 	line-height: 1.3;
 }
 #message-board a {
-	color: white;
+	color: var(--bg-color);
 	white-space: nowrap;
 }
 
