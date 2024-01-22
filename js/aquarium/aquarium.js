@@ -265,11 +265,9 @@ async function init (data) {
     Aquarium.toggleFilters(Aquarium.settings.filters);
     Aquarium.resize = resize;
 
-    setupSound();
+    // setupSound();
 
     Aquarium.app.start();
-    // Aquarium.emitter.emitNow();
-    Aquarium.bgm.play();
     Aquarium.viewport.alpha = 1;
 
     window.addEventListener("resize", resize);
@@ -458,6 +456,7 @@ function setupSound () {
     Aquarium.bgm = PIXI.sound.add('bgm', 'sounds/bgm.mp3');
     Aquarium.bgm.loop = true;
     Aquarium.bgm.volume = 0.5;
+    Aquarium.bgm.singleInstance = true;
 }
 
 function setupDebug () {

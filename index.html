@@ -36,8 +36,6 @@
         <!-- Libraries -->
         <script src="js/plugins/pixi/pixi.min.js"></script>
         <script src="js/plugins/pixi/pixi-sound.min.js"></script>
-        <script src="js/plugins/pixi/pixi-particles.min.js"></script>
-        <script src="js/plugins/pixi/particle-emitter.min.js"></script>
         <script src="js/plugins/pixi/pixi-filters.min.js"></script>
         <script src="js/plugins/pixi/pixi_viewport.umd.cjs"></script>
         <script src="js/plugins/pixi/live2dcubismcore.min.js"></script>
@@ -53,6 +51,15 @@
             <a href="#fish-aria" class="visually-hidden skip-link"
                 >Skip to content</a
             >
+            <audio id="bgm" src="sounds/bgm_long.mp3" loop></audio>
+            <div id="bgm-controls">
+                <label for="bgm-toggle">Toggle Volume: </label>
+                <button id="bgm-toggle" state="full">
+                    <img track-state="full" src="icons/volume_up.svg">
+                    <img track-state="low" src="icons/volume_down.svg">
+                    <img track-state="mute" src="icons/volume_off.svg">
+                </button>
+            </div>
             <h1 id="title-header">The Regis Altare Birthday Project 2024</h1>
              <!-- Burger menu for responsive layout -->
             <button id="nav-hamburger" aria-label="Toggle site navigation">
