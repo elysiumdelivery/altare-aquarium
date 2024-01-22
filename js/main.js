@@ -113,7 +113,7 @@ async function main() {
 
         let enterButton = document.createElement("button");
         enterButton.ariaLabel = "Enter Interactive Aquarium";
-        enterButton.innerText = "Enter";
+        enterButton.innerText = "Click to \n Enter";
         loader.querySelector(".spinner-container").appendChild(enterButton);
         enterButton.onclick = () => {
             loader.classList.add("fade");
