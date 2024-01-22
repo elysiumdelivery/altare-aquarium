@@ -108,7 +108,6 @@ async function init (data) {
     });
 
     Aquarium.viewport.on("moved-end", (e) => {
-        console.log(e)
         setTimeout(function () {
             this.isDraggingViewport = false;
         }.bind(this), 50)
