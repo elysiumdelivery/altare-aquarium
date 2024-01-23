@@ -315,6 +315,13 @@ section.sponsor-column p {
 	white-space: nowrap;
 }
 
+@media only screen and (min-aspect-ratio: 1/1) {
+	/* wide styling, for when the tabs are all visible on screen */
+	nav {
+		height: 25vh;
+	}
+}
+
 @media only screen and (max-width:1020px){
 	#youtube-video {
 		width: 80vw;
