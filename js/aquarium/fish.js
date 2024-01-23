@@ -33,7 +33,7 @@ Fish.prototype.init = async function () {
     }
     else {
         let modelFilePath = `images/l2d/${this.data["Sea Level"]}/${this.data["Filename"]}/${this.data["Filename"]}.model3.json`;
-        return PIXI.live2d.Live2DModel.from(modelFilePath, { autoInteract: false, idleMotionGroup: 'Idle' }).then((loadedModel) => {
+        return PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false }).then((loadedModel) => {
             self.model = loadedModel;
             self.model.cullable = true;
             self.model.filters = [];
@@ -111,11 +111,12 @@ Fish.prototype.update = function (delta) {
         this.toggleDirection();
     }
     if (!this.isStatic) {
-        // this.model.update(Aquarium.app.ticker.elapsedMS);
+       this.model.update(Aquarium.app.ticker.deltaMS);
     }
-    this.model.x += delta * this.speed * this.direction;
+    // this.model.x += delta * this.speed * this.direction;
+    this.model.x = WORLD_WIDTH / 2;
     if (this.data["Movement"] === "Moving") {
-        this.model.y += delta * this.speed * 0.5 * Math.sin((Date.now() + randomRange(20, 100))/ 600);
+        // this.model.y += delta * this.speed * 0.5 * Math.sin((Date.now() + randomRange(20, 100))/ 600);
     }
 }
 
