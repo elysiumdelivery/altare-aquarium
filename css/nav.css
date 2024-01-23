@@ -285,7 +285,7 @@ footer {
 	
 
 	nav {
-		height: 25vh;
+		height: 10vmax;
 	}
 
 	nav a:not(#nav-home).active {
