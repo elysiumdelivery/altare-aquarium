@@ -240,17 +240,22 @@ nav a {
 
 
 
-.details-dialog-fish {
+.details-dialog-fish,
+.details-dialog-img {
     width: 100%;
 }
 
-.details-dialog-fish.size_S {
+.details-dialog-img {
+    margin: 2em 0;
+}
+
+.details-dialog-img.size_S {
     width: 60%;
 }
-.details-dialog-fish.size_M {
+.details-dialog-img.size_M {
     width: 80%;
 }
-.details-dialog-fish.size_L {
+.details-dialog-img.size_L {
     width: 100%;
 }
 

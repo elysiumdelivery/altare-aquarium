@@ -33,7 +33,7 @@ Fish.prototype.init = async function () {
     }
     else {
         let modelFilePath = `images/l2d/${this.data["Sea Level"]}/${this.data["Filename"]}/${this.data["Filename"]}.model3.json`;
-        return PIXI.live2d.Live2DModel.from(modelFilePath, { autoUpdate: false, autoInteract: false, idleMotionGroup: 'Idle' }).then((loadedModel) => {
+        return PIXI.live2d.Live2DModel.from(modelFilePath, { autoInteract: false, idleMotionGroup: 'Idle' }).then((loadedModel) => {
             self.model = loadedModel;
             self.model.cullable = true;
             self.model.filters = [];
@@ -74,7 +74,7 @@ Fish.prototype.isVisible = function () {
 }
 Fish.prototype.isInBounds = function (top, left, bottom, right) {
     return  ((this.model.y - (this.model.height / 2)) >= top) && 
-            ((this.model.y + this.model.height / 2) <= bottom) && 
+            ((this.model.y + (this.model.height / 2)) <= bottom) && 
             ((this.model.x) >= left) &&
             ((this.model.x) <= right);
 
@@ -93,7 +93,7 @@ Fish.prototype.containsPoint = function (point) {
 }
 Fish.prototype.inRangeX = function (x, direction) {
     let xMin = this.rangeX[0] || 0;
-    let xMax = this.rangeX[1] || Aquarium.viewport.worldWidth;
+    let xMax = this.rangeX[1] || WORLD_WIDTH;
     return (x < xMin && direction === -1) || (x > xMax && direction === 1);
 }
 Fish.prototype.update = function (delta) {
@@ -111,7 +111,7 @@ Fish.prototype.update = function (delta) {
         this.toggleDirection();
     }
     if (!this.isStatic) {
-        this.model.update(Aquarium.app.ticker.elapsedMS);
+        // this.model.update(Aquarium.app.ticker.elapsedMS);
     }
     this.model.x += delta * this.speed * this.direction;
     if (this.data["Movement"] === "Moving") {
