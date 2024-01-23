@@ -228,6 +228,18 @@ nav a {
     margin: 0;
 }
 
+#fish-details-dialog.surface {
+    background: #BCD6DD;
+}
+#fish-details-dialog.middle {
+    background: #778795;
+}
+#fish-details-dialog.bottom {
+    background: #37424C;
+}
+
+
+
 .details-dialog-fish {
     width: 100%;
 }

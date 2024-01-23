@@ -294,6 +294,18 @@ async function init (data) {
             Aquarium.particlesFront.handleScroll(e);
             Aquarium.particlesBack.handleScroll(e);
         });
+        Aquarium.viewport.on("wheel", (e) => {
+            Aquarium.particlesFront.handleScroll(e);
+            Aquarium.particlesBack.handleScroll(e);
+        });
+        Aquarium.viewport.on("drag-start", (e) => {
+            Aquarium.particlesFront.handleDrag("start", e);
+            Aquarium.particlesBack.handleDrag("start", e);
+        });
+        Aquarium.viewport.on("moved", (e) => {
+            Aquarium.particlesFront.handleDrag("dragging", e);
+            Aquarium.particlesBack.handleDrag("dragging", e);
+        });
         Aquarium.viewport.fitWidth()
         Aquarium.viewport.clamp({direction: "all"})
         resize();

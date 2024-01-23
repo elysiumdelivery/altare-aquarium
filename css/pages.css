@@ -147,6 +147,8 @@ section#download-links {
 	display: flex;
 	justify-content: center;
 	background-color:transparent;
+	flex-wrap: wrap;
+    gap: 1em;
 }
 section#download-links a {
 	color: white;
