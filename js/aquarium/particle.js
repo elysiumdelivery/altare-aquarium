@@ -1,11 +1,8 @@
 import { Aquarium, LEVELS, WORLD_WIDTH, WORLD_HEIGHT } from "./aquarium.js";
 
-let THEME = "light";
 let MOTION_PREF = "allow";
 
 const PARTICLE_COUNT = 100;
-const DARK_COLORS = ["0x4361ee", "0x3a0ca3", "0x7209b7", "0xf72585"];
-const LIGHT_COLORS = ["0xbde0fe", "0xa2d2ff", "0xffafcc", "0xffc8dd"];
 
 // from: https://www.joshwcomeau.com/snippets/javascript/debounce/
 const debounce = (callback, wait) => {
@@ -150,15 +147,6 @@ Particles.prototype.handleScroll = function (event) {
     }
 }
 
-//   handleSwitch = () => {
-//     this.pixi.renderer.background.color = this.isLightTheme
-//       ? "0x00FFFF"
-//       : "0x4B0082";
-//     this.particleContainer.destroy();
-//     this.particleContainer = null;
-//     this.createParticles();
-//   };
-
 //   handleMotion = () => {
 //     this.particles.forEach((particle) => {
 //       const speed = this.motionPref ? Math.random() : 0;
@@ -171,26 +159,7 @@ Particles.prototype.handleScroll = function (event) {
 // for toggling theme and motion for demo purposes
 // this does not account for system preferences
 
-// const toggleTheme = document.getElementById("toggle-theme");
 // const toggleMotion = document.getElementById("toggle-motion");
-
-// toggleTheme.addEventListener("click", () => {
-//   let newTheme;
-//   const root = document.documentElement;
-
-//   if (THEME === "light") {
-//     newTheme = "dark";
-//   } else {
-//     newTheme = "light";
-//   }
-
-//   THEME = newTheme;
-//   const event = new CustomEvent("themeSwitch", { detail: newTheme });
-//   window.dispatchEvent(event);
-
-//   root.classList.remove("light", "dark");
-//   root.classList.add(newTheme);
-// });
 
 // toggleMotion.addEventListener("click", () => {
 //   let newPref;

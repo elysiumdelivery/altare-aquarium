@@ -14,4 +14,4 @@ magick mogrify -trim +repage images/thumbs/*.png
 magick mogrify -resize 1024x1024\> images/thumbs/*.png
 magick mogrify -resize 512x512\> images/twitter/*.png
 
-for file in $(find images/ -name '*.png'); do cwebp -q 50 "$file" -o "${file%.png}.webp"; done
+for file in $(find images/ -name '*.png'); do cwebp -q 100 "$file" -o "${file%.png}.webp"; done

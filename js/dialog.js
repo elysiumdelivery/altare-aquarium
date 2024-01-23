@@ -21,6 +21,9 @@ export function updateDetailsDialog(id, data, cardUrl) {
   // TODO;
   // Header
   // Image -> `"images/thumbs/${data["Sea Level"]}/${data["Filename"]}.webp"`
+
+  DETAILS_DIALOG_EL.className = data["Sea Level"].toLowerCase();
+
   DETAILS_DIALOG_EL.getElementsByClassName("dialog-title")[0].innerHTML = "";
   DETAILS_DIALOG_EL.getElementsByClassName(
     "dialog-title"
