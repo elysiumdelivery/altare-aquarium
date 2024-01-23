@@ -43,7 +43,7 @@ function Particle (texture, radius, x, y, speed) {
         const depthShift =
             (this.radius / 10) * this.scrollDelta * this.sprite.inertia;
         this.sprite.y += depthShift;
-        this.sprite.inertia -= delta * 0.02;
+        this.sprite.inertia -= delta;
         }
 
         if (this.sprite.x < 0) {
@@ -131,6 +131,28 @@ Particles.prototype.handleResize = debounce((event) => {
 Particles.prototype.handleScroll = function (event) {
     let self = this;
     if (!this.ticking) {
+        window.requestAnimationFrame(() => {
+            let newScroll = Aquarium.viewport.y;
+            let scrollDelta = self.scrollY - newScroll;
+            let delta = Math.floor(scrollDelta) || 0;
+            self.scrollY = newScroll;
+            self.particles.forEach((particle) => {
+                // particle.shift(delta)
+                particle.sprite.inertia = 1;
+                particle.scrollDelta = -delta;
+            });
+            self.ticking = false;
+        });
+        self.ticking = true;
+    }
+}
+
+Particles.prototype.handleDrag = function (type, event) {
+    let self = this;
+    if (type == "start") {
+        self.scrollY = event.viewport.y;
+    }
+    else if (type == "dragging" && !this.ticking) {
         window.requestAnimationFrame(() => {
             let newScroll = Aquarium.viewport.y;
             let scrollDelta = self.scrollY - newScroll;
