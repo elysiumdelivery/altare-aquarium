@@ -8,7 +8,7 @@ export const WORLD_WIDTH = 1920;
 export const WORLD_HEIGHT = 23000;
 export const LEVELS = {
     "Sky": 0,
-    "Top": 1500,
+    "Top": 1600,
     "Surface": 1800,
     "Middle": WORLD_HEIGHT * (1 / 2),
     "Floor": WORLD_HEIGHT * 0.75
