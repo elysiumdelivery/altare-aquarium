@@ -1,3 +1,5 @@
+
+
 /* styles that apply to just the interactive aquarium */
 html {
     /* fullscreen, no scrolling */
@@ -217,10 +219,23 @@ nav a {
     justify-content: flex-start;
 }
 
+.fish-details-dialog-close{
+    position: absolute;
+    transform: translate(0%, 0%);
+    top: 3%;
+    right: 3.5%;
+}
+
 .dialog-title, .details-dialog-text{
     background: rgba(255, 255, 255, 0.5);
     padding: 1rem;
-    
+    width: 97%;
+}
+
+.dialog-title#fish-details-title{
+    text-align: center;
+    margin-top: 2.5em;
+    font-size: 1.25em;
 }
 
 #fish-details-title h2{
@@ -264,9 +279,17 @@ nav a {
     text-decoration: underline;
 }
 
+.details-dialog-text p{
+    font-size: 1.25rem;
+}
+.details-dialog-text p:last-child{
+    margin-bottom: 0.5em;
+}
+
 .fish-info{
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
     font-weight: bold;
+    margin-top: 0.5em;
 }
 
 .dialog-container:not([aria-hidden="true"]) #fish-details-dialog, 
