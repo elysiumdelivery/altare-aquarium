@@ -113,10 +113,9 @@ Fish.prototype.update = function (delta) {
     if (!this.isStatic) {
        this.model.update(Aquarium.app.ticker.deltaMS);
     }
-    // this.model.x += delta * this.speed * this.direction;
-    this.model.x = WORLD_WIDTH / 2;
+    this.model.x += delta * this.speed * this.direction;
     if (this.data["Movement"] === "Moving") {
-        // this.model.y += delta * this.speed * 0.5 * Math.sin((Date.now() + randomRange(20, 100))/ 600);
+        this.model.y += delta * this.speed * 0.5 * Math.sin((Date.now() + randomRange(20, 100))/ 600);
     }
 }
 
