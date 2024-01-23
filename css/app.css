@@ -121,11 +121,13 @@ nav a {
 #loader p {
     padding: 0.5em 1em;
     border: 0;
-
     font-family: 'ADLaM Display';
     color: #074f80;
+    background: transparent;
     font-size: 2.5vmax;
+    cursor: pointer;
     margin-left: 2vmin;
+    text-align: center;
 }
 
 #quality-settings {
@@ -169,6 +171,8 @@ nav a {
     transform: translateX(-50%);
 }
 
+/* dialog box */
+
 .dialog-container {
     position: absolute;
     top: 0;
@@ -202,18 +206,26 @@ nav a {
     height: 80dvh;
     padding: 2em;
     box-sizing: border-box;
-
-    background: white;
-
+    background: #bcd6dd; /*test*/
     transition: 0.5s transform ease, 0.5s opacity ease;
     transform: translateY(25%);
     opacity: 0;
     overflow-y: auto;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+}
+
+.dialog-title, .details-dialog-text{
+    background: rgba(255, 255, 255, 0.5);
+    padding: 1rem;
+    
+}
+
+#fish-details-title h2{
+    font-size: 2rem;
+    margin: 0;
 }
 
 #fish-details-dialog.surface {
@@ -240,6 +252,16 @@ nav a {
 }
 .details-dialog-fish.size_L {
     width: 100%;
+}
+
+.details-dialog-text h3{
+    font-size: 1.5rem;
+    text-decoration: underline;
+}
+
+.fish-info{
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .dialog-container:not([aria-hidden="true"]) #fish-details-dialog, 
