@@ -35,9 +35,9 @@ export function updateDetailsDialog(id, data, cardUrl) {
   `
   );
   let fishImage = DETAILS_DIALOG_EL.getElementsByClassName(
-    "details-dialog-fish"
+    "details-dialog-img"
   )[0];
-  fishImage.className = "details-dialog-fish";
+  fishImage.className = "details-dialog-img";
   fishImage.classList.add(`size_${data["Size Category"]}`);
   fishImage.src = `images/thumbs/${data["Filename"]}.webp`;
 
