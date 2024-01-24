@@ -45,13 +45,13 @@ footer a .icon,
 
 #nav-hamburger {
 	/* hamburger stays up top while user is scrolling down */
-	position: sticky;
+	position: fixed;
 	top: 0.5em;
-	right: 0;
+    right: 0.5em;
 	height: 4em;
 	width: 4em;
 	background: rgb(59 71 179);
-	margin: 1em 0.25em;
+	margin: 0;
 	margin-left: auto;
 	border: 0;
 	cursor: pointer;
@@ -280,6 +280,20 @@ footer {
 	}
 }
 
+@media only screen and (max-aspect-ratio: 1/1) {
+
+	#title-header {
+		position: relative;
+		width: 60%;
+		/* margin-top: 8vh; */
+		margin: 0 auto;
+		font-size: 1.4em;
+	}
+
+	nav a {
+		font-size: 1em;
+	}
+}
 @media only screen and (min-aspect-ratio: 1/1) {
 	/* wide styling, for when the tabs are all visible on screen */
 	
