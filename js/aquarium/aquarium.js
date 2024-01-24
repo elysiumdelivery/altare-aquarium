@@ -208,7 +208,7 @@ async function init (data) {
      * Workaround where we emit our own event that acts as the click.
      */
     Aquarium.app.view.addEventListener('pointerup', (e) => {
-        if (!Aquarium.isDraggingViewport && Aquarium.currentActiveFish && Aquarium.currentActiveFish.model.containsPoint(e)) {
+        if (!Aquarium.isDraggingViewport && Aquarium.currentActiveFish && Aquarium.currentActiveFish.containsPoint(e)) {
             Aquarium.emitEvent("onFishClicked", { idx: Aquarium.currentActiveFish.id, data: Aquarium.currentActiveFish.data });
         }
     });
