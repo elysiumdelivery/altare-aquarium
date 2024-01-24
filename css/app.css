@@ -221,13 +221,13 @@ nav a {
 }
 
 .fish-details-dialog-close{
-    padding-top: 1em;
+    margin-top: 1.5em;
 }
 
 .dialog-title, .details-dialog-text{
     background: rgba(255, 255, 255, 0.5);
     padding: 1rem;
-    width: 90%;
+    width: 97%;
 }
 
 .dialog-title#fish-details-title{
@@ -274,10 +274,12 @@ nav a {
 .details-dialog-text h3{
     font-size: 1.5rem;
     text-decoration: underline;
+    margin: 1rem 0;
 }
 
 .details-dialog-text p{
     font-size: 1.25rem;
+    margin: 0;
 }
 .details-dialog-text p:first-child{
     margin-top: 0;
@@ -290,7 +292,6 @@ nav a {
     font-size: 1.5rem !important;
     font-weight: bold;
     margin-top: 0.5em;
-    line-height: 1;
 }
 
 .dialog-container:not([aria-hidden="true"]) #fish-details-dialog, 
