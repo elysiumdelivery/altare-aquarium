@@ -1,1 +1,1 @@
-{"Version":3,"Parameters":[{"Id":"aaaaaaaaaaaaaaaaaaaaaaaaa","GroupId":"","Name":"Breath"}],"ParameterGroups":[],"Parts":[{"Id":"BlueWhale","Name":"BlueWhale"}]}
+{"Version":3,"Parameters":[{"Id":"aaaaaaaaaaaaaaaaaaaaaaaaa","GroupId":"","Name":"Breath"},{"Id":"Param","GroupId":"","Name":"Parameter1"}],"ParameterGroups":[],"Parts":[{"Id":"BlueWhale","Name":"BlueWhale"}]}
