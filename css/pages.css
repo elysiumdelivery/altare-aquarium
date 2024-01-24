@@ -66,6 +66,26 @@ section#artist-writer-board .artist-writer-message {
 	animation-fill-mode: both;
 	animation-iteration-count: 1;
 	will-change: transform;
+
+	overflow: hidden;
+	border-radius: 8px;
+}
+
+/* Altventurer bg */
+section#artist-writer-board .artist-writer-message::before {
+	position: absolute;
+	content: "";
+	background-image: url(../images/Slime.webp);
+	background-size: contain;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	left: -60px;
+	bottom: -100px;
+	width: 200px;
+	height: 200px;
+	transform: scale(-1, 1);
+	opacity: 0.25;
+	z-index: -1;
 }
 
 section#artist-writer-board .artist-writer-message:first-child {
@@ -180,8 +200,7 @@ section.credits-column h2,
 section.sponsor-column h2 {
 	text-align: center;
 	font-size: 1.4em;
-	/* this is the credits background color */
-	border-bottom: 3px solid rgba(0, 0, 0, 0.5);
+	border-bottom: 2px solid rgb(71 78 105 / 50%);
 	padding-bottom: 1em;
 	column-span: all;
 }

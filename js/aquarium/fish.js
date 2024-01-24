@@ -76,7 +76,7 @@ Fish.prototype.isInBounds = function (top, left, bottom, right) {
     return  ((this.model.y - (this.model.height / 2)) >= top) && 
             ((this.model.y + (this.model.height / 2)) <= bottom) && 
             ((this.model.x) >= left) &&
-            ((this.model.x) <= right);
+            ((this.model.x - (this.model.width / 2)) <= right);
 
 }
 Fish.prototype.toggleDirection = function () {

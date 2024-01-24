@@ -244,8 +244,8 @@ async function init (data) {
         if (Aquarium.settings.filters) {
             overlayGraphic.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
             if (Aquarium.particlesFront && Aquarium.particlesBack) {
-                Aquarium.particlesFront.particleContainer.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
-                Aquarium.particlesBack.particleContainer.alpha = (Aquarium.viewport.bottom / WORLD_HEIGHT) * 0.8;
+                Aquarium.particlesFront.particleContainer.alpha = (Aquarium.viewport.top / WORLD_HEIGHT) * 0.8;
+                Aquarium.particlesBack.particleContainer.alpha = (Aquarium.viewport.top / WORLD_HEIGHT) * 0.8;
             }
             // Aquarium.emitter.parent.alpha = clamp(lerp(0, 1, (Aquarium.viewport.top - LEVELS.Top) / (LEVELS.Top + 100)), 0, 1);
             Aquarium.filters.godrayFilter.time += d / lerp(50, 100, 1 - (Aquarium.viewport.top / WORLD_HEIGHT));
@@ -254,14 +254,11 @@ async function init (data) {
             Aquarium.filters.godrayFilter.alpha = lerp(0, 0.3, clamp((Aquarium.viewport.top - LEVELS.Surface) / LEVELS.Surface, 0, 1));
 
             Aquarium.filters.displacementFilter.enabled = Aquarium.viewport.top >= LEVELS.Surface;
-
-            // Aquarium.emitter.update(d * 0.001);
         }
         
         updateDebugLayer();
     });
 
-    Aquarium.toggleFilters(Aquarium.settings.filters);
     Aquarium.resize = resize;
 
     // setupSound();
@@ -308,6 +305,7 @@ async function init (data) {
         });
         Aquarium.viewport.fitWidth()
         Aquarium.viewport.clamp({direction: "all"})
+        Aquarium.toggleFilters(Aquarium.settings.filters);
         resize();
         if (window.innerHeight >= window.innerWidth) {
             Aquarium.viewport.moveCenter(WORLD_WIDTH - 500, 0);
@@ -455,11 +453,15 @@ function toggleFilters (isOn) {
     Aquarium.settings.filters = isOn;
     if (Aquarium.settings.filters) {
         Aquarium.overlay.visible = true;
+        Aquarium.particlesFront.particleContainer.visible = true;
+        Aquarium.particlesBack.particleContainer.visible = true;
         Aquarium.viewport.filters = [Aquarium.filters.displacementFilter, Aquarium.filters.godrayFilter]
     }
     else {
         Aquarium.overlay.visible = false;
         Aquarium.viewport.filters = [];
+        Aquarium.particlesFront.particleContainer.visible = false;
+        Aquarium.particlesBack.particleContainer.visible = false;
     }
 }
 

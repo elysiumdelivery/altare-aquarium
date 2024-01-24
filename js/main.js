@@ -74,14 +74,16 @@ async function main() {
     })
     Aquarium.addGameStateListener("onViewportUpdate", (viewport) => {
         let screenCoords = viewport.toScreen(viewport.worldWidth / 2, 50);
+        let nav = document.getElementById("nav");
+        let titleHeader = document.getElementById("title-header");
         if (window.innerHeight > window.innerWidth) {
-            document.getElementById("nav").style.top = null;
+            nav.style.top = null;
         }
         else {
-            document.getElementById("nav").style.top = `calc(${screenCoords.y}px + 12vmin)`;
+            nav.style.top = `calc(${screenCoords.y}px + 12vmin)`;
         }
         if (window.aquarium.viewport.top < LEVELS.Surface) {
-            document.getElementById("title-header").style.top = screenCoords.y;
+            titleHeader.style.top = screenCoords.y;
         }
         
         document.getElementById("back-to-top").style.opacity = clamp(lerp(0, 1, (window.aquarium.viewport.center.y - LEVELS.Top) / (LEVELS.Top + 100)), 0, 1);
