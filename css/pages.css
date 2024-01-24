@@ -245,6 +245,7 @@ section.credits-column#credits-role-id-3 {
 section.credits-column#credits-role-id-4 {
 	grid-area: twitillust;
 	animation-delay: 2.5s;
+	column-count: 2;
 }
 
 section.credits-column li {
@@ -265,6 +266,12 @@ section.credits-column#twitter-images ul {
 section.credits-column#twitter-images li {
 	display: flex;
 	flex-direction: column;
+}
+section.credits-column#twitter-images li.full_row {
+	width: 100%;
+}
+section.credits-column#twitter-images li.full_row img {
+	margin: auto;
 }
 section.credits-column#twitter-images li img {
 	height: auto;
