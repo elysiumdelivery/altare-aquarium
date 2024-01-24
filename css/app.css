@@ -227,7 +227,7 @@ nav a {
 .dialog-title, .details-dialog-text{
     background: rgba(255, 255, 255, 0.5);
     padding: 1rem;
-    width: 97%;
+    width: 90%;
 }
 
 .dialog-title#fish-details-title{
@@ -290,6 +290,7 @@ nav a {
     font-size: 1.5rem !important;
     font-weight: bold;
     margin-top: 0.5em;
+    line-height: 1;
 }
 
 .dialog-container:not([aria-hidden="true"]) #fish-details-dialog, 
