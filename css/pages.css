@@ -387,16 +387,6 @@ section.sponsor-column p {
 			"twitillust"
 			"twitter";
 	}
-
-	#collection-stats h2 {
-		flex-basis: 50%;
-		flex-grow: 1;
-		text-align: center;
-	}
-	#collection-stats #gacha-pull-count {
-		/* force the numbers to flow to the 2nd line */
-		flex-basis: 30%;
-	}
 }
 
 @media only screen and (min-width: 800px) {
@@ -406,8 +396,9 @@ section.sponsor-column p {
 	}
 }
 	
-@media only screen and (max-width:420px){
-	section.credits-column#credits-role-id-0 {
+@media only screen and (max-width:470px){
+	section.credits-column#credits-role-id-0,
+	section.credits-column#credits-role-id-4 {
 		columns: 1;
 	}
 	section.credits-column#twitter-images li img {
