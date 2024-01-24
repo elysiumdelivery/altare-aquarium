@@ -112,7 +112,7 @@ function renderTwitterArtCredits(twitter_art_data) {
   creditsColumn.append(twitterImagesHeader);
   const artList = document.createElement("ul");
 
-  twitter_art_data.forEach((artData) => {
+  twitter_art_data.forEach((artData, i) => {
     const artContainer = document.createElement("li");
     const img = document.createElement("img");
     img.src = `../images/twitter/${artData["Artwork"].replace(/\.png|\.gif/i, ".webp")}`;
@@ -122,9 +122,12 @@ function renderTwitterArtCredits(twitter_art_data) {
       let creditTwitter = document.createElement("a");
       creditTwitter.href = `https://twitter.com/${artData["Twitter"]}`;
       creditTwitter.setAttribute('target', '_blank');
-      creditTwitter.textContent = `By @${artData["Staff name"]}`;
+      creditTwitter.textContent = `By ${artData["Staff name"]}`;
       artContainer.append(creditTwitter);
     }
+    if (i === 0) {
+      artContainer.classList.add("full_row");
+    } 
     artList.append(artContainer);
   });
   creditsColumn.append(artList);

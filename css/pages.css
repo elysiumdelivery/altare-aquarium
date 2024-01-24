@@ -245,6 +245,7 @@ section.credits-column#credits-role-id-3 {
 section.credits-column#credits-role-id-4 {
 	grid-area: twitillust;
 	animation-delay: 2.5s;
+	column-count: 2;
 }
 
 section.credits-column li {
@@ -265,6 +266,12 @@ section.credits-column#twitter-images ul {
 section.credits-column#twitter-images li {
 	display: flex;
 	flex-direction: column;
+}
+section.credits-column#twitter-images li.full_row {
+	width: 100%;
+}
+section.credits-column#twitter-images li.full_row img {
+	margin: auto;
 }
 section.credits-column#twitter-images li img {
 	height: auto;
@@ -380,16 +387,6 @@ section.sponsor-column p {
 			"twitillust"
 			"twitter";
 	}
-
-	#collection-stats h2 {
-		flex-basis: 50%;
-		flex-grow: 1;
-		text-align: center;
-	}
-	#collection-stats #gacha-pull-count {
-		/* force the numbers to flow to the 2nd line */
-		flex-basis: 30%;
-	}
 }
 
 @media only screen and (min-width: 800px) {
@@ -399,8 +396,9 @@ section.sponsor-column p {
 	}
 }
 	
-@media only screen and (max-width:420px){
-	section.credits-column#credits-role-id-0 {
+@media only screen and (max-width:470px){
+	section.credits-column#credits-role-id-0,
+	section.credits-column#credits-role-id-4 {
 		columns: 1;
 	}
 	section.credits-column#twitter-images li img {
