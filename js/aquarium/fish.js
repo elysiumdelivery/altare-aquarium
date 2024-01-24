@@ -97,7 +97,6 @@ Fish.prototype.inRangeX = function (x, direction) {
     return (x < xMin && direction === -1) || (x > xMax && direction === 1);
 }
 Fish.prototype.update = function (delta) {
-    this.setVisible(this.isInBounds(Aquarium.viewport.top - this.model.height, -100, Aquarium.viewport.bottom + this.model.height, Aquarium.viewport.right + 100));
     if (!Aquarium.accessibilityActive) {
         if (Aquarium.currentActiveFish !== this && (this.containsPoint(Aquarium.app.renderer.events.pointer))) {
             Aquarium.emitEvent("onFishOver", this);
@@ -106,16 +105,17 @@ Fish.prototype.update = function (delta) {
             Aquarium.emitEvent("onFishOut", this);
         }
     }
-    if (this.inRangeX(this.model.x, this.direction)) {
-        this.toggleDirection();
-    }
-    if (!this.isStatic && this.isVisible()) {
-       this.model.update(Aquarium.app.ticker.deltaMS);
-    }
     this.model.x += delta * this.speed * this.direction;
     if (this.data["Movement"] === "Moving" && this.isVisible()) {
         this.model.y += delta * this.speed * 0.5 * Math.sin((Date.now() + randomRange(20, 100))/ 600);
     }
+    if (!this.isStatic && this.inRangeX(this.model.x, this.direction)) {
+        this.toggleDirection();
+    }
+    this.setVisible(this.isInBounds(Aquarium.viewport.top - this.model.height, 0, Aquarium.viewport.bottom + this.model.height, WORLD_WIDTH));
+    if (!this.isStatic && this.isVisible()) {
+        this.model.update(Aquarium.app.ticker.deltaMS);
+     }
 }
 
 Fish.prototype.toggleHighlight = function (isOn) {

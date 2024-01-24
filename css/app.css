@@ -132,6 +132,11 @@ nav a {
     text-align: center;
 }
 
+#fish-count {
+    position: fixed;
+    bottom: 0;
+}
+
 #quality-settings {
 }
 
@@ -310,4 +315,9 @@ nav a {
     0% { opacity: 1; }
     50% { opacity: 0.5; }
     100% { opacity: 1; }
+}
+@keyframes fishCountAnim {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    0% { transform: scale(1); }
 }
