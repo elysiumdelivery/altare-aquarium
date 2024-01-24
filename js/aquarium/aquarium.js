@@ -74,9 +74,8 @@ export const Aquarium = ((options = {}) => {
 async function init (data) {
     Aquarium.app = new PIXI.Application({
         view: document.getElementById('canvas'),
-        backgroundAlpha: 1,
         resizeTo: window,
-        resolution: 0.95
+        resolution: 1,
     });
     Aquarium.viewport = new pixi_viewport.Viewport({
         screenWidth: window.innerWidth,
@@ -209,7 +208,7 @@ async function init (data) {
      * Workaround where we emit our own event that acts as the click.
      */
     Aquarium.app.view.addEventListener('pointerup', (e) => {
-        if (!Aquarium.isDraggingViewport && Aquarium.currentActiveFish && Aquarium.currentActiveFish.model.containsPoint(e)) {
+        if (!Aquarium.isDraggingViewport && Aquarium.currentActiveFish && Aquarium.currentActiveFish.containsPoint(e)) {
             Aquarium.emitEvent("onFishClicked", { idx: Aquarium.currentActiveFish.id, data: Aquarium.currentActiveFish.data });
         }
     });
@@ -319,10 +318,12 @@ async function init (data) {
 async function loadAltare () {
     return PIXI.Assets.load(spineModel).then((resource) => {
 
+        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
         Aquarium.altareBoat = new PIXI.spine.Spine(resource.spineData);
         Aquarium.altareBoat.scale.set(0.8)
         Aquarium.altareBoat.x = WORLD_WIDTH - 500;
         Aquarium.altareBoat.y = LEVELS.Top;
+        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
 
         Aquarium.altareFloat = PIXI.Sprite.from("../images/Altare.webp")
         Aquarium.altareSlime = PIXI.Sprite.from("../images/Slime.webp")

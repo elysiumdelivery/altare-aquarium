@@ -26,6 +26,25 @@ Fish.prototype.init = async function () {
         self.model.filters = [];
         self.model.anchor.set(0.5, 0.5);
         self.model.scale.set(self.scale);
+
+        let bound = new PIXI.Rectangle(-self.model.width / 2, -self.model.height / 2, self.model.width, self.model.height);
+        self.model.getBounds(false, bound);
+        bound.pad(bound.width / 2);
+        console.log(bound)
+        self.hitArea = new PIXI.Graphics();
+        self.hitArea.beginFill(0xff0000);
+        self.hitArea.drawRect(bound.x, bound.y, bound.width, bound.height);
+        self.hitArea.alpha = 0;
+        let minSize = 800;
+        if (self.hitArea.width < minSize || self.hitArea.height < minSize) {
+            let bounds = self.hitArea.getBounds();
+            self.hitArea.drawRect(bounds.x + (bounds.width/2) - (minSize/2), bounds.y + (bounds.y/2) - (minSize/2), minSize, minSize);
+        }
+        self.hitArea.endFill();
+        self.hitArea.cursor = "pointer";
+        self.hitArea.interactive = true;
+        self.model.addChild(self.hitArea); 
+        
         if (self.direction === 1) {
             self.model.scale.x *= -1;
         }
@@ -84,12 +103,7 @@ Fish.prototype.toggleDirection = function () {
     this.model.scale.x *= -1;
 }
 Fish.prototype.containsPoint = function (point) {
-    if (this.isStatic) {
-        return this.model.containsPoint(point);
-    }
-    else {
-        return this.hitArea.containsPoint(point);
-    }
+    return this.hitArea.containsPoint(point);
 }
 Fish.prototype.inRangeX = function (x, direction) {
     let xMin = this.rangeX[0] || 0;

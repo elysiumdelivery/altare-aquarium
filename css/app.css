@@ -95,7 +95,7 @@ nav a {
 #loader .spinner-container label {
     color: white;
     font-family: 'Rowdies', sans-serif;
-    font-size: 3vmin;
+    font-size: 3vmax;
     margin-bottom: 0.5em;
     animation: loading-label;
     animation-duration: 5s;
@@ -130,6 +130,12 @@ nav a {
     cursor: pointer;
     margin-left: 2vmin;
     text-align: center;
+}
+
+#loader p.small {
+    margin-top: 2.5em;
+    font-family: 'Montserrat';
+    font-size: 2vmax;
 }
 
 #fish-count {
@@ -233,6 +239,7 @@ nav a {
 
 .fish-details-dialog-close{
     margin-top: 1.5em;
+    cursor: pointer;
 }
 
 .dialog-title, .details-dialog-text{

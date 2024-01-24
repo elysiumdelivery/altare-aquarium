@@ -374,13 +374,13 @@
 				"Boat_Front": { "x": -40.01, "y": 212.3, "width": 1035, "height": 496 }
 			},
 			"OceanBack_1": {
-				"OceanBack_1": { "x": -1684.71, "y": 22.22, "width": 1002, "height": 187 }
+				"OceanBack_1": { "x": -1683, "y": 22.22, "width": 1002, "height": 187 }
 			},
 			"OceanBack_2": {
 				"OceanBack_2": { "x": -265, "y": 22.5, "width": 1842, "height": 187 }
 			},
 			"OceanFront_1": {
-				"OceanFront_1": { "x": -1684.71, "y": -135.78, "width": 1002, "height": 323 }
+				"OceanFront_1": { "x": -1683, "y": -135.78, "width": 1002, "height": 323 }
 			},
 			"OceanFront_2": {
 				"OceanFront_2": { "x": -265, "y": -136, "width": 1842, "height": 324 }
