@@ -135,6 +135,12 @@ nav a {
 #fish-count {
     position: fixed;
     bottom: 0;
+    left: 0;
+    margin: 1em;
+    background: white;
+    padding: 0.5em 0.6em;
+    border-radius: 10px;
+    transform-origin: 0 100%;
 }
 
 #quality-settings {
@@ -318,6 +324,6 @@ nav a {
 }
 @keyframes fishCountAnim {
     0% { transform: scale(1); }
-    50% { transform: scale(1.5); }
+    50% { transform: scale(1.25); }
     0% { transform: scale(1); }
 }

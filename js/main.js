@@ -136,8 +136,12 @@ async function main() {
             DETAILS_DIALOG_A11Y.show();
         });
 
+        // Setup fish counter
+        fishFound = JSON.parse(localStorage.getItem("altare-aquarium-fish-found" || "")) ?? [];
+        updateFishCounter();
+
         DETAILS_DIALOG_A11Y.on('hide', function (event) {
-            // updateFishCounter();
+            updateFishCounter();
         })
 
         overlayToggle.checked = aquarium.overlay.visible;
@@ -153,6 +157,11 @@ function updateFishCounter () {
     let total = aquarium.getAllFish().length;
     let found = fishFound.length;
 
+    document.getElementById("fish-count").onanimationend = () => {
+        document.getElementById("fish-count").style.animation = null;
+    }
     document.getElementById("fish-count").innerHTML = `${found} / ${total} fish found`;
-    document.getElementById("fish-count").style.animation = "fishCountAnim 1s ease";
+    document.getElementById("fish-count").style.animation = "fishCountAnim 0.5s ease";
+
+    localStorage.setItem("altare-aquarium-fish-found", JSON.stringify(fishFound));
 }

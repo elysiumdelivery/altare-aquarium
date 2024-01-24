@@ -410,8 +410,13 @@ async function loadData(allFishData) {
                 node.onfocus = function () {
                     Aquarium.accessibilityActive = true;
                     Aquarium.emitEvent("onFishOver", this);
-                    if ((this.model.y + (this.model.getBounds().height / 2)) > Aquarium.viewport.bottom || (this.model.y - (this.model.getBounds().height / 2)) <= Aquarium.viewport.top) {
-                        Aquarium.viewport.animate({ time: 250, position: {x: Aquarium.viewport.center.x, y: this.model.y}, removeOnInterrupt: true })
+                    if (window.innerWidth > window.innerHeight) {
+                        if ((this.model.y + (this.model.getBounds().height / 2)) > Aquarium.viewport.bottom || (this.model.y - (this.model.getBounds().height / 2)) <= Aquarium.viewport.top) {
+                            Aquarium.viewport.animate({ time: 250, position: {x: Aquarium.viewport.center.x, y: this.model.y}, removeOnInterrupt: true })
+                        }
+                    }
+                    else {
+                        Aquarium.viewport.animate({ time: 250, position: {x: this.model.x, y: this.model.y}, removeOnInterrupt: true })
                     }
                 }.bind(fish)
                 node.onblur = function () {

@@ -14,13 +14,14 @@ export async function setupDetailsDialog() {
   // as well as closing on esc, clicking outside of the dialog, etc.
   DETAILS_DIALOG_A11Y = new A11yDialog(document.getElementById("fish-details"));
   DETAILS_DIALOG_A11Y.hide();
-  console.log(DETAILS_DIALOG_A11Y)
 }
 
 export function updateDetailsDialog(id, data, cardUrl) {
   // TODO;
   // Header
   // Image -> `"images/thumbs/${data["Sea Level"]}/${data["Filename"]}.webp"`
+
+  DETAILS_DIALOG_EL.scrollTop = 0;
 
   DETAILS_DIALOG_EL.className = data["Sea Level"].toLowerCase();
 
