@@ -87,6 +87,7 @@ async function main() {
             titleHeader.style.top = screenCoords.y;
         }
         
+        document.getElementById("fish-count").style.opacity = clamp(lerp(0, 1, (window.aquarium.viewport.center.y - LEVELS.Top) / (LEVELS.Top + 100)), 0, 1);
         document.getElementById("back-to-top").style.opacity = clamp(lerp(0, 1, (window.aquarium.viewport.center.y - LEVELS.Top) / (LEVELS.Top + 100)), 0, 1);
 
         if (window.innerWidth < window.innerHeight) {
