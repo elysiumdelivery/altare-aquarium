@@ -370,8 +370,8 @@ footer {
 
 	#bgm-controls {
 		position: absolute;
-		top: 1vw;
-		right: 1vw;
+		top: 1em;
+		right: 1em;
 	}
 
 	#bgm-controls label {
