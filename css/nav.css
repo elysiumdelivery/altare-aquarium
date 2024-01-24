@@ -204,7 +204,8 @@ footer {
 		align-items: center;
 		justify-content: center;
 		width: 100vw;
-		height: 100vh;
+		height: 100dvh;
+		overflow-y: auto;
 		z-index: 999;
 
 		background-color: rgb(59 71 179 / 80%);
