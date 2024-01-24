@@ -106,15 +106,14 @@ Fish.prototype.update = function (delta) {
             Aquarium.emitEvent("onFishOut", this);
         }
     }
-    if (!this.isVisible()) return;
     if (this.inRangeX(this.model.x, this.direction)) {
         this.toggleDirection();
     }
-    if (!this.isStatic) {
+    if (!this.isStatic && this.isVisible()) {
        this.model.update(Aquarium.app.ticker.deltaMS);
     }
     this.model.x += delta * this.speed * this.direction;
-    if (this.data["Movement"] === "Moving") {
+    if (this.data["Movement"] === "Moving" && this.isVisible()) {
         this.model.y += delta * this.speed * 0.5 * Math.sin((Date.now() + randomRange(20, 100))/ 600);
     }
 }
