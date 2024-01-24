@@ -2,6 +2,7 @@ import { setupDetailsDialog, updateDetailsDialog, DETAILS_DIALOG_A11Y } from "./
 import { Aquarium, LEVELS, WORLD_WIDTH, WORLD_HEIGHT, lerp, clamp } from "./aquarium/aquarium.js"
 
 const FISH_DATA_PATH = "fish.csv";
+let fishFound = [];
 
 async function parseCSV(filePath) {
     return new Promise((resolve, reject) => {
@@ -127,10 +128,17 @@ async function main() {
         }
         
         Aquarium.addGameStateListener("onFishClicked", (fishData) => {
+            if (fishFound.indexOf(fishData.idx) === -1) {
+                fishFound.push(fishData.idx);
+            }
             // Open dialog info on selected fish
             updateDetailsDialog(fishData.idx, fishData.data);
             DETAILS_DIALOG_A11Y.show();
         });
+
+        DETAILS_DIALOG_A11Y.on('hide', function (event) {
+            // updateFishCounter();
+        })
 
         overlayToggle.checked = aquarium.overlay.visible;
     });
@@ -139,4 +147,12 @@ async function main() {
 
 window.onload = () => {
     main();
+}
+
+function updateFishCounter () {
+    let total = aquarium.getAllFish().length;
+    let found = fishFound.length;
+
+    document.getElementById("fish-count").innerHTML = `${found} / ${total} fish found`;
+    document.getElementById("fish-count").style.animation = "fishCountAnim 1s ease";
 }

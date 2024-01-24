@@ -97,7 +97,7 @@ Fish.prototype.inRangeX = function (x, direction) {
     return (x < xMin && direction === -1) || (x > xMax && direction === 1);
 }
 Fish.prototype.update = function (delta) {
-    this.setVisible(this.isInBounds(Aquarium.viewport.top - this.model.height, -100, Aquarium.viewport.bottom + this.model.height, Aquarium.viewport.right + 100));
+    this.setVisible(this.isInBounds(Aquarium.viewport.top - this.model.height, 0, Aquarium.viewport.bottom + this.model.height, WORLD_WIDTH));
     if (!Aquarium.accessibilityActive) {
         if (Aquarium.currentActiveFish !== this && (this.containsPoint(Aquarium.app.renderer.events.pointer))) {
             Aquarium.emitEvent("onFishOver", this);
@@ -106,7 +106,7 @@ Fish.prototype.update = function (delta) {
             Aquarium.emitEvent("onFishOut", this);
         }
     }
-    if (this.inRangeX(this.model.x, this.direction)) {
+    if (!this.isStatic && this.inRangeX(this.model.x, this.direction)) {
         this.toggleDirection();
     }
     if (!this.isStatic && this.isVisible()) {
