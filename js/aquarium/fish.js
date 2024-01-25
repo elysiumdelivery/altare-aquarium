@@ -146,7 +146,8 @@ function randomRange(min, max) {
 }
 
 function getSpeedFromData (data) {
-    if (data["Slow"] == "TRUE") return randomRange(0.5, 1);
+    if (data["Super Slow"] == "TRUE") return 0.2;
+    if (data["Slow"] == "TRUE") return randomRange(0.5, 0.8);
     if (data["Fast"] == "TRUE") return randomRange(1, 1.5);
     if (data["Stationary"] == "TRUE") return 0;
 }
